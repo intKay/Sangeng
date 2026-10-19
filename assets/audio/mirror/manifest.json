@@ -1,0 +1,216 @@
+{
+  "id": "mirror",
+  "music": {
+    "main": {
+      "file": "music/main.ogg",
+      "volume": 0.5,
+      "loop": true,
+      "fade": 4.0
+    },
+    "tension": {
+      "file": "music/tension.ogg",
+      "volume": 0.45,
+      "loop": true,
+      "fade": 2.0
+    },
+    "ending": {
+      "file": "music/ending.ogg",
+      "volume": 0.55,
+      "loop": false,
+      "fade": 2.0
+    }
+  },
+  "ambience": {
+    "fluorescent": {
+      "file": "ambience/fluorescent_buzz.ogg",
+      "volume": 0.55,
+      "loop": true
+    },
+    "waterDrip": {
+      "file": "ambience/water_drip.ogg",
+      "volume": 0.55,
+      "loop": true
+    },
+    "distantWater": {
+      "file": "ambience/distant_water.ogg",
+      "volume": 0.45,
+      "loop": true
+    },
+    "steamHiss": {
+      "file": "ambience/steam_hiss.ogg",
+      "volume": 0.4,
+      "loop": true
+    }
+  },
+  "sfx": {
+    "stepTile": {
+      "files": [
+        "sfx/step_tile_1.ogg",
+        "sfx/step_tile_2.ogg",
+        "sfx/step_tile_3.ogg",
+        "sfx/step_tile_4.ogg"
+      ],
+      "volume": 0.55
+    },
+    "towelPick": {
+      "files": [
+        "sfx/towel_pick.ogg"
+      ],
+      "volume": 0.6
+    },
+    "valveTurn": {
+      "files": [
+        "sfx/valve_turn_1.ogg",
+        "sfx/valve_turn_2.ogg"
+      ],
+      "volume": 0.8
+    },
+    "waterStream": {
+      "files": [
+        "sfx/water_stream.ogg"
+      ],
+      "volume": 0.55,
+      "loop": true
+    },
+    "waterSplash": {
+      "files": [
+        "sfx/water_splash.ogg"
+      ],
+      "volume": 0.8
+    },
+    "switchClick": {
+      "files": [
+        "sfx/switch_click.ogg"
+      ],
+      "volume": 0.7
+    },
+    "lightFlicker": {
+      "files": [
+        "sfx/light_flicker_1.ogg",
+        "sfx/light_flicker_2.ogg"
+      ],
+      "volume": 0.6
+    },
+    "lockerCreak": {
+      "files": [
+        "sfx/locker_creak_1.ogg",
+        "sfx/locker_creak_2.ogg"
+      ],
+      "volume": 0.7
+    },
+    "stoolDrag": {
+      "files": [
+        "sfx/stool_drag.ogg"
+      ],
+      "volume": 0.7
+    },
+    "radioOn": {
+      "files": [
+        "sfx/radio_on.ogg"
+      ],
+      "volume": 0.7
+    },
+    "radioStatic": {
+      "files": [
+        "sfx/radio_static.ogg"
+      ],
+      "volume": 0.45,
+      "loop": true
+    },
+    "clockTick": {
+      "files": [
+        "sfx/clock_tick.ogg"
+      ],
+      "volume": 0.4,
+      "loop": true
+    },
+    "mirrorTouch": {
+      "files": [
+        "sfx/mirror_touch.ogg"
+      ],
+      "volume": 0.7
+    },
+    "glassCrack": {
+      "files": [
+        "sfx/glass_crack.ogg"
+      ],
+      "volume": 0.95
+    },
+    "doppelStep": {
+      "files": [
+        "sfx/doppel_step_1.ogg",
+        "sfx/doppel_step_2.ogg",
+        "sfx/doppel_step_3.ogg"
+      ],
+      "volume": 0.7
+    },
+    "doppelBreath": {
+      "files": [
+        "sfx/doppel_breath.ogg"
+      ],
+      "volume": 0.65,
+      "loop": true
+    },
+    "heartbeat": {
+      "files": [
+        "sfx/heartbeat.ogg"
+      ],
+      "volume": 0.65,
+      "loop": true
+    },
+    "breath": {
+      "files": [
+        "sfx/breath.ogg"
+      ],
+      "volume": 0.5,
+      "loop": true
+    },
+    "whisper": {
+      "files": [
+        "sfx/whisper_1.ogg",
+        "sfx/whisper_2.ogg",
+        "sfx/whisper_3.ogg"
+      ],
+      "volume": 0.55
+    },
+    "stinger": {
+      "files": [
+        "sfx/stinger_1.ogg",
+        "sfx/stinger_2.ogg"
+      ],
+      "volume": 0.8
+    },
+    "blackout": {
+      "files": [
+        "sfx/blackout.ogg"
+      ],
+      "volume": 0.8
+    }
+  },
+  "ui": {
+    "hover": {
+      "files": [
+        "../shared/ui_hover.ogg"
+      ],
+      "volume": 0.35
+    },
+    "click": {
+      "files": [
+        "../shared/ui_click.ogg"
+      ],
+      "volume": 0.45
+    },
+    "back": {
+      "files": [
+        "../shared/ui_back.ogg"
+      ],
+      "volume": 0.4
+    },
+    "confirm": {
+      "files": [
+        "../shared/ui_confirm.ogg"
+      ],
+      "volume": 0.5
+    }
+  }
+}

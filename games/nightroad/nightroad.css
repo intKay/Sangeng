@@ -1,0 +1,49 @@
+/* 《夜路》局部样式：夺灯白闪 / 注视压迫边缘 / 结局选择提示。
+   只补充本作玩法反馈，不改动共享引擎 UI。 */
+
+#nr-flash {
+  position: fixed; inset: 0; z-index: 6; pointer-events: none;
+  background: radial-gradient(circle at 50% 44%, #f4f7fb 0%, #e2e9f2 52%, #c6d2e2 100%);
+  opacity: 0;
+}
+#nr-flash.on { animation: nr-flash 640ms ease-out; }
+@keyframes nr-flash {
+  0% { opacity: 0; }
+  7% { opacity: 0.94; }
+  38% { opacity: 0.5; }
+  100% { opacity: 0; }
+}
+
+#nr-gaze {
+  position: fixed; inset: 0; z-index: 5; pointer-events: none;
+  box-shadow: inset 0 0 130px 26px rgba(228, 234, 244, 0.9);
+  opacity: 0; transition: opacity 120ms linear;
+}
+
+#nr-choice {
+  position: fixed; left: 50%; bottom: clamp(126px, 21vh, 196px);
+  transform: translateX(-50%);
+  display: none; flex-direction: column; gap: 9px;
+  pointer-events: none; text-align: left;
+  color: rgba(236, 240, 248, 0.92);
+  font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans SC", sans-serif;
+}
+#nr-choice.show { display: flex; }
+#nr-choice .row {
+  display: flex; align-items: center; gap: 14px;
+  opacity: 0; animation: nr-choice-in 560ms ease forwards;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.95);
+}
+#nr-choice .row:nth-child(2) { animation-delay: 260ms; }
+#nr-choice b {
+  font: 0.72rem/1 ui-monospace, Consolas, monospace;
+  font-weight: 400; letter-spacing: 0.08em;
+  color: var(--sg-accent, #9db8d8);
+  border: 1px solid rgba(157, 184, 216, 0.6);
+  border-radius: 1px; padding: 0.38em 0.5em;
+}
+#nr-choice span { font-size: 1.02rem; letter-spacing: 0.16em; }
+@keyframes nr-choice-in {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: none; }
+}

@@ -1,0 +1,221 @@
+{
+  "id": "door",
+  "music": {
+    "main": {
+      "file": "music/main.ogg",
+      "volume": 0.5,
+      "loop": true,
+      "fade": 4.0
+    },
+    "tension": {
+      "file": "music/tension.ogg",
+      "volume": 0.45,
+      "loop": true,
+      "fade": 2.0
+    },
+    "ending": {
+      "file": "music/ending.ogg",
+      "volume": 0.55,
+      "loop": false,
+      "fade": 2.0
+    }
+  },
+  "ambience": {
+    "corridor": {
+      "file": "ambience/corridor_hum.ogg",
+      "volume": 0.55,
+      "loop": true
+    },
+    "roomTone": {
+      "file": "ambience/room_tone.ogg",
+      "volume": 0.5,
+      "loop": true
+    },
+    "rainWindow": {
+      "file": "ambience/rain_window.ogg",
+      "volume": 0.45,
+      "loop": true
+    },
+    "tvStatic": {
+      "file": "ambience/tv_static.ogg",
+      "volume": 0.35,
+      "loop": true
+    }
+  },
+  "sfx": {
+    "stepWood": {
+      "files": [
+        "sfx/step_wood_1.ogg",
+        "sfx/step_wood_2.ogg",
+        "sfx/step_wood_3.ogg",
+        "sfx/step_wood_4.ogg"
+      ],
+      "volume": 0.55
+    },
+    "stepCarpet": {
+      "files": [
+        "sfx/step_carpet_1.ogg",
+        "sfx/step_carpet_2.ogg",
+        "sfx/step_carpet_3.ogg"
+      ],
+      "volume": 0.5
+    },
+    "doorOpen": {
+      "files": [
+        "sfx/door_open.ogg"
+      ],
+      "volume": 0.9
+    },
+    "doorClose": {
+      "files": [
+        "sfx/door_close.ogg"
+      ],
+      "volume": 0.9
+    },
+    "doorLocked": {
+      "files": [
+        "sfx/door_locked.ogg"
+      ],
+      "volume": 0.85
+    },
+    "doorUnlock": {
+      "files": [
+        "sfx/door_unlock.ogg"
+      ],
+      "volume": 0.85
+    },
+    "pickupLetter": {
+      "files": [
+        "sfx/pickup_letter_1.ogg",
+        "sfx/pickup_letter_2.ogg"
+      ],
+      "volume": 0.7
+    },
+    "pickupBattery": {
+      "files": [
+        "sfx/pickup_battery.ogg"
+      ],
+      "volume": 0.7
+    },
+    "flashlightClick": {
+      "files": [
+        "sfx/flashlight_click.ogg"
+      ],
+      "volume": 0.6
+    },
+    "batteryLow": {
+      "files": [
+        "sfx/battery_low.ogg"
+      ],
+      "volume": 0.5
+    },
+    "lightSwitch": {
+      "files": [
+        "sfx/light_switch.ogg"
+      ],
+      "volume": 0.7
+    },
+    "lightFlicker": {
+      "files": [
+        "sfx/light_flicker_1.ogg",
+        "sfx/light_flicker_2.ogg"
+      ],
+      "volume": 0.6
+    },
+    "paperRustle": {
+      "files": [
+        "sfx/paper_rustle_1.ogg",
+        "sfx/paper_rustle_2.ogg"
+      ],
+      "volume": 0.55
+    },
+    "clockTick": {
+      "files": [
+        "sfx/clock_tick.ogg"
+      ],
+      "volume": 0.4,
+      "loop": true
+    },
+    "heartbeat": {
+      "files": [
+        "sfx/heartbeat.ogg"
+      ],
+      "volume": 0.65,
+      "loop": true
+    },
+    "breath": {
+      "files": [
+        "sfx/breath.ogg"
+      ],
+      "volume": 0.5,
+      "loop": true
+    },
+    "whisper": {
+      "files": [
+        "sfx/whisper_1.ogg",
+        "sfx/whisper_2.ogg",
+        "sfx/whisper_3.ogg"
+      ],
+      "volume": 0.55
+    },
+    "stinger": {
+      "files": [
+        "sfx/stinger_1.ogg",
+        "sfx/stinger_2.ogg"
+      ],
+      "volume": 0.8
+    },
+    "blackout": {
+      "files": [
+        "sfx/blackout.ogg"
+      ],
+      "volume": 0.8
+    },
+    "entityBreath": {
+      "files": [
+        "sfx/entity_breath.ogg"
+      ],
+      "volume": 0.65,
+      "loop": true
+    },
+    "entityStep": {
+      "files": [
+        "sfx/entity_step_1.ogg",
+        "sfx/entity_step_2.ogg"
+      ],
+      "volume": 0.8
+    },
+    "entityCatch": {
+      "files": [
+        "sfx/entity_catch.ogg"
+      ],
+      "volume": 0.9
+    }
+  },
+  "ui": {
+    "hover": {
+      "files": [
+        "../shared/ui_hover.ogg"
+      ],
+      "volume": 0.35
+    },
+    "click": {
+      "files": [
+        "../shared/ui_click.ogg"
+      ],
+      "volume": 0.45
+    },
+    "back": {
+      "files": [
+        "../shared/ui_back.ogg"
+      ],
+      "volume": 0.4
+    },
+    "confirm": {
+      "files": [
+        "../shared/ui_confirm.ogg"
+      ],
+      "volume": 0.5
+    }
+  }
+}

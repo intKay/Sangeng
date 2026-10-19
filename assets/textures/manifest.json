@@ -1,0 +1,312 @@
+{
+  "materials": {
+    "MAT_wallpaper": {
+      "file": "wallpaper_old.jpg",
+      "colorSpace": "srgb",
+      "tint": "#efe8d4",
+      "emissive": null
+    },
+    "MAT_wallpaper_dark": {
+      "file": "wallpaper_old_dark.jpg",
+      "colorSpace": "srgb",
+      "tint": "#d8d2b8",
+      "emissive": null
+    },
+    "MAT_plaster": {
+      "file": "plaster.jpg",
+      "colorSpace": "srgb",
+      "tint": "#ffffff",
+      "emissive": null
+    },
+    "MAT_wood_floor": {
+      "file": "wood_floor.jpg",
+      "colorSpace": "srgb",
+      "tint": "#f0dcc8",
+      "emissive": null
+    },
+    "MAT_wood_door": {
+      "file": "wood_door.jpg",
+      "colorSpace": "srgb",
+      "tint": "#f2e2d2",
+      "emissive": null
+    },
+    "MAT_wood_dark": {
+      "file": "wood_dark.jpg",
+      "colorSpace": "srgb",
+      "tint": "#ffffff",
+      "emissive": null
+    },
+    "MAT_wood_pale": {
+      "file": "wood_pale.jpg",
+      "colorSpace": "srgb",
+      "tint": "#f6ecd8",
+      "emissive": null
+    },
+    "MAT_paint_ceiling": {
+      "file": "paint_ceiling.jpg",
+      "colorSpace": "srgb",
+      "tint": "#ffffff",
+      "emissive": null
+    },
+    "MAT_concrete": {
+      "file": "concrete.jpg",
+      "colorSpace": "srgb",
+      "tint": "#ffffff",
+      "emissive": null
+    },
+    "MAT_tile_green": {
+      "file": "tile_green.jpg",
+      "colorSpace": "srgb",
+      "tint": "#ffffff",
+      "emissive": null
+    },
+    "MAT_tile_white": {
+      "file": "tile_white.jpg",
+      "colorSpace": "srgb",
+      "tint": "#ffffff",
+      "emissive": null
+    },
+    "MAT_tile_floor": {
+      "file": "tile_floor.jpg",
+      "colorSpace": "srgb",
+      "tint": "#ffffff",
+      "emissive": null
+    },
+    "MAT_metal_locker": {
+      "file": "metal_locker.jpg",
+      "colorSpace": "srgb",
+      "tint": "#ffffff",
+      "emissive": null
+    },
+    "MAT_metal_rust": {
+      "file": "metal_rust.jpg",
+      "colorSpace": "srgb",
+      "tint": "#ffffff",
+      "emissive": null
+    },
+    "MAT_glass_dirty": {
+      "file": "glass_dirty.jpg",
+      "colorSpace": "srgb",
+      "tint": "#ffffff",
+      "emissive": null
+    },
+    "MAT_window_night": {
+      "file": "window_night.jpg",
+      "colorSpace": "srgb",
+      "tint": "#ffffff",
+      "emissive": null
+    },
+    "MAT_curtain": {
+      "file": "curtain.jpg",
+      "colorSpace": "srgb",
+      "tint": "#f4e8c8",
+      "emissive": null
+    },
+    "MAT_soil": {
+      "file": "soil.jpg",
+      "colorSpace": "srgb",
+      "tint": "#ffffff",
+      "emissive": null
+    },
+    "MAT_grass": {
+      "file": "grass.jpg",
+      "colorSpace": "srgb",
+      "tint": "#ffffff",
+      "emissive": null
+    },
+    "MAT_bark": {
+      "file": "bark.jpg",
+      "colorSpace": "srgb",
+      "tint": "#ffffff",
+      "emissive": null
+    },
+    "MAT_leaves": {
+      "file": "leaves.jpg",
+      "colorSpace": "srgb",
+      "tint": "#ffffff",
+      "emissive": null
+    },
+    "MAT_stone": {
+      "file": "stone.jpg",
+      "colorSpace": "srgb",
+      "tint": "#ffffff",
+      "emissive": null
+    },
+    "MAT_shrine_wood": {
+      "file": "shrine_wood.jpg",
+      "colorSpace": "srgb",
+      "tint": "#ffffff",
+      "emissive": null
+    },
+    "MAT_fabric_red": {
+      "file": "fabric_red.jpg",
+      "colorSpace": "srgb",
+      "tint": "#ffffff",
+      "emissive": null
+    },
+    "MAT_fabric_white": {
+      "file": "fabric_white.jpg",
+      "colorSpace": "srgb",
+      "tint": "#ffffff",
+      "emissive": null
+    },
+    "MAT_fabric_blue": {
+      "file": "fabric_blue.jpg",
+      "colorSpace": "srgb",
+      "tint": "#ffffff",
+      "emissive": null
+    },
+    "MAT_paper": {
+      "file": "paper.jpg",
+      "colorSpace": "srgb",
+      "tint": "#f6eed8",
+      "emissive": null
+    },
+    "MAT_photo": {
+      "file": "photo_old.jpg",
+      "colorSpace": "srgb",
+      "tint": "#ffffff",
+      "emissive": null
+    },
+    "MAT_tv_static": {
+      "file": "tv_static.jpg",
+      "colorSpace": "srgb",
+      "tint": "#ffffff",
+      "emissive": "#a9bcc2",
+      "emissiveIntensity": 0.55
+    },
+    "MAT_lamp_tube": {
+      "file": "lamp_tube.jpg",
+      "colorSpace": "srgb",
+      "tint": "#ffffff",
+      "emissive": "#dff5e8",
+      "emissiveIntensity": 1.6
+    },
+    "MAT_lamp_warm": {
+      "file": "lamp_warm.jpg",
+      "colorSpace": "srgb",
+      "tint": "#ffffff",
+      "emissive": "#ffcf92",
+      "emissiveIntensity": 1.5
+    },
+    "MAT_lantern_paper": {
+      "file": "lantern_paper.jpg",
+      "colorSpace": "srgb",
+      "tint": "#ffffff",
+      "emissive": "#ff6a3a",
+      "emissiveIntensity": 1.35
+    },
+    "MAT_sign_night_1": {
+      "file": "sign_night_1.jpg",
+      "colorSpace": "srgb",
+      "tint": "#ffffff",
+      "emissive": null
+    },
+    "MAT_sign_night_2": {
+      "file": "sign_night_2.jpg",
+      "colorSpace": "srgb",
+      "tint": "#ffffff",
+      "emissive": null
+    },
+    "MAT_sign_bath": {
+      "file": "sign_bath.jpg",
+      "colorSpace": "srgb",
+      "tint": "#ffffff",
+      "emissive": null
+    },
+    "MAT_shrine_tablet": {
+      "file": "shrine_tablet.jpg",
+      "colorSpace": "srgb",
+      "tint": "#ffffff",
+      "emissive": null
+    },
+    "MAT_door_number_501": {
+      "file": "door_number_501.jpg",
+      "colorSpace": "srgb",
+      "tint": "#ffffff",
+      "emissive": null
+    },
+    "MAT_door_number_502": {
+      "file": "door_number_502.jpg",
+      "colorSpace": "srgb",
+      "tint": "#ffffff",
+      "emissive": null
+    },
+    "MAT_door_number_503": {
+      "file": "door_number_503.jpg",
+      "colorSpace": "srgb",
+      "tint": "#ffffff",
+      "emissive": null
+    },
+    "MAT_door_number_504": {
+      "file": "door_number_504.jpg",
+      "colorSpace": "srgb",
+      "tint": "#ffffff",
+      "emissive": null
+    },
+    "MAT_clock_face": {
+      "file": "clock_face.jpg",
+      "colorSpace": "srgb",
+      "tint": "#ffffff",
+      "emissive": null
+    },
+    "MAT_mirror_grime": {
+      "file": "mirror_grime.png",
+      "colorSpace": "srgb",
+      "tint": "#ffffff",
+      "emissive": null,
+      "transparent": true
+    },
+    "MAT_stain_mold": {
+      "file": "stain_mold.png",
+      "colorSpace": "srgb",
+      "tint": "#ffffff",
+      "emissive": null,
+      "transparent": true
+    },
+    "MAT_stain_water": {
+      "file": "stain_water.png",
+      "colorSpace": "srgb",
+      "tint": "#ffffff",
+      "emissive": null,
+      "transparent": true
+    },
+    "MAT_entity_white": {
+      "file": "entity_white.jpg",
+      "colorSpace": "srgb",
+      "tint": "#ffffff",
+      "emissive": null
+    },
+    "MAT_entity_hair": {
+      "file": "entity_hair.jpg",
+      "colorSpace": "srgb",
+      "tint": "#ffffff",
+      "emissive": null
+    },
+    "MAT_entity_face": {
+      "file": "entity_face.jpg",
+      "colorSpace": "srgb",
+      "tint": "#ffffff",
+      "emissive": null
+    },
+    "MAT_red_cloth": {
+      "file": "red_cloth.jpg",
+      "colorSpace": "srgb",
+      "tint": "#ffffff",
+      "emissive": null
+    },
+    "MAT_paper_money": {
+      "file": "paper_money.jpg",
+      "colorSpace": "srgb",
+      "tint": "#ffffff",
+      "emissive": null
+    },
+    "MAT_steam": {
+      "file": "steam.png",
+      "colorSpace": "srgb",
+      "tint": "#ffffff",
+      "emissive": null,
+      "transparent": true
+    }
+  }
+}

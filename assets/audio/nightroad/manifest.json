@@ -1,0 +1,185 @@
+{
+  "id": "nightroad",
+  "music": {
+    "main": {
+      "file": "music/main.ogg",
+      "volume": 0.5,
+      "loop": true,
+      "fade": 4.0
+    },
+    "tension": {
+      "file": "music/tension.ogg",
+      "volume": 0.45,
+      "loop": true,
+      "fade": 2.0
+    },
+    "ending": {
+      "file": "music/ending.ogg",
+      "volume": 0.55,
+      "loop": false,
+      "fade": 2.0
+    }
+  },
+  "ambience": {
+    "windField": {
+      "file": "ambience/wind_field.ogg",
+      "volume": 0.55,
+      "loop": true
+    },
+    "insects": {
+      "file": "ambience/insects.ogg",
+      "volume": 0.45,
+      "loop": true
+    },
+    "nightRoomTone": {
+      "file": "ambience/night_room_tone.ogg",
+      "volume": 0.55,
+      "loop": true
+    },
+    "distantDog": {
+      "file": "ambience/distant_dog.ogg",
+      "volume": 0.4,
+      "loop": true
+    }
+  },
+  "sfx": {
+    "stepDirt": {
+      "files": [
+        "sfx/step_dirt_1.ogg",
+        "sfx/step_dirt_2.ogg",
+        "sfx/step_dirt_3.ogg",
+        "sfx/step_dirt_4.ogg"
+      ],
+      "volume": 0.55
+    },
+    "stepGrass": {
+      "files": [
+        "sfx/step_grass_1.ogg",
+        "sfx/step_grass_2.ogg",
+        "sfx/step_grass_3.ogg"
+      ],
+      "volume": 0.5
+    },
+    "matchStrike": {
+      "files": [
+        "sfx/match_strike_1.ogg",
+        "sfx/match_strike_2.ogg"
+      ],
+      "volume": 0.8
+    },
+    "lanternLight": {
+      "files": [
+        "sfx/lantern_light_1.ogg",
+        "sfx/lantern_light_2.ogg"
+      ],
+      "volume": 0.85
+    },
+    "paperFlutter": {
+      "files": [
+        "sfx/paper_flutter_1.ogg",
+        "sfx/paper_flutter_2.ogg"
+      ],
+      "volume": 0.55
+    },
+    "entityRustle": {
+      "files": [
+        "sfx/entity_rustle_1.ogg",
+        "sfx/entity_rustle_2.ogg",
+        "sfx/entity_rustle_3.ogg"
+      ],
+      "volume": 0.7
+    },
+    "entityCatch": {
+      "files": [
+        "sfx/entity_catch.ogg"
+      ],
+      "volume": 0.9
+    },
+    "shrineBell": {
+      "files": [
+        "sfx/shrine_bell.ogg"
+      ],
+      "volume": 0.9
+    },
+    "metalBell": {
+      "files": [
+        "sfx/metal_bell.ogg"
+      ],
+      "volume": 0.55
+    },
+    "windGust": {
+      "files": [
+        "sfx/wind_gust_1.ogg",
+        "sfx/wind_gust_2.ogg"
+      ],
+      "volume": 0.65
+    },
+    "crow": {
+      "files": [
+        "sfx/crow.ogg"
+      ],
+      "volume": 0.65
+    },
+    "heartbeat": {
+      "files": [
+        "sfx/heartbeat.ogg"
+      ],
+      "volume": 0.65,
+      "loop": true
+    },
+    "breath": {
+      "files": [
+        "sfx/breath.ogg"
+      ],
+      "volume": 0.5,
+      "loop": true
+    },
+    "whisper": {
+      "files": [
+        "sfx/whisper_1.ogg",
+        "sfx/whisper_2.ogg",
+        "sfx/whisper_3.ogg"
+      ],
+      "volume": 0.55
+    },
+    "stinger": {
+      "files": [
+        "sfx/stinger_1.ogg",
+        "sfx/stinger_2.ogg"
+      ],
+      "volume": 0.8
+    },
+    "blackout": {
+      "files": [
+        "sfx/blackout.ogg"
+      ],
+      "volume": 0.8
+    }
+  },
+  "ui": {
+    "hover": {
+      "files": [
+        "../shared/ui_hover.ogg"
+      ],
+      "volume": 0.35
+    },
+    "click": {
+      "files": [
+        "../shared/ui_click.ogg"
+      ],
+      "volume": 0.45
+    },
+    "back": {
+      "files": [
+        "../shared/ui_back.ogg"
+      ],
+      "volume": 0.4
+    },
+    "confirm": {
+      "files": [
+        "../shared/ui_confirm.ogg"
+      ],
+      "volume": 0.5
+    }
+  }
+}

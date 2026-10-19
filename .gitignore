@@ -1,0 +1,9 @@
+dist/
+__pycache__/
+*.py[cod]
+.venv/
+output/
+.playwright-cli/
+.env
+.env.*
+*.blend1

@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>镜中 · 三更</title>
+  <meta name="description" content="《三更》二更《镜中》：90 年代公共澡堂更衣室，镜子里的人比你早到。">
+  <link rel="icon" href="../../assets/art/favicon.png">
+  <link rel="stylesheet" href="../../engine/engine.css">
+  <style>
+    /* 本作专用：结局的白闪 / 镜面碎裂闪动（只覆盖画面，不承担任何菜单 UI） */
+    #mirror-flash {
+      position: fixed; inset: 0; z-index: 79;
+      background: #fff; opacity: 0; pointer-events: none;
+      mix-blend-mode: screen;
+    }
+    #mirror-flash.on { opacity: 0.92; }
+    #mirror-flash.soft { opacity: 0.35; }
+  </style>
+</head>
+<body>
+  <canvas id="gl"></canvas>
+  <div id="mirror-flash"></div>
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "../../vendor/three/three.module.js",
+      "three/addons/": "../../vendor/three/addons/"
+    }
+  }
+  </script>
+  <script type="module" src="./game.js"></script>
+</body>
+</html>

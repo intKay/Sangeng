@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>三更 · 三个心理恐怖短篇</title>
+  <meta name="description" content="《三更》：三个 6–10 分钟的浏览器心理恐怖短篇——《门后》《镜中》《夜路》。全部 3D 场景、音效与音乐、美术均为原创程序化资产。">
+  <link rel="icon" href="./assets/art/favicon.png">
+  <style>
+    :root {
+      --ink: #d8d2c0;
+      --dim: rgba(216, 210, 192, 0.5);
+      --line: rgba(216, 210, 192, 0.16);
+      --accent: #c9a55a;
+      --bg: #060807;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; min-height: 100%; background: var(--bg); color: var(--ink); }
+    body {
+      font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans SC", sans-serif;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+      padding: clamp(28px, 5vw, 72px);
+    }
+    .hero-bg {
+      position: absolute; inset: -3%;
+      background: url("./assets/art/hero.jpg") center/cover no-repeat, #0a0c0b;
+      filter: brightness(0.42) contrast(1.08) saturate(0.7) blur(0.4px);
+      transform: scale(1.03);
+      animation: slowzoom 52s ease-in-out infinite alternate;
+    }
+    @keyframes slowzoom { from { transform: scale(1.03) translate3d(0,0,0); } to { transform: scale(1.1) translate3d(-1.4%, -1%, 0); } }
+    .hero-bg::after {
+      content: ""; position: absolute; inset: 0;
+      background:
+        radial-gradient(120% 90% at 24% 30%, rgba(6, 8, 7, 0.1), rgba(6, 8, 7, 0.95) 74%),
+        linear-gradient(0deg, rgba(4, 5, 5, 0.98) 0%, rgba(4, 5, 5, 0.55) 35%, rgba(4, 5, 5, 0.75) 100%);
+    }
+    .grain {
+      position: absolute; inset: 0; pointer-events: none; opacity: 0.1; mix-blend-mode: screen;
+      background-image:
+        repeating-linear-gradient(0deg, rgba(255,255,255,0.12) 0 1px, transparent 1px 3px),
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.04) 0 1px, transparent 1px 4px);
+      animation: grainmove 0.45s steps(3) infinite;
+    }
+    @keyframes grainmove {
+      0% { transform: translate3d(0,0,0); } 33% { transform: translate3d(-1px,1px,0); }
+      66% { transform: translate3d(1px,-1px,0); } 100% { transform: translate3d(0,0,0); }
+    }
+    .hero > * { position: relative; z-index: 2; }
+
+    header { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; }
+    .brand { display: flex; align-items: center; gap: clamp(14px, 2vw, 24px); }
+    .brand img.seal { width: clamp(52px, 7vw, 86px); height: auto; filter: drop-shadow(0 6px 22px rgba(0,0,0,.7)); }
+    .brand-kicker {
+      font: 0.66rem/1 ui-monospace, Consolas, monospace;
+      letter-spacing: 0.5em; color: var(--accent); margin-bottom: 0.9em;
+    }
+    .brand h1 {
+      margin: 0;
+      font-family: "KaiTi", "STKaiti", "Kaiti SC", "SimSun", serif;
+      font-weight: 400;
+      font-size: clamp(2.8rem, 6vw, 4.6rem);
+      line-height: 0.95;
+      letter-spacing: 0.16em;
+    }
+    .brand-en {
+      margin-top: 0.8em;
+      font: 0.64rem/1 ui-monospace, Consolas, monospace;
+      letter-spacing: 0.52em; color: var(--dim);
+    }
+    .header-note { text-align: right; font-size: 0.7rem; line-height: 2; color: var(--dim); max-width: 240px; }
+    .header-note b { color: var(--accent); font-weight: 500; }
+
+    .intro {
+      margin: clamp(38px, 7vh, 80px) 0 clamp(28px, 5vh, 52px);
+      max-width: 720px;
+    }
+    .intro p {
+      margin: 0 0 1em;
+      font-size: clamp(0.86rem, 1.4vw, 0.98rem);
+      line-height: 2.1;
+      color: rgba(216, 210, 192, 0.72);
+      letter-spacing: 0.03em;
+    }
+    .intro p strong { color: var(--ink); font-weight: 500; }
+    .warn {
+      display: inline-block;
+      font-size: 0.72rem; line-height: 1.9; color: var(--dim);
+      border-left: 1px solid rgba(201, 165, 90, 0.45);
+      padding-left: 1em; margin-top: 0.4em;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: clamp(14px, 2vw, 26px);
+      margin-bottom: clamp(30px, 5vh, 56px);
+    }
+    a.card {
+      position: relative;
+      display: block;
+      border: 1px solid var(--line);
+      background: #0b0d0c;
+      color: var(--ink);
+      text-decoration: none;
+      overflow: hidden;
+      transition: border-color 220ms, transform 260ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 260ms;
+    }
+    a.card:hover, a.card:focus-visible {
+      border-color: rgba(201, 165, 90, 0.55);
+      transform: translateY(-4px);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65);
+      outline: none;
+    }
+    .card-poster {
+      position: relative;
+      aspect-ratio: 3 / 4;
+      overflow: hidden;
+      background: #0a0c0b;
+    }
+    .card-poster img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: saturate(0.85) contrast(1.04) brightness(0.9);
+      transition: transform 900ms cubic-bezier(0.16, 1, 0.3, 1), filter 400ms;
+    }
+    a.card:hover .card-poster img { transform: scale(1.045); filter: saturate(1) contrast(1.06) brightness(1); }
+    .card-poster::after {
+      content: ""; position: absolute; inset: 0;
+      background: linear-gradient(0deg, rgba(6, 8, 7, 0.96) 0%, rgba(6, 8, 7, 0.06) 45%, rgba(6, 8, 7, 0.3) 100%);
+    }
+    .card-body { position: relative; padding: clamp(16px, 2vw, 26px); margin-top: -20%; }
+    .card-chapter {
+      font: 0.6rem/1 ui-monospace, Consolas, monospace;
+      letter-spacing: 0.4em; color: var(--accent);
+    }
+    .card h2 {
+      margin: 0.55em 0 0.45em;
+      font-family: "KaiTi", "STKaiti", "Kaiti SC", "SimSun", serif;
+      font-weight: 400;
+      font-size: clamp(1.7rem, 2.6vw, 2.3rem);
+      letter-spacing: 0.12em;
+    }
+    .card-en {
+      font: 0.58rem/1 ui-monospace, Consolas, monospace;
+      letter-spacing: 0.3em; color: var(--dim);
+      margin-bottom: 1.3em;
+    }
+    .card p {
+      margin: 0 0 1.2em;
+      font-size: 0.78rem; line-height: 1.95;
+      color: rgba(216, 210, 192, 0.62);
+    }
+    .card-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .card-tags span {
+      font: 0.58rem/1 ui-monospace, Consolas, monospace;
+      letter-spacing: 0.14em;
+      border: 1px solid rgba(216, 210, 192, 0.16);
+      color: rgba(216, 210, 192, 0.5);
+      padding: 0.45em 0.6em;
+    }
+    .card-enter {
+      margin-top: 1.5em;
+      font: 0.64rem/1 ui-monospace, Consolas, monospace;
+      letter-spacing: 0.3em; color: var(--accent);
+      display: flex; align-items: center; gap: 0.8em;
+    }
+    .card-enter::after { content: "→"; font-family: sans-serif; letter-spacing: 0; }
+
+    footer {
+      border-top: 1px solid var(--line);
+      padding-top: clamp(16px, 2.4vw, 26px);
+      display: flex; flex-wrap: wrap; gap: 18px 38px;
+      justify-content: space-between;
+      font-size: 0.68rem; line-height: 1.9; color: var(--dim);
+    }
+    footer .cols { display: flex; flex-wrap: wrap; gap: 18px 38px; }
+    footer strong { color: var(--ink); font-weight: 500; }
+    footer code {
+      font-family: ui-monospace, Consolas, monospace;
+      background: rgba(216, 210, 192, 0.07);
+      border: 1px solid var(--line);
+      padding: 0.12em 0.4em; color: rgba(232, 226, 210, 0.8);
+    }
+    .footer-brand { font-family: "KaiTi", "STKaiti", "SimSun", serif; font-size: 0.86rem; letter-spacing: 0.2em; color: rgba(216,210,192,0.55); }
+
+    @media (max-width: 900px) {
+      .cards { grid-template-columns: 1fr; }
+      .card { display: grid; grid-template-columns: 40% 60%; }
+      .card-poster { aspect-ratio: auto; height: 100%; }
+      .card-body { margin-top: 0; align-self: center; }
+      .header-note { display: none; }
+    }
+    @media (max-width: 560px) {
+      .card { display: block; }
+      .card-body { margin-top: -16%; }
+      header { align-items: center; }
+    }
+  </style>
+</head>
+<body>
+  <main class="hero">
+    <div class="hero-bg"></div>
+    <div class="grain"></div>
+
+    <header>
+      <div class="brand">
+        <img class="seal" src="./assets/art/seal.png" alt="三更印">
+        <div>
+          <div class="brand-kicker">SANGENG · THREE WATCHES</div>
+          <h1>三更</h1>
+          <div class="brand-en">心理恐怖短篇三则</div>
+        </div>
+      </div>
+      <div class="header-note">
+        <b>三个 6–10 分钟</b>的互动短篇<br>
+        本地运行 · 无需联网 · 无存档<br>
+        建议戴耳机，关灯。
+      </div>
+    </header>
+
+    <section class="intro">
+      <p>三更过后，<strong>门会自己开</strong>。三个发生在中国的心理恐怖短篇：一间反复经过的老公寓、一面比你早到的镜子、一条送完葬还要走完的夜路。</p>
+      <p>全部场景用 Blender 手工低模搭建，贴图、音效与环境音乐由程序合成；没有外部素材，没有跳吓音效，只有你越来越清楚的呼吸。</p>
+      <div class="warn">内容提示：心理恐怖、闪烁画面、幽闭空间、死亡意象。无血腥画面。可随时 Esc 暂停。</div>
+    </section>
+
+    <section class="cards">
+      <a class="card" href="./games/door/index.html">
+        <div class="card-poster"><img src="./assets/art/poster-door.jpg" alt="《门后》海报"></div>
+        <div class="card-body">
+          <div class="card-chapter">一更 · DOOR</div>
+          <h2>门后</h2>
+          <div class="card-en">BEHIND THE DOOR</div>
+          <p>你每年回来一次。今年门没锁。走廊比记忆里长，503 的灯亮着，三张字条在等你把它们找齐。</p>
+          <div class="card-tags"><span>老公寓</span><span>手电</span><span>潜行</span><span>约 8 分钟</span></div>
+          <div class="card-enter">进入 503</div>
+        </div>
+      </a>
+      <a class="card" href="./games/mirror/index.html">
+        <div class="card-poster"><img src="./assets/art/poster-mirror.jpg" alt="《镜中》海报"></div>
+        <div class="card-body">
+          <div class="card-chapter">二更 · MIRROR</div>
+          <h2>镜中</h2>
+          <div class="card-en">IN THE MIRROR</div>
+          <p>九十年代的公共澡堂，夜里还有人。镜子里那间房和这里不太一样；你每把它摆对一次，镜中人就靠近一步。</p>
+          <div class="card-tags"><span>镜面解谜</span><span>替身</span><span>瓷砖</span><span>约 7 分钟</span></div>
+          <div class="card-enter">看向镜面</div>
+        </div>
+      </a>
+      <a class="card" href="./games/nightroad/index.html">
+        <div class="card-poster"><img src="./assets/art/poster-night.jpg" alt="《夜路》海报"></div>
+        <div class="card-body">
+          <div class="card-chapter">三更 · NIGHTROAD</div>
+          <h2>夜路</h2>
+          <div class="card-en">THE NIGHT ROAD</div>
+          <p>送完葬，你一个人走夜路回家。五盏纸灯笼等在田埂边，身后多了一个人的脚步声——你在看它的时候，它才停下。</p>
+          <div class="card-tags"><span>乡野志怪</span><span>纸人</span><span>点灯</span><span>约 9 分钟</span></div>
+          <div class="card-enter">点亮灯笼</div>
+        </div>
+      </a>
+    </section>
+
+    <footer>
+      <div class="cols">
+        <div><strong>怎么玩</strong><br>用本地服务器打开：<br><code>python serve.py</code> → <code>http://127.0.0.1:8137/</code></div>
+        <div><strong>操作</strong><br>WASD 移动 · 鼠标视角 · E 交互 · Shift 快走<br>F 手电（门后） · Esc 暂停</div>
+        <div><strong>制作</strong><br>three.js 引擎 · Blender 低模与 GLB<br>numpy/ffmpeg 合成音频 · Pillow 程序化贴图</div>
+      </div>
+      <div class="footer-brand">三更 / SANGENG · 原创程序化资产</div>
+    </footer>
+  </main>
+</body>
+</html>

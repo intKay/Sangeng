@@ -1,0 +1,405 @@
+/* 《三更》共享界面样式 */
+:root {
+  --sg-accent: #c9a55a;
+  --sg-ink: #d8d2c0;
+  --sg-bg: #080a09;
+}
+* { box-sizing: border-box; }
+html, body {
+  margin: 0; padding: 0; width: 100%; height: 100%;
+  background: var(--sg-bg);
+  color: var(--sg-ink);
+  font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans SC", sans-serif;
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+}
+canvas#gl {
+  position: fixed; inset: 0; width: 100%; height: 100%;
+  display: block; background: #000;
+  image-rendering: pixelated;
+}
+body.sg-playing canvas#gl { cursor: none; }
+
+#sg-root { position: fixed; inset: 0; z-index: 10; pointer-events: none; }
+#sg-root .sg-screen {
+  position: fixed; inset: 0; display: none;
+  pointer-events: auto;
+  background: #050605;
+}
+#sg-root .sg-screen.show { display: flex; }
+
+/* ---------- 加载 ---------- */
+#sg-loading {
+  position: fixed; inset: 0; z-index: 95;
+  display: none; align-items: center; justify-content: center;
+  background: #050605; pointer-events: auto;
+}
+#sg-loading.show { display: flex; }
+.sg-load-inner { width: min(420px, 76vw); text-align: left; }
+.sg-load-kicker {
+  font: 0.68rem/1 ui-monospace, Consolas, monospace;
+  letter-spacing: 0.42em; color: var(--sg-accent); opacity: 0.85;
+}
+.sg-load-title {
+  margin: 0.5em 0 0.7em;
+  font-family: "KaiTi", "STKaiti", "Kaiti SC", "SimSun", serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+  letter-spacing: 0.18em;
+}
+.sg-load-bar {
+  height: 1px; background: rgba(216, 210, 192, 0.18);
+  position: relative; overflow: hidden;
+}
+.sg-load-bar i {
+  position: absolute; left: 0; top: 0; bottom: 0; width: 0%;
+  background: var(--sg-accent);
+  transition: width 220ms linear;
+}
+.sg-load-label {
+  margin-top: 0.9em;
+  font-size: 0.78rem; color: rgba(216, 210, 192, 0.45);
+  letter-spacing: 0.08em;
+}
+
+/* ---------- 标题页 ---------- */
+#sg-title { z-index: 70; overflow: hidden; }
+.sg-title-bg {
+  position: absolute; inset: -2%;
+  background: #0a0c0b center 55%/cover no-repeat;
+  filter: brightness(0.68) contrast(1.1) saturate(0.78);
+  transform: scale(1.02);
+  animation: sg-slowzoom 38s ease-in-out infinite alternate;
+}
+@keyframes sg-slowzoom {
+  from { transform: scale(1.02) translate3d(0, 0, 0); }
+  to { transform: scale(1.09) translate3d(-1.2%, -0.8%, 0); }
+}
+.sg-title-bg::after {
+  content: ""; position: absolute; inset: 0;
+  background:
+    radial-gradient(120% 90% at 28% 45%, rgba(4, 6, 5, 0.15), rgba(4, 6, 5, 0.92) 72%),
+    linear-gradient(90deg, rgba(4, 6, 5, 0.9) 0%, rgba(4, 6, 5, 0.55) 45%, rgba(4, 6, 5, 0.2) 100%),
+    linear-gradient(0deg, rgba(4, 6, 5, 0.9), transparent 40%);
+}
+.sg-title-grain {
+  position: absolute; inset: 0; opacity: 0.09; mix-blend-mode: screen;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(255,255,255,0.14) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.05) 0 1px, transparent 1px 4px);
+  animation: sg-grainmove 0.42s steps(3) infinite;
+}
+@keyframes sg-grainmove {
+  0% { transform: translate3d(0, 0, 0); }
+  33% { transform: translate3d(-1px, 1px, 0); }
+  66% { transform: translate3d(1px, -1px, 0); }
+  100% { transform: translate3d(0, 0, 0); }
+}
+.sg-title-inner {
+  position: relative; z-index: 2;
+  height: 100%;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: clamp(28px, 8vw, 120px);
+  max-width: 900px;
+}
+.sg-chapter {
+  font: 0.7rem/1 ui-monospace, Consolas, monospace;
+  letter-spacing: 0.52em; color: var(--sg-accent);
+  opacity: 0.9;
+}
+.sg-title-h1 {
+  margin: 0.22em 0 0.1em;
+  font-family: "KaiTi", "STKaiti", "Kaiti SC", "SimSun", serif;
+  font-weight: 400;
+  font-size: clamp(3.6rem, 11vw, 8rem);
+  letter-spacing: 0.14em;
+  line-height: 1.02;
+  text-shadow: 0 0 42px rgba(0, 0, 0, 0.9);
+  animation: sg-titlein 2.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes sg-titlein {
+  from { opacity: 0; transform: translateY(14px); letter-spacing: 0.28em; filter: blur(6px); }
+  to { opacity: 1; transform: none; filter: blur(0); }
+}
+.sg-title-en {
+  font: 0.68rem/1 ui-monospace, Consolas, monospace;
+  letter-spacing: 0.6em; color: rgba(216, 210, 192, 0.45);
+  margin-bottom: 2.2em;
+}
+.sg-warning {
+  max-width: 520px; margin: 0 0 2.4em;
+  font-size: 0.8rem; line-height: 2; color: rgba(216, 210, 192, 0.5);
+  border-left: 1px solid rgba(201, 165, 90, 0.4);
+  padding-left: 1.1em;
+}
+.sg-buttons { display: flex; gap: 14px; flex-wrap: wrap; }
+.sg-buttons.column { flex-direction: column; align-items: stretch; min-width: 220px; }
+.sg-buttons.row { flex-direction: row; margin-top: 2.2em; justify-content: center; }
+.sg-btn {
+  appearance: none;
+  background: rgba(10, 12, 11, 0.5);
+  border: 1px solid rgba(216, 210, 192, 0.22);
+  color: var(--sg-ink);
+  font-family: inherit;
+  font-size: 0.86rem;
+  letter-spacing: 0.16em;
+  padding: 0.92em 1.9em;
+  cursor: pointer;
+  transition: background 160ms, border-color 160ms, color 160ms, transform 160ms;
+}
+.sg-btn:hover, .sg-btn:focus-visible {
+  background: rgba(201, 165, 90, 0.12);
+  border-color: rgba(201, 165, 90, 0.7);
+  color: #f3ecda;
+  outline: none;
+}
+.sg-btn:active { transform: translateY(1px); }
+.sg-btn.primary {
+  border-color: rgba(201, 165, 90, 0.65);
+  color: #f0e4c8;
+}
+.sg-btn.primary:hover { background: rgba(201, 165, 90, 0.2); }
+.sg-title-hint {
+  margin-top: 2.6em;
+  font-size: 0.7rem; letter-spacing: 0.12em;
+  color: rgba(216, 210, 192, 0.3);
+}
+.sg-title-footer {
+  position: absolute; right: clamp(20px, 5vw, 64px); bottom: clamp(18px, 4vw, 42px);
+  z-index: 2; font: 0.62rem/1 ui-monospace, Consolas, monospace;
+  letter-spacing: 0.5em; color: rgba(216, 210, 192, 0.25);
+}
+
+/* ---------- HUD ---------- */
+#sg-hud {
+  position: fixed; inset: 0; z-index: 20;
+  pointer-events: none; opacity: 0; transition: opacity 500ms ease;
+}
+#sg-hud.show { opacity: 1; }
+#sg-objective {
+  position: absolute; top: clamp(20px, 4vh, 44px); left: clamp(20px, 3.4vw, 52px);
+  display: flex; align-items: baseline; gap: 0.9em;
+  opacity: 0; transform: translateY(-4px); transition: opacity 500ms, transform 500ms;
+}
+#sg-objective.show { opacity: 1; transform: none; }
+#sg-objective .lbl {
+  font: 0.6rem/1 ui-monospace, Consolas, monospace;
+  letter-spacing: 0.32em; color: var(--sg-accent); opacity: 0.85;
+  border-left: 1px solid rgba(201, 165, 90, 0.55); padding-left: 0.9em;
+}
+#sg-objective .txt {
+  font-size: 0.82rem; letter-spacing: 0.1em;
+  color: rgba(232, 226, 210, 0.82);
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.9);
+}
+#sg-counter {
+  position: absolute; top: clamp(20px, 4vh, 44px); right: clamp(20px, 3.4vw, 52px);
+  font: 0.72rem/1 ui-monospace, Consolas, monospace;
+  letter-spacing: 0.22em; color: rgba(201, 165, 90, 0.8);
+  opacity: 0; transition: opacity 500ms;
+}
+#sg-counter.show { opacity: 1; }
+#sg-crosshair {
+  position: absolute; left: 50%; top: 50%; width: 4px; height: 4px;
+  margin: -2px 0 0 -2px; border-radius: 50%;
+  background: rgba(232, 226, 210, 0.55);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.45);
+  transition: opacity 200ms;
+}
+#sg-hud.no-crosshair #sg-crosshair { opacity: 0; }
+#sg-prompt {
+  position: absolute; left: 50%; top: 58%;
+  transform: translateX(-50%) translateY(4px);
+  font-size: 0.84rem; letter-spacing: 0.14em;
+  color: rgba(240, 232, 212, 0.9);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95);
+  opacity: 0; transition: opacity 200ms, transform 200ms;
+  white-space: nowrap;
+}
+#sg-prompt.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+#sg-prompt::before {
+  content: "E "; color: var(--sg-accent);
+  font: 0.7rem/1 ui-monospace, Consolas, monospace;
+  border: 1px solid rgba(201, 165, 90, 0.55);
+  padding: 0.28em 0.42em; margin-right: 0.8em;
+}
+#sg-subtitle {
+  position: absolute; left: 50%; bottom: clamp(9vh, 13vh, 140px);
+  transform: translateX(-50%);
+  width: min(760px, 84vw);
+  text-align: center;
+  font-family: "KaiTi", "STKaiti", "Kaiti SC", "SimSun", serif;
+  font-size: clamp(1.02rem, 2.1vw, 1.34rem);
+  line-height: 1.9; letter-spacing: 0.06em;
+  color: rgba(238, 232, 216, 0.94);
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.98), 0 0 2px rgba(0, 0, 0, 1);
+  opacity: 0; transition: opacity 320ms ease;
+}
+#sg-subtitle.show { opacity: 1; }
+#sg-battery {
+  position: absolute; right: clamp(20px, 3.4vw, 52px); bottom: clamp(18px, 3.6vh, 42px);
+  display: none; align-items: center; gap: 0.7em;
+  opacity: 0.8;
+}
+#sg-battery.show { display: flex; }
+#sg-battery .cap {
+  font: 0.58rem/1 ui-monospace, Consolas, monospace;
+  letter-spacing: 0.26em; color: rgba(216, 210, 192, 0.5);
+}
+#sg-battery .bar {
+  width: 92px; height: 3px; background: rgba(216, 210, 192, 0.16); overflow: hidden;
+}
+#sg-battery .bar i {
+  display: block; height: 100%; width: 100%;
+  background: var(--sg-accent); transition: width 200ms linear;
+}
+#sg-battery.low .bar i { background: #a4453a; }
+
+/* ---------- 淡入淡出 ---------- */
+#sg-fade {
+  position: fixed; inset: 0; z-index: 80;
+  background: #000; opacity: 0; pointer-events: none;
+}
+
+/* ---------- 面板（暂停/设置/死亡） ---------- */
+#sg-pause, #sg-settings, #sg-death { z-index: 75; background: rgba(3, 4, 4, 0.86); backdrop-filter: blur(2px); align-items: center; justify-content: center; }
+.sg-panel {
+  width: min(420px, 84vw);
+  border: 1px solid rgba(216, 210, 192, 0.16);
+  background: linear-gradient(160deg, rgba(16, 18, 16, 0.92), rgba(7, 8, 7, 0.96));
+  padding: clamp(28px, 5vw, 52px);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+}
+.sg-panel.wide { width: min(540px, 88vw); }
+.sg-panel-kicker {
+  font: 0.6rem/1 ui-monospace, Consolas, monospace;
+  letter-spacing: 0.44em; color: var(--sg-accent); opacity: 0.75;
+}
+.sg-panel h2 {
+  margin: 0.5em 0 1.6em;
+  font-family: "KaiTi", "STKaiti", "Kaiti SC", "SimSun", serif;
+  font-weight: 400; font-size: 2.1rem; letter-spacing: 0.16em;
+}
+.sg-panel-note {
+  margin: 1.8em 0 0; font-size: 0.7rem; letter-spacing: 0.12em;
+  color: rgba(216, 210, 192, 0.3);
+}
+.sg-death-title { color: #c8a9a0; }
+.sg-death-text {
+  color: rgba(216, 210, 192, 0.6);
+  font-size: 0.84rem; line-height: 2; margin: 0 0 2em;
+}
+
+/* ---------- 设置 ---------- */
+.sg-field {
+  display: grid; grid-template-columns: 8.4em 1fr 3.6em;
+  align-items: center; gap: 1em;
+  padding: 1.1em 0;
+  border-bottom: 1px solid rgba(216, 210, 192, 0.08);
+  font-size: 0.8rem; letter-spacing: 0.08em;
+  color: rgba(216, 210, 192, 0.78);
+}
+.sg-field.inline { grid-template-columns: 8.4em auto; }
+.sg-field .val {
+  font: 0.68rem/1 ui-monospace, Consolas, monospace;
+  color: var(--sg-accent); text-align: right;
+}
+.sg-field input[type="range"] {
+  appearance: none; width: 100%; height: 2px;
+  background: rgba(216, 210, 192, 0.2); outline: none;
+}
+.sg-field input[type="range"]::-webkit-slider-thumb {
+  appearance: none; width: 10px; height: 10px; border-radius: 50%;
+  background: var(--sg-accent); cursor: pointer;
+}
+.sg-field input[type="range"]::-moz-range-thumb {
+  width: 10px; height: 10px; border: 0; border-radius: 50%;
+  background: var(--sg-accent); cursor: pointer;
+}
+.sg-field select {
+  background: transparent; color: var(--sg-ink);
+  border: 1px solid rgba(216, 210, 192, 0.2);
+  padding: 0.5em 0.6em; font-family: inherit; font-size: 0.78rem;
+}
+.sg-field input[type="checkbox"] { accent-color: var(--sg-accent); width: 16px; height: 16px; }
+
+/* ---------- 结局 ---------- */
+#sg-ending {
+  z-index: 76; background: #030403;
+  align-items: center; justify-content: center;
+}
+.sg-ending-inner { width: min(720px, 86vw); text-align: center; }
+.sg-ending-title {
+  margin: 0.3em 0 1.1em;
+  font-family: "KaiTi", "STKaiti", "Kaiti SC", "SimSun", serif;
+  font-weight: 400; font-size: clamp(2.2rem, 5vw, 3.4rem);
+  letter-spacing: 0.2em;
+}
+.sg-ending-lines p {
+  margin: 0 0 0.9em;
+  font-family: "KaiTi", "STKaiti", "Kaiti SC", "SimSun", serif;
+  font-size: clamp(0.98rem, 2vw, 1.16rem);
+  line-height: 2.1; letter-spacing: 0.05em;
+  color: rgba(232, 226, 210, 0.82);
+  opacity: 0; animation: sg-linein 1.4s ease forwards;
+}
+@keyframes sg-linein { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.sg-ending-footer {
+  margin-top: 2.4em;
+  font: 0.68rem/1.9 ui-monospace, Consolas, monospace;
+  letter-spacing: 0.2em; color: rgba(201, 165, 90, 0.55);
+}
+
+/* ---------- 信纸 ---------- */
+#sg-paper { z-index: 78; background: rgba(2, 3, 2, 0.94); align-items: center; justify-content: center; }
+.sg-paper-sheet {
+  position: relative;
+  width: min(620px, 84vw); max-height: 82vh; overflow: auto;
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0)),
+    #c9bda0;
+  color: #2a2419;
+  padding: clamp(26px, 5vw, 58px);
+  transform: rotate(-0.35deg);
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.8), inset 0 0 80px rgba(90, 64, 30, 0.28);
+  border: 1px solid rgba(60, 46, 24, 0.35);
+}
+.sg-paper-sheet::before {
+  content: ""; position: absolute; inset: 0;
+  background-image: repeating-linear-gradient(0deg, rgba(80, 60, 30, 0.035) 0 1px, transparent 1px 3px);
+  pointer-events: none;
+}
+.sg-paper-head {
+  font-family: "KaiTi", "STKaiti", "Kaiti SC", "SimSun", serif;
+  font-size: 1.5rem; letter-spacing: 0.1em;
+  padding-bottom: 0.7em; margin-bottom: 1.2em;
+  border-bottom: 1px solid rgba(60, 46, 24, 0.28);
+}
+.sg-paper-body p {
+  margin: 0 0 1.1em;
+  font-family: "KaiTi", "STKaiti", "Kaiti SC", "SimSun", serif;
+  font-size: 1.06rem; line-height: 2.15; letter-spacing: 0.03em;
+}
+.sg-paper-foot {
+  margin-top: 1.4em; font-size: 0.68rem; letter-spacing: 0.16em;
+  color: rgba(42, 36, 25, 0.5);
+}
+.sg-paper-sheet .sg-btn {
+  margin-top: 1em;
+  color: #2a2419; border-color: rgba(60, 46, 24, 0.5);
+  background: rgba(60, 46, 24, 0.06);
+}
+.sg-paper-sheet .sg-btn:hover {
+  background: rgba(60, 46, 24, 0.14);
+  border-color: rgba(60, 46, 24, 0.8);
+  color: #1b160e;
+}
+
+/* ---------- 小屏 ---------- */
+@media (max-width: 620px) {
+  .sg-title-inner { padding: 28px 22px; }
+  .sg-warning { display: none; }
+  .sg-title-hint { margin-top: 1.6em; }
+  .sg-buttons { gap: 10px; }
+  .sg-btn { padding: 0.8em 1.2em; font-size: 0.8rem; }
+}

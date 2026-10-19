@@ -1,0 +1,10 @@
+{
+  "http_files_verified": 205,
+  "directory_entries": 4,
+  "head": true,
+  "not_found": 404,
+  "traversal": 403,
+  "post": 405,
+  "host_guard": 403,
+  "artifact_hashes": true
+}

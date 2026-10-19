@@ -1,0 +1,29 @@
+{
+  "id": "shared",
+  "ui": {
+    "hover": {
+      "files": [
+        "ui_hover.ogg"
+      ],
+      "volume": 0.35
+    },
+    "click": {
+      "files": [
+        "ui_click.ogg"
+      ],
+      "volume": 0.45
+    },
+    "back": {
+      "files": [
+        "ui_back.ogg"
+      ],
+      "volume": 0.4
+    },
+    "confirm": {
+      "files": [
+        "ui_confirm.ogg"
+      ],
+      "volume": 0.5
+    }
+  }
+}
