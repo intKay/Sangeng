@@ -1,0 +1,29 @@
+{
+  "results": [
+    {
+      "profile": "small-phone",
+      "chapter": "door",
+      "resources": {
+        "textures": 62,
+        "missing": 0,
+        "touch": true,
+        "scale": 0.45,
+        "mp3": true
+      },
+      "target": "INT_door_503",
+      "before": false,
+      "after": true,
+      "audio": {
+        "supported": true,
+        "peak": 0.2263464778661728,
+        "state": "running"
+      },
+      "iframe": true,
+      "rotation": true
+    }
+  ],
+  "limits": [
+    "browser emulation, no physical phone",
+    "local sandboxed iframe, not live itch.io"
+  ]
+}

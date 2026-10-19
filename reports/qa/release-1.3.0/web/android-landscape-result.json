@@ -1,0 +1,71 @@
+{
+  "results": [
+    {
+      "profile": "android-landscape",
+      "chapter": "door",
+      "resources": {
+        "textures": 62,
+        "missing": 0,
+        "touch": true,
+        "scale": 0.45,
+        "mp3": false
+      },
+      "target": "INT_door_503",
+      "before": false,
+      "after": true,
+      "audio": {
+        "supported": true,
+        "peak": 0.2035525143146515,
+        "state": "running"
+      },
+      "iframe": true,
+      "rotation": true
+    },
+    {
+      "profile": "android-landscape",
+      "chapter": "mirror",
+      "resources": {
+        "textures": 62,
+        "missing": 0,
+        "touch": true,
+        "scale": 0.6,
+        "mp3": false
+      },
+      "target": "INT_towel",
+      "before": "floor",
+      "after": "hook",
+      "audio": {
+        "supported": true,
+        "peak": 0.21408095955848694,
+        "state": "running"
+      },
+      "iframe": true,
+      "rotation": true
+    },
+    {
+      "profile": "android-landscape",
+      "chapter": "nightroad",
+      "resources": {
+        "textures": 62,
+        "missing": 0,
+        "touch": true,
+        "scale": 0.6,
+        "mp3": false
+      },
+      "target": "INT_lantern_01",
+      "before": 0,
+      "after": 1,
+      "audio": {
+        "supported": true,
+        "peak": 0.21089160442352295,
+        "state": "running"
+      },
+      "iframe": true,
+      "rotation": true
+    }
+  ],
+  "limits": [
+    "browser emulation, no physical phone",
+    "local sandboxed iframe, not live itch.io"
+  ]
+}

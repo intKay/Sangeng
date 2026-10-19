@@ -38,7 +38,26 @@ async function aim(name){
  await page.waitForTimeout(100);
  assert.equal(await page.evaluate(()=>__SANGENG__.interact.current?.object.name),name);
 }
-async function use(name){await aim(name);await page.keyboard.press('e');}
+async function use(name){await ensurePlaying();await aim(name);await ensurePlaying();await page.keyboard.press('e');}
+async function ensurePlaying(){
+ // 自动化窗口可能被其他窗口遮挡而触发游戏内失焦暂停；这里只负责继续，暂停本身由 verify_desktop 单独覆盖。
+ if(!page)return;
+ const st=await page.evaluate(()=>window.__SANGENG__?.state).catch(()=>null);
+ if(st==='paused'){
+  await page.locator('[data-act="resume"]:visible').first().click();
+  await page.waitForFunction(()=>__SANGENG__.state==='playing');
+  await page.waitForTimeout(120);
+ }
+}
+async function waitUntil(fn,timeout=30000){
+ const end=Date.now()+timeout;
+ while(Date.now()<end){
+  await ensurePlaying();
+  if(await page.evaluate(fn))return;
+  await page.waitForTimeout(200);
+ }
+ throw new Error('timeout waiting: '+fn.toString().slice(0,80));
+}
 async function closePaper(){
  await page.waitForFunction(()=>__SANGENG__.state==='paper'&&!document.pointerLockElement);
  await page.keyboard.press('e');
@@ -46,10 +65,12 @@ async function closePaper(){
 }
 async function subtitles(){
  const seq=await page.evaluate(async()=>{
-  const ui=__SANGENG__.ui;ui.clearSubtitles();ui.subtitle('QA first',.05);
-  await new Promise(r=>setTimeout(r,150));ui.subtitle('QA later',.15);
-  const later=ui.el.subtitle.textContent;await new Promise(r=>setTimeout(r,250));
-  ui.subtitle('QA queued A',.05);ui.subtitle('QA queued B',.2);await new Promise(r=>setTimeout(r,250));
+  const ui=__SANGENG__.ui;ui.clearSubtitles();
+  // 队列在两条字幕之间保留 120ms 间隔；等待第一条约 50ms 的短字幕过期后再读。
+  ui.subtitle('QA first',.05);await new Promise(r=>setTimeout(r,400));
+  ui.subtitle('QA later',.15);await new Promise(r=>setTimeout(r,80));
+  const later=ui.el.subtitle.textContent;ui.clearSubtitles();
+  ui.subtitle('QA queued A',.05);ui.subtitle('QA queued B',.2);await new Promise(r=>setTimeout(r,260));
   const ordered=ui.el.subtitle.textContent;ui.clearSubtitles();return {later,ordered};
  });
  assert.equal(seq.later,'QA later');assert.equal(seq.ordered,'QA queued B');return seq;
@@ -60,7 +81,9 @@ async function signal(){return page.evaluate(async()=>{
  a.master.disconnect(n);return {peak,state:a.ctx.state};
 });}
 (async()=>{
- app=await electron.launch({executablePath:exe,args:source?[path.resolve('.')]:[],timeout:60000});
+ // Optional test-only flags for headless/CI hosts, e.g. SANGENG_QA_FLAGS="--no-sandbox --disable-gpu".
+ const qaFlags=(process.env.SANGENG_QA_FLAGS||'').split(/\s+/).filter(Boolean);
+ app=await electron.launch({executablePath:exe,args:[...qaFlags,...(source?[path.resolve('.')]:[])],timeout:60000});
  page=await app.firstWindow();await page.waitForURL('sangeng://game/');
  await page.setViewportSize({width:1280,height:800});
  page.on('pageerror',e=>result.errors.push(e.message));
@@ -84,16 +107,16 @@ async function signal(){return page.evaluate(async()=>{
  }
  // Let the real entity catch the player, rather than invoking a death debug method.
  await page.evaluate(()=>{const s=__DOOR__.state;s.entity.grace=0;s.entity.root.position.copy(__SANGENG__.player.pos);});
- await page.waitForFunction(()=>__SANGENG__.state==='dead',null,{timeout:10000});
+ await waitUntil(()=>__SANGENG__.state==='dead',20000);
  await page.locator('[data-act="retry"]').click();await page.waitForFunction(()=>__SANGENG__.state==='playing');
  assert.equal(await page.evaluate(()=>__DOOR__.state.letters.length),3);door.deathRetry=true;
  await page.evaluate(()=>{const g=__SANGENG__;g.player.pos.set(7.1,0,5.3);g.player._syncCamera(0,true);});
- await page.waitForFunction(()=>__DOOR__.state.finalStarted);
+ await waitUntil(()=>__DOOR__.state.finalStarted,30000);
  assert(await page.evaluate(()=>__DOOR__.state.entity.sitting.visible&&!__DOOR__.state.entity.root.visible));
  await page.evaluate(async()=>{const T=await import('/vendor/three/three.module.js');const g=__SANGENG__;g.player.teleportToPos(new T.Vector3(7.6,0,5.5),new T.Vector3(7.6,.95,7));});
  await page.waitForTimeout(350);
  await shot('door-seated');await use('INT_letter_final');await closePaper();
- await page.waitForFunction(()=>__SANGENG__.state==='ending',null,{timeout:12000});
+ await waitUntil(()=>__SANGENG__.state==='ending',30000);
  await shot('door-ending');door.ending=true;door.pickups=3;door.newExaminations=4;result.chapters.push(door);
  // Mirror: deliberate wrong uses -> punishment/death, retry, then solve all rounds using E.
  const mirror={id:'mirror',resources:await load('mirror'),subtitles:await subtitles(),signal:await signal()};
@@ -105,7 +128,7 @@ async function signal(){return page.evaluate(async()=>{
   if(await page.evaluate(()=>__SANGENG__.state==='dead'))break;
   await use('INT_valve');await page.waitForTimeout(900);
  }
- await page.waitForFunction(()=>__SANGENG__.state==='dead',null,{timeout:12000});
+ await waitUntil(()=>__SANGENG__.state==='dead',20000);
  await page.locator('[data-act="retry"]').click();await page.waitForFunction(()=>__SANGENG__.state==='playing');mirror.wrongUseDeathRetry=true;
  const names={towel:'INT_towel',locker:'INT_locker_02',lights:'INT_switch',mannequin:'INT_mannequin',radio:'INT_radio',stool01:'INT_stool_01',valve:'INT_valve'};
  for(let round=0;round<3;round++){
@@ -123,8 +146,8 @@ async function signal(){return page.evaluate(async()=>{
    await page.waitForTimeout(200);await shot('mirror-round-'+(round+2));
   }
  }
- await page.waitForFunction(()=>__MIRROR__.state.crackShown,null,{timeout:12000});await shot('mirror-crack');
- await page.waitForFunction(()=>__SANGENG__.state==='ending',null,{timeout:20000});await shot('mirror-ending');
+ await waitUntil(()=>__MIRROR__.state.crackShown,30000);await shot('mirror-crack');
+ await waitUntil(()=>__SANGENG__.state==='ending',40000);await shot('mirror-ending');
  assert.equal(await page.evaluate(()=>__MIRROR__.state.handprints),3);mirror.roundsSolvedByE=3;mirror.ending=true;result.chapters.push(mirror);
  // Nightroad changed its model and subtitle integration too: test all lantern interactions.
  const night={id:'nightroad',resources:await load('nightroad'),subtitles:await subtitles(),signal:await signal()};
@@ -133,9 +156,10 @@ async function signal(){return page.evaluate(async()=>{
  for(const name of lanterns){await use(name);await page.waitForTimeout(350);}
  assert.equal(await page.evaluate(()=>__NIGHT__.state.litCount),5);night.lanternsByE=5;await shot('night-lanterns');
  await use('INT_incense');
- await page.waitForFunction(()=>__NIGHT__.state.decision.active,null,{timeout:15000});
- await page.keyboard.down('w');await page.waitForTimeout(1600);await page.keyboard.up('w');
- await page.waitForFunction(()=>__SANGENG__.state==='ending',null,{timeout:20000});
+ await waitUntil(()=>__NIGHT__.state.decision.active,40000);
+ await page.keyboard.up('w');await page.waitForTimeout(200);
+ await page.keyboard.down('w');await page.waitForTimeout(2200);await page.keyboard.up('w');
+ await waitUntil(()=>__SANGENG__.state==='ending',40000);
  night.shrineAndEndingByKeys=true;await shot('night-ending');
  result.chapters.push(night);assert.deepEqual(result.errors,[]);assert.deepEqual(result.failedRequests,[]);
  fs.writeFileSync(path.join(out,source?'source-result.json':'packaged-result.json'),JSON.stringify(result,null,2));

@@ -1,0 +1,61 @@
+{
+  "assistedPlacement": true,
+  "chapters": [
+    {
+      "id": "door",
+      "resources": {
+        "textures": 62,
+        "missing": []
+      },
+      "subtitles": {
+        "later": "QA later",
+        "ordered": "QA queued B"
+      },
+      "signal": {
+        "peak": 0.2096983790397644,
+        "state": "running"
+      },
+      "deathRetry": true,
+      "ending": true,
+      "pickups": 3,
+      "newExaminations": 4
+    },
+    {
+      "id": "mirror",
+      "resources": {
+        "textures": 62,
+        "missing": []
+      },
+      "subtitles": {
+        "later": "QA later",
+        "ordered": "QA queued B"
+      },
+      "signal": {
+        "peak": 0.18739435076713562,
+        "state": "running"
+      },
+      "wrongUseDeathRetry": true,
+      "roundsSolvedByE": 3,
+      "ending": true
+    },
+    {
+      "id": "nightroad",
+      "resources": {
+        "textures": 62,
+        "missing": []
+      },
+      "subtitles": {
+        "later": "QA later",
+        "ordered": "QA queued B"
+      },
+      "signal": {
+        "peak": 0.15089140832424164,
+        "state": "running"
+      },
+      "lanternsByE": 5,
+      "shrineAndEndingByKeys": true
+    }
+  ],
+  "errors": [],
+  "failedRequests": []
+}

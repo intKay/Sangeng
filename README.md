@@ -1,67 +1,153 @@
 # 三更 · SANGENG
 
-三个第一人称心理恐怖短篇，共用一套低多边形 3D 引擎。网页版 **v1.2.0**，Windows 桌面版 **v1.1.0**（内置 Chromium）。
+> 三个发生在中国的第一人称心理恐怖短篇：一间反复经过的老公寓、一面比你早到的镜子、一条送完葬还要走完的夜路。每篇 6–10 分钟，低多边形 3D，程序化贴图与合成声音；没有跳吓音效，没有血腥画面。
+
+[![itch.io](https://img.shields.io/badge/itch.io-在线游玩-c9a55a?style=flat-square)](https://kay-setsuna.itch.io/horror-demo)
+[![version](https://img.shields.io/badge/version-1.3.0-8a1e1e?style=flat-square)](https://github.com/intKay/Sangeng/releases/tag/v1.3.0)
+![platform](https://img.shields.io/badge/platform-Windows%20%7C%20Web%20%7C%20Mobile-3b4a44?style=flat-square)
+![engine](https://img.shields.io/badge/engine-Three.js%20r160-1f2a26?style=flat-square)
+
+![三更入口页](docs/screenshots/01-home.jpg)
 
 | 一更《门后》 | 二更《镜中》 | 三更《夜路》 |
 |---|---|---|
+| ![门后](assets/art/poster-door.jpg) | ![镜中](assets/art/poster-mirror.jpg) | ![夜路](assets/art/poster-night.jpg) |
 | 老公寓里的夜间探访 | 公共澡堂更衣室 | 乡野夜路上的灯火 |
 | 约 6–8 分钟 | 约 5–7 分钟 | 约 7–10 分钟 |
 
-![三更](assets/art/hero.jpg)
-
 ## 下载游玩
 
-手机/桌面浏览器通用包见 [v1.2.0 Release](https://github.com/intKay/Sangeng/releases/tag/v1.2.0)；网页 ZIP 用于完整静态托管或上传 itch.io，请勿在 ZIP 内直接双击 HTML。
+| 平台 | 文件 | 说明 |
+|---|---|---|
+| 手机 / 桌面浏览器 | [`Sangeng-1.3.0-web.zip`](https://github.com/intKay/Sangeng/releases/download/v1.3.0/Sangeng-1.3.0-web.zip) | 同一个包适配电脑与触屏；用于静态托管或上传 itch.io。请勿在 ZIP 内直接双击 HTML。 |
+| Windows 10/11 x64 | [`Sangeng-1.3.0-Setup-x64.exe`](https://github.com/intKay/Sangeng/releases/download/v1.3.0/Sangeng-1.3.0-Setup-x64.exe) | 安装版，内置 Electron/Chromium，离线运行。 |
+| Windows 免安装 | [`Sangeng-1.3.0-Portable-x64.exe`](https://github.com/intKay/Sangeng/releases/download/v1.3.0/Sangeng-1.3.0-Portable-x64.exe) | 单文件便携版，双击即玩，首次启动会解包运行时。 |
 
-在 [桌面版 Release](https://github.com/intKay/Sangeng/releases/tag/v1.1.0) 下载 **`Sangeng-1.1.0-Setup-x64.exe`**，双击安装后从桌面快捷方式启动。也可下载 **`Sangeng-1.1.0-Portable-x64.exe`**，直接双击游玩，无需解压 ZIP。
+全部文件、`SHA256SUMS.txt` 与构建 manifest 见 [v1.3.0 Release](https://github.com/intKay/Sangeng/releases/tag/v1.3.0)。网页包约 33 MB；桌面版约 144 MB，未数字签名，Windows 可能提示未知发布者。
 
-需要 Windows 10/11 x64 和支持 WebGL2 的显卡。内置 Electron/Chromium，离线运行，无需安装浏览器、Python、Node 或 .NET；保留现有 Three.js/Web Audio 引擎。图片、模型和声音全部随包提供。关闭游戏窗口即可退出。EXE 未数字签名，Windows 可能提示未知发布者。首次点击“开始”后启用声音。
+浏览器需要支持 WebGL2 与 Web Audio 的现代版本；Edge / Chrome / Safari 均可。移动端建议横屏，竖屏也保留操作。第一次点击“开始”后解锁声音。
 
-WASD 移动，鼠标环视，Shift 快走，**E 交互**，Esc 暂停。F 为《门后》拾取后的手电开关。暂无存档和移动端操作。
+## 操作
 
-内容提示：心理恐怖、闪烁画面、幽闭空间、死亡意象；无血腥画面。
+| 动作 | 键鼠 | 触屏 |
+|---|---|---|
+| 移动 | `WASD` | 左下摇杆 |
+| 环视 | 鼠标（点击画面锁定） | 右侧空白区域拖动 |
+| 交互 | `E` | 右下“交互”按钮 |
+| 快走 | `Shift` | “快走”按钮 |
+| 手电（仅《门后》） | `F` | “手电”按钮 |
+| 暂停 / 设置 | `Esc` | 右上“暂停” |
 
-## 从源码启动
+触屏和键鼠可以随时在设置里切换；摇杆在松手、失焦、旋转或暂停时清零。不支持 Ogg/Vorbis 的浏览器会自动改用同名 MP3 备用音频。
 
-手机网页版 v1.2.0 导出：`python tools/build_web.py`，产物 `dist/web/Sangeng-1.2.0-web.zip`。同一包适配桌面与触屏，包含摇杆、拖动环视和屏幕操作按钮；手动上传步骤见 [itch.io 手机适配说明](docs/ITCHIO_MOBILE.md)。桌面安装版仍保留 v1.1.0 Release，本轮未修改线上 itch.io 页面。
+**内容提示**：心理恐怖、闪烁画面、幽闭空间、死亡意象；无血腥画面。建议戴耳机，在安静、光线较暗的环境游玩。
 
-桌面开发与构建（需要 Node.js 22.12+，首次下载依赖需联网）：
+## 画面
+
+| 门后 | 镜中 | 夜路 |
+|---|---|---|
+| ![门后](docs/screenshots/02-door.jpg) | ![镜中](docs/screenshots/03-mirror.jpg) | ![夜路](docs/screenshots/04-nightroad.jpg) |
+
+手机横屏触控（摇杆、拖动环视与屏幕按钮）：
+
+![手机触屏操作](docs/screenshots/05-mobile-door.jpg)
+
+## 三个短篇
+
+### 一更《门后》· 老公寓循环
+
+你每年回来一次。今年，503 的门没锁。
+
+- 在 503 里找到三张字条；每拿到一张，灯灭，你回到走廊开端，走廊和屋内发生细微变化。
+- 手电有电量；黑暗里心跳会加快。
+- 第三轮起，“她”出现在走廊。她只在你**不看她**时移动；被碰到就从头再来。
+- 拿到三张字条后，回卧室，读床上的信。
+
+### 二更《镜中》· 澡堂更衣室
+
+九十年代的公共澡堂，夜里还有人。镜子里的人比你早到。
+
+- 镜面实时渲染“另一间房”，两边状态并不一致。
+- 三个回合，每回合把现实中的物件摆成镜中的样子（毛巾、阀门、灯、凳子、柜门、收音机、模特）。
+- 每完成一回合（以及每次错误交互），镜中身影靠近一步；五步到身后 → 结束。
+- 第三次对齐后，镜面碎裂。
+
+### 三更《夜路》· 乡野夜行
+
+送完葬，你一个人走夜路回家。身后多了一个人。
+
+- 点亮沿途五盏纸灯笼，走到土地庙上香。
+- 纸人只在你没看它时移动；连续注视超过约 2.5 秒会“夺灯”（最近一盏灯熄灭）。
+- 点灯会短暂定住它，并成为死亡后的重生点。
+- 庙前可选择回头 / 不回头，两段不同结局。
+
+## 技术实现
+
+- **渲染**：Three.js r160（`vendor/three/` 本地化，无 CDN）；内部渲染分辨率 45%–80% 再最近邻放大，配合胶片颗粒、扫描线、暗角、色差、抖动与低饱和调色，做出 PS1 低保真气质。
+- **后处理**：`engine/postfx.js` 单通道全屏 Shader，`sanity / threat` 实时改变扭曲、色差、颗粒与心跳感。
+- **第一人称**：`engine/player.js`——重力/阻尼移动、AABB 碰撞、头部摆动、脚步节拍、手电电量与低电闪烁。
+- **交互**：中心射线拾取 + `E`；门有开合动画与碰撞联动。触屏层见 `engine/touch.js`。
+- **音频**：`engine/audio.js`——manifest 驱动，音乐/环境交叉淡化，HRTF 空间声像，合成混响，实时心跳/呼吸/耳鸣层；MP3 兜底。
+- **镜子**：`engine/mirror.js`——仿 three.js Reflector 的投影纹理平面反射；反射场景是关卡克隆，可与现实状态不同。
+- **UI**：`engine/ui.js` + `engine.css`——标题/加载/HUD/字幕/暂停/设置/死亡/结局/信纸，原生 DOM，适配安全区与小屏滚动。
+- **关卡**：`engine/engine.js`——加载 GLB、按 `MAT_*` 替换材质、读取 `LIGHT_*` Empty 建灯、提取 `COL_*` 碰撞、`SPAWN/LOOK/MARK` 标记、`V2_/V3_` 变体、`ENTITY_*` 实体。
+
+所有 3D 场景、贴图、音效与音乐均为原创或程序化生成：Blender 5.2 headless 建模，numpy + Pillow 生成 62 张贴图，numpy 合成 121 个音频事件。没有外部下载素材、没有真人语音。资产规格见 [`docs/ASSET_SPEC.md`](docs/ASSET_SPEC.md)、[`docs/AUDIO_SPEC.md`](docs/AUDIO_SPEC.md)、[`docs/ART_SPEC.md`](docs/ART_SPEC.md)。
+
+## 从源码运行与构建
 
 ```powershell
-npm ci
-npm start
-npm run dist
+python serve.py          # 本地静态服务器，只用标准库
+# 或双击 start_sangeng.cmd，然后打开 http://127.0.0.1:8137/
 ```
 
-桌面产物位于 `dist/desktop/`；构建自动使用独立临时目录。定向验收使用 `node tools/verify_desktop.cjs <安装后的 Sangeng.exe 路径>`。旧 C# 包构建脚本仅用于重现 v1.0.1 历史产物。
+必须通过 HTTP 打开（ES Module、GLB 与音频不能从 `file://` 加载）。
 
 ```powershell
-python serve.py
+npm ci                   # Node.js 22.12+，首次需联网
+npm start                # Electron 开发运行
+npm run dist             # 构建 Windows 安装版 + 便携版
+python tools/build_web.py  # 构建 Sangeng-1.3.0-web.zip
 ```
 
-用 Edge/Chrome 打开 `http://127.0.0.1:8137/`，也可双击 `start_sangeng.cmd`。服务器仅用 Python 标准库。需要 HTTP 服务加载 ES Modules、GLB 与音频，请通过启动脚本进入。
+产物位于 `dist/desktop/` 与 `dist/web/`，附带 SHA-256、manifest 和 itch.io 上传说明。重建资产还需要 Blender、numpy、Pillow、ffmpeg 等各脚本列出的依赖；游玩与打包不需要这些依赖。
 
-## v1.0.1
+## 验证
 
-- 修复音源漏接混音节点导致的音乐、环境与音效无声。
-- 隐藏物件不再拦截交互射线，当前物件的提示变化可及时刷新。
-- 长按 E 不再连续触发拾取、开合等操作。
-- 提供 Windows 便携包、单文件 EXE、网页托管 ZIP 和校验文件。
+v1.3.0 在本机完成：网页包 Android 横屏 / 小屏手机模拟、桌面 Chromium 与独立 Electron 运行；三篇核心交互、门后手电、暂停/设置、字幕队列、死亡重试与结局；62 张贴图与 121 个音频就绪；GLB 命名、碰撞、材质与面数预算。339 个运行文件打包进网页 ZIP。当前证据、测试方法和未覆盖项见 [`reports/qa/release-1.3.0/ACCEPTANCE.md`](reports/qa/release-1.3.0/ACCEPTANCE.md)。
 
-本轮定向验证覆盖三篇核心 E 交互、门后 F、暂停/继续、音量设置、长按 E 与音频信号；205 个打包运行文件经 HTTP 逐字节核对。未重新逐关完整通关、未做人耳音量平衡或异机验收。细节见 [验证范围](docs/VALIDATION.md)。
+## 已知限制
 
-## 结构与构建
+- 桌面版只提供 Windows x64；未做数字签名。
+- 暂无存档与章节选择；单局 6–10 分钟，死亡就地重试。
+- 低分辨率 + 颗粒是刻意的美术选择；设置里可调“清晰 / 标准 / 粗颗粒”。
+- 镜面反射略暗、关灯回合灯管仍自发光等已知观感限制，记录在发布说明中。
+- 自动化测试使用调试放置抵达交互附近；没有真人完整通关、人耳音量平衡或异机验收。
 
-- `engine/`：Three.js 渲染、后处理、玩家、交互、Web Audio 与界面。
-- `games/`：三个短篇。
-- `assets/`：低模、程序化贴图、合成音频与海报。
-- `tools/`：Blender、音频、美术生成及 Windows 发布工具。
-- `docs/`：设计、接口、资产规范与分享说明。
+## 版本历史
 
-```powershell
-python tools/build_release.py
+| 版本 | 内容 |
+|---|---|
+| v1.3.0 | 接收场景内容打磨；网页包、安装版与便携版统一到 1.3.0；字幕队列修复；手机触控保留。 |
+| v1.2.0 | 手机/桌面通用 HTML5 包：摇杆、拖动环视、屏幕按钮与安全区适配。 |
+| v1.1.0 | 内置 Electron/Chromium 的 Windows 独立桌面版。 |
+| v1.0.1 | 修复音源未接入混音图导致的无声、隐藏物件拦截交互、长按 `E` 重复触发。 |
+
+## 目录结构
+
+```
+Sangeng/
+  index.html            入口（三张海报卡片）
+  serve.py              本地服务器（多线程，无依赖）
+  engine/               共享引擎：engine / player / audio / ui / postfx / mirror / touch / utils
+  games/                door《门后》 / mirror《镜中》 / nightroad《夜路》
+  assets/               models / textures / audio / art
+  tools/                Blender、美术、音频生成与发布 / 验收脚本
+  docs/                 设计、接口、资产规格、分享与 itch.io 说明
+  reports/              验收证据、报告与截图
+  vendor/               three.js r160 + GLTFLoader（MIT）
 ```
 
-上述历史 v1.0.1 构建需要系统 .NET Framework C# 编译器。产物位于 `dist/`。重建资产还需要 Blender，以及 numpy、Pillow、ffmpeg 等各资产脚本列出的依赖；游玩与打包不需要安装这些资产生成依赖。
+## 原创与许可
 
-分享网址可使用网页 ZIP，步骤见 [分享说明](docs/SHARING.md)。原创内容与第三方许可见 [NOTICE](NOTICE.md)。
+玩法代码、场景、贴图、音效与音乐均为本项目原创或程序化生成。仓库暂未为原创部分提供独立开源许可证，其它使用许可请联系仓库作者；请勿将 demo 录屏用于商业发行。Three.js 及 addons 依 MIT 许可本地分发，完整声明见 [`vendor/three/LICENSE`](vendor/three/LICENSE) 与 [`NOTICE.md`](NOTICE.md)。
