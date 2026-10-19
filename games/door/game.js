@@ -284,7 +284,11 @@ const config = {
       onOpen: () => {
         game.ui.subtitle('门没锁。', 2.2);
         game.ui.setObjective('进去看看');
+        if (door503 && door503.interact) door503.interact.setPrompt('关上 503 的门');
         if (game.audio && game.audio.ready) playSfx('doorUnlock', { volume: 0.5 });
+      },
+      onClose: () => {
+        if (door503 && door503.interact) door503.interact.setPrompt('打开 503 的门');
       },
     });
     state.doors['503'] = door503;
@@ -294,6 +298,12 @@ const config = {
       locked: true,
       lockedText: '门锁着。门缝底下透出一点光。',
       onLocked: () => tryUnlockBedroom(game),
+      onOpen: () => {
+        if (doorBed && doorBed.interact) doorBed.interact.setPrompt('关上卧室门');
+      },
+      onClose: () => {
+        if (doorBed && doorBed.interact) doorBed.interact.setPrompt('打开卧室门');
+      },
     });
     state.doors.bedroom = doorBed;
 
