@@ -85,13 +85,15 @@ export class AudioManager {
   }
 
   _collect(manifest, manifestUrl) {
+    // Older Safari can decode MP3 but not Ogg/Vorbis. Preserve variation arrays.
+    const ogg = !!document.createElement('audio').canPlayType('audio/ogg; codecs="vorbis"');
     const cats = ['music', 'ambience', 'sfx', 'ui'];
     for (const cat of cats) {
       const src = manifest[cat] || {};
       for (const key of Object.keys(src)) {
         const def = src[key] || {};
         const files = (def.files || (def.file ? [def.file] : []))
-          .map((f) => new URL(f, manifestUrl).href);
+          .map((f) => new URL(ogg ? f : f.replace(/\.ogg$/i, '.mp3'), manifestUrl).href);
         this.entries[cat][key] = {
           key, category: cat, files,
           volume: def.volume == null ? 1 : def.volume,
@@ -187,7 +189,7 @@ export class AudioManager {
 
   unlock() {
     if (!this.ctx) return;
-    if (this.ctx.state === 'suspended') this.ctx.resume().catch(() => {});
+    if (this.ctx.state !== 'running' && this.ctx.state !== 'closed') this.ctx.resume().catch(() => {});
   }
 
   /* ---------- 基础播放 ---------- */

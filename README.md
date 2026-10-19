@@ -1,6 +1,6 @@
 # 三更 · SANGENG
 
-三个第一人称心理恐怖短篇，共用一套低多边形 3D 引擎。当前版本 **v1.1.0**，提供内置 Chromium 的 Windows 桌面应用。
+三个第一人称心理恐怖短篇，共用一套低多边形 3D 引擎。网页版 **v1.2.0**，Windows 桌面版 **v1.1.0**（内置 Chromium）。
 
 | 一更《门后》 | 二更《镜中》 | 三更《夜路》 |
 |---|---|---|
@@ -11,7 +11,9 @@
 
 ## 下载游玩
 
-在 [Releases](https://github.com/intKay/Sangeng/releases/latest) 下载 **`Sangeng-1.1.0-Setup-x64.exe`**，双击安装后从桌面快捷方式启动。也可下载 **`Sangeng-1.1.0-Portable-x64.exe`**，直接双击游玩，无需解压 ZIP。
+手机/桌面浏览器通用包见 [v1.2.0 Release](https://github.com/intKay/Sangeng/releases/tag/v1.2.0)；网页 ZIP 用于完整静态托管或上传 itch.io，请勿在 ZIP 内直接双击 HTML。
+
+在 [桌面版 Release](https://github.com/intKay/Sangeng/releases/tag/v1.1.0) 下载 **`Sangeng-1.1.0-Setup-x64.exe`**，双击安装后从桌面快捷方式启动。也可下载 **`Sangeng-1.1.0-Portable-x64.exe`**，直接双击游玩，无需解压 ZIP。
 
 需要 Windows 10/11 x64 和支持 WebGL2 的显卡。内置 Electron/Chromium，离线运行，无需安装浏览器、Python、Node 或 .NET；保留现有 Three.js/Web Audio 引擎。图片、模型和声音全部随包提供。关闭游戏窗口即可退出。EXE 未数字签名，Windows 可能提示未知发布者。首次点击“开始”后启用声音。
 
@@ -20,6 +22,8 @@ WASD 移动，鼠标环视，Shift 快走，**E 交互**，Esc 暂停。F 为《
 内容提示：心理恐怖、闪烁画面、幽闭空间、死亡意象；无血腥画面。
 
 ## 从源码启动
+
+手机网页版 v1.2.0 导出：`python tools/build_web.py`，产物 `dist/web/Sangeng-1.2.0-web.zip`。同一包适配桌面与触屏，包含摇杆、拖动环视和屏幕操作按钮；手动上传步骤见 [itch.io 手机适配说明](docs/ITCHIO_MOBILE.md)。桌面安装版仍保留 v1.1.0 Release，本轮未修改线上 itch.io 页面。
 
 桌面开发与构建（需要 Node.js 22.12+，首次下载依赖需联网）：
 

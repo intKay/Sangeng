@@ -52,7 +52,8 @@ const TEMPLATE = `
   <div class="sg-panel wide">
     <div class="sg-panel-kicker">SETTINGS</div>
     <h2>设置</h2>
-    <label class="sg-field"><span>鼠标灵敏度</span><input type="range" data-set="sensitivity" min="0.2" max="3" step="0.05"><b class="val"></b></label>
+    <label class="sg-field"><span>视角灵敏度</span><input type="range" data-set="sensitivity" min="0.2" max="3" step="0.05"><b class="val"></b></label>
+    <label class="sg-field"><span>操作方式</span><select data-set="inputMode"><option value="auto">自动识别</option><option value="touch">触屏 / 拖动</option><option value="mouse">键盘 / 鼠标</option></select><b class="val"></b></label>
     <label class="sg-field"><span>主音量</span><input type="range" data-set="volume" min="0" max="1" step="0.02"><b class="val"></b></label>
     <label class="sg-field"><span>渲染颗粒度</span>
       <select data-set="renderScale">
@@ -187,9 +188,10 @@ export class UI {
         let val;
         if (input.type === 'checkbox') val = input.checked;
         else if (input.type === 'range') val = parseFloat(input.value);
-        else val = input.tagName === 'SELECT' ? parseFloat(input.value) : input.value;
+        else val = input.tagName === 'SELECT' && key !== 'inputMode' ? parseFloat(input.value) : input.value;
         const s = this.game.settings;
         if (key === 'subtitles') s.subtitles = !!val;
+        else if (key === 'inputMode') s.inputMode = val;
         else if (key === 'renderScale') s.renderScale = parseFloat(val);
         else if (key === 'sensitivity') s.sensitivity = parseFloat(val);
         else if (key === 'volume') s.volume = parseFloat(val);
@@ -205,6 +207,7 @@ export class UI {
     this.root.querySelectorAll('[data-set]').forEach((input) => {
       const key = input.dataset.set;
       if (key === 'subtitles') input.checked = !!s.subtitles;
+      else if (key === 'inputMode') input.value = s.inputMode;
       else if (key === 'renderScale') input.value = String(s.renderScale);
       else if (key === 'sensitivity') input.value = String(s.sensitivity);
       else if (key === 'volume') input.value = String(s.volume);

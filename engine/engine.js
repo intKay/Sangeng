@@ -5,11 +5,12 @@ import { PostFX } from './postfx.js';
 import { AudioManager } from './audio.js';
 import { UI } from './ui.js';
 import { Player } from './player.js';
+import { TouchControls, prefersTouch } from './touch.js';
 import { PlanarMirror } from './mirror.js';
 import { clamp, damp, loadJSON } from './utils.js';
 
 const SETTINGS_KEY = 'sangeng-settings-v1';
-const DEFAULT_SETTINGS = { sensitivity: 1.0, volume: 0.8, subtitles: true, renderScale: 0.6 };
+const DEFAULT_SETTINGS = { sensitivity: 1.0, volume: 0.8, subtitles: true, renderScale: 0.6, inputMode: 'auto' };
 
 class CollisionWorld {
   constructor() { this.boxes = []; }
@@ -150,12 +151,11 @@ export class HorrorGame {
   }
 
   _loadSettings() {
-    let s = Object.assign({}, DEFAULT_SETTINGS);
+    let s = Object.assign({}, DEFAULT_SETTINGS, prefersTouch() ? { renderScale: 0.45 } : {});
     try {
       const raw = localStorage.getItem(SETTINGS_KEY);
       if (raw) Object.assign(s, JSON.parse(raw));
     } catch (e) { /* ignore */ }
-    if (this.config && this.config.renderScale) s.renderScale = this.config.renderScale;
     return s;
   }
 
@@ -189,6 +189,7 @@ export class HorrorGame {
     this.ui.setLoading(0.88, '正在关灯…');
     this._initPlayer();
     this.interact = new InteractionManager(this);
+    this.touchControls = new TouchControls(this);
     this._applyAtmosphere();
     this.applySettings();
     this._bindGlobalEvents();
@@ -452,6 +453,7 @@ export class HorrorGame {
     this.postfx.setScale(s.renderScale);
     if (this.mirror) this.mirror.setResolutionScale(s.renderScale);
     this.ui.syncSettingsLabels();
+    this.touchControls?.configure();
     this._saveSettings();
   }
 
@@ -499,6 +501,7 @@ export class HorrorGame {
 
   resume() {
     if (this.state !== 'paused') return;
+    this.audio.unlock();
     this.state = 'playing';
     this.player.enabled = true;
     this.ui.hidePause();
@@ -565,6 +568,7 @@ export class HorrorGame {
   goHome() { location.href = this.config.homeUrl; }
 
   _requestLock() {
+    if (this.touchEnabled || typeof this.canvas?.requestPointerLock !== 'function') return;
     if (!this.canvas || document.pointerLockElement === this.canvas) return;
     const p = this.canvas.requestPointerLock();
     if (p && p.catch) p.catch(() => {});
@@ -760,6 +764,7 @@ export class HorrorGame {
     const dt = Math.min(0.05, this.clock.getDelta());
     this.time += dt;
     this.ui.update(dt);
+    this.touchControls?.update();
 
     if (this.state === 'playing') {
       this.player.update(dt);
