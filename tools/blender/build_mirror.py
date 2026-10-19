@@ -5,6 +5,7 @@ headless:  blender.exe -b --factory-startup --python build_mirror.py
 import sys
 import os
 import math
+from mathutils import Matrix
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import lib_build as L
@@ -12,25 +13,81 @@ import lib_build as L
 OUT = L.MODELS + r"\mirror.glb"
 
 
+def wall_art(name, x0, x1, y0, y1, z0, z1, mat, front,
+             frame="MAT_paper", group=None):
+    """Thin framed poster/notice on a wall; front face UV 0-1."""
+    g = group if group else name
+    L.slab(name + "_frame", x0, x1, y0, y1, z0, z1, frame, group=g)
+    eps = 0.005
+    fx0, fx1, fy0, fy1 = x0, x1, y0, y1
+    if front[0] != 0:
+        if front[0] < 0:
+            fx0, fx1 = x0 - eps, x0
+        else:
+            fx0, fx1 = x1, x1 + eps
+    else:
+        if front[1] < 0:
+            fy0, fy1 = y0 - eps, y0
+        else:
+            fy0, fy1 = y1, y1 + eps
+    L.slab(name + "_face", fx0, fx1, fy0, fy1, z0 + 0.012, z1 - 0.012, mat,
+           front=front, uv="unit", group=g)
+
+
 def hex_humanoid(group, prefix, x, y, body="MAT_entity_white",
-                 hair="MAT_entity_hair", face="MAT_entity_face"):
+                 hair="MAT_entity_hair", face="MAT_entity_hair"):
+    """v1.0.2: wet-haired white-clad reflection woman.  Origin = feet centre."""
     P = (x, y, 0.0)
-    L.frustum(prefix + "_dress", (0.6, 0.48), (0.34, 0.26), 0.02, 1.15,
+    # layered wet gown
+    L.frustum(prefix + "_gown_hem", (0.72, 0.58), (0.54, 0.42), 0.02, 0.46,
               (x, y), body, group=group, pivot=P)
-    L.frustum(prefix + "_torso", (0.34, 0.26), (0.3, 0.22), 1.12, 1.42,
+    L.frustum(prefix + "_gown_mid", (0.54, 0.42), (0.42, 0.3), 0.44, 0.84,
               (x, y), body, group=group, pivot=P)
-    L.cyl_between(prefix + "_arm_l", (x - 0.17, y, 1.4), (x - 0.24, y + 0.02, 0.9),
-                  0.035, body, segments=6, group=group, pivot=P)
-    L.cyl_between(prefix + "_arm_r", (x + 0.17, y, 1.4), (x + 0.24, y + 0.02, 0.9),
-                  0.035, body, segments=6, group=group, pivot=P)
-    L.sphere(prefix + "_head", 0.1, (x, y, 1.56), body, subdiv=2,
-             scale=(0.9, 0.85, 1.1), group=group, pivot=P)
-    L.sphere(prefix + "_hair", 0.104, (x, y + 0.015, 1.59), hair, subdiv=2,
-             scale=(0.95, 0.9, 0.95), group=group, pivot=P)
+    L.frustum(prefix + "_torso", (0.42, 0.3), (0.33, 0.22), 0.82, 1.24,
+              (x, y), body, group=group, pivot=P)
+    L.box(prefix + "_shoulders", (0.38, 0.2, 0.08), (x, y, 1.26), body,
+          group=group, pivot=P)
+    # arms + hands
+    for k, sx in enumerate((-1, 1)):
+        L.sphere(prefix + "_shoulder_%d" % k, 0.055,
+                 (x + sx * 0.17, y, 1.24), body, subdiv=1,
+                 group=group, pivot=P)
+        L.cyl_between(prefix + "_upper_arm_%d" % k,
+                      (x + sx * 0.17, y, 1.22),
+                      (x + sx * 0.24, y + 0.03, 0.97), 0.038, body,
+                      segments=6, group=group, pivot=P)
+        L.cyl_between(prefix + "_fore_arm_%d" % k,
+                      (x + sx * 0.24, y + 0.03, 0.97),
+                      (x + sx * 0.21, y - 0.02, 0.76), 0.03, body,
+                      segments=6, group=group, pivot=P)
+        L.sphere(prefix + "_hand_%d" % k, 0.04,
+                 (x + sx * 0.21, y - 0.03, 0.73), body, subdiv=1,
+                 scale=(1.0, 1.3, 0.8), group=group, pivot=P)
+    # neck / head / dark dripping face
+    L.cyl(prefix + "_neck", 0.045, 0.09, (x, y, 1.3), body, segments=8,
+          group=group, pivot=P)
+    L.sphere(prefix + "_head", 0.1, (x, y, 1.44), body, subdiv=2,
+             scale=(0.9, 0.85, 1.12), group=group, pivot=P)
     L.slab(prefix + "_face", x - 0.06, x + 0.06, y - 0.102, y - 0.094,
-           1.53, 1.6, face, front=(0, -1, 0), uv="unit", group=group, pivot=P)
-    L.slab(prefix + "_hair_back", x - 0.12, x + 0.12, y + 0.05, y + 0.1,
-           0.9, 1.58, hair, group=group, pivot=P)
+           1.41, 1.5, face, front=(0, -1, 0), uv="unit", group=group, pivot=P)
+    for k, sx in enumerate((-1, 1)):
+        L.slab(prefix + "_eye_%d" % k, x + sx * 0.042 - 0.018,
+               x + sx * 0.042 + 0.018, y - 0.106, y - 0.102, 1.455, 1.47,
+               body, group=group, pivot=P)
+    # wet hair: cap + veil + long strands down past the shoulders
+    L.sphere(prefix + "_hair_cap", 0.107, (x, y + 0.012, 1.47), hair,
+             subdiv=2, scale=(0.98, 0.95, 1.0), group=group, pivot=P)
+    L.slab(prefix + "_hair_veil_l", x - 0.145, x - 0.07, y - 0.095,
+           y - 0.055, 1.1, 1.5, hair, group=group, pivot=P)
+    L.slab(prefix + "_hair_veil_r", x + 0.07, x + 0.145, y - 0.095,
+           y - 0.055, 1.1, 1.5, hair, group=group, pivot=P)
+    L.slab(prefix + "_hair_back", x - 0.145, x + 0.145, y + 0.06, y + 0.12,
+           0.5, 1.5, hair, group=group, pivot=P)
+    for k, (dx, w, ztop, zbot) in enumerate([
+            (-0.13, 0.1, 1.4, 0.66), (-0.045, 0.1, 1.34, 0.54),
+            (0.045, 0.1, 1.34, 0.54), (0.13, 0.1, 1.4, 0.66)]):
+        L.slab(prefix + "_hair_strand_%d" % k, x + dx - w / 2, x + dx + w / 2,
+               y + 0.08, y + 0.13, zbot, ztop, hair, group=group, pivot=P)
     L.box(prefix + "_foot_l", (0.09, 0.2, 0.05), (x - 0.1, y - 0.04, 0.025),
           body, group=group, pivot=P)
     L.box(prefix + "_foot_r", (0.09, 0.2, 0.05), (x + 0.1, y - 0.04, 0.025),
@@ -290,7 +347,7 @@ def build_lockers_props():
                   0.018, "MAT_wood_pale", segments=6)
     L.sphere("S_mop_head", 0.1, (3.07, -0.91, 1.28), "MAT_fabric_white",
              subdiv=1, scale=(1.0, 0.7, 1.4))
-    L.box("S_newspaper", (0.3, 0.22, 0.006), (-0.5, -0.85, 0.49),
+    L.box("S_newspaper", (0.3, 0.22, 0.006), (-0.5, -0.45, 0.49),
           "MAT_paper", rot=(0, 0, 0.3))
     L.box("S_cigarette", (0.06, 0.008, 0.008), (0.2, -0.2, 0.49),
           "MAT_fabric_white")
@@ -352,6 +409,131 @@ def build_lockers_props():
     L.col_slab("COL_wall_east", 3.6, 3.75, -2.95, 2.95)
 
 
+def build_v102_mirror():
+    """v1.0.2 additions: bathhouse life layer + hidden story planes."""
+    # ---- east wall: bath poster + notice
+    wall_art("S_bath_poster", 3.59, 3.60, -1.15, -0.45, 1.55, 2.35,
+             "MAT_bath_poster", (-1, 0, 0), frame="MAT_paper")
+    wall_art("S_bath_notice", 3.59, 3.60, 1.15, 1.78, 1.45, 1.98,
+             "MAT_bath_notice", (-1, 0, 0), frame="MAT_paper")
+    # ---- west wall: ticket board + tickets
+    L.slab("S_ticket_board_back", -3.60, -3.59, 1.25, 2.05, 1.4, 1.98,
+           "MAT_wood_dark", group="S_ticket_board")
+    L.slab("S_ticket_board", -3.59, -3.585, 1.29, 2.01, 1.44, 1.94,
+           "MAT_notice_board", front=(1, 0, 0), uv="unit",
+           group="S_ticket_board")
+    for i, (yy, zz) in enumerate([(1.45, 1.75), (1.7, 1.6), (1.9, 1.82)]):
+        L.slab("S_ticket_board_ticket_%d" % i, -3.585, -3.581,
+               yy - 0.07, yy + 0.07, zz - 0.05, zz + 0.05,
+               "MAT_bath_ticket", front=(1, 0, 0), uv="unit",
+               group="S_ticket_board")
+    for i, (xx, yy, rot, zz) in enumerate([
+            (0.66, -0.3, 0.2, 0.495), (0.78, -0.26, -0.4, 0.5),
+            (-0.4, -0.25, 0.5, 0.495), (1.6, -1.9, 0.9, 0.012),
+            (-1.9, -0.9, -0.3, 0.012)]):
+        L.box("S_bath_ticket_%d" % i, (0.09, 0.06, 0.004), (xx, yy, zz),
+              "MAT_bath_ticket", rot=(0, 0, rot), group="S_bath_ticket")
+    # ---- open locker door with clothes spilling out (bank 1, first door)
+    hinge = (-3.158, -2.355, 0.0)
+    width = 0.464
+    door = L.slab("S_open_locker_clothes_door", hinge[0],
+                  hinge[0] + width, -2.36, -2.34, 0.12, 1.95,
+                  "MAT_metal_locker", group="S_open_locker_clothes", pivot=hinge)
+    door.data.transform(Matrix.Rotation(math.radians(38), 4, "Z"))
+    L.box("S_open_locker_clothes_shirt", (0.32, 0.14, 0.46),
+          (-2.92, -2.12, 1.05), "MAT_fabric_white", rot=(0, 0, 0.25),
+          group="S_open_locker_clothes")
+    L.box("S_open_locker_clothes_pants", (0.24, 0.12, 0.6),
+          (-2.86, -2.0, 0.62), "MAT_fabric_blue", rot=(0, 0, -0.2),
+          group="S_open_locker_clothes")
+    L.box("S_open_locker_clothes_towel", (0.3, 0.1, 0.18),
+          (-2.98, -2.2, 1.34), "MAT_fabric_white", rot=(0, 0, 0.4),
+          group="S_open_locker_clothes")
+    # ---- shoes under the bench
+    L.box("S_shoes_bench_0", (0.1, 0.24, 0.06), (0.32, -0.42, 0.035),
+          "MAT_entity_hair", group="S_shoes_bench")
+    L.box("S_shoes_bench_1", (0.1, 0.24, 0.06), (-0.12, -0.3, 0.035),
+          "MAT_entity_hair", group="S_shoes_bench")
+    # ---- towel pile / basin / bottles / comb on and around the bench
+    for i, (xx, yy, zz, mat) in enumerate([
+            (0.62, -0.44, 0.51, "MAT_fabric_white"),
+            (0.68, -0.42, 0.56, "MAT_fabric_red"),
+            (0.6, -0.38, 0.6, "MAT_fabric_white")]):
+        L.box("S_towel_pile_%d" % i, (0.32, 0.26, 0.06), (xx, yy, zz),
+              mat, rot=(0, 0, 0.1 * i), group="S_towel_pile")
+    L.cyl("S_basin", 0.19, 0.1, (-0.58, -0.42, 0.53), "MAT_tile_white",
+          segments=12, group="S_basin")
+    L.cyl("S_basin_inner", 0.15, 0.06, (-0.58, -0.42, 0.555),
+          "MAT_metal_locker", segments=12, group="S_basin")
+    L.box("S_basin_water", (0.24, 0.24, 0.004), (-0.58, -0.42, 0.582),
+          "MAT_stain_water", group="S_basin")
+    for i, (xx, zz, h, mat) in enumerate([
+            (-1.88, 0.99, 0.18, "MAT_fabric_blue"),
+            (-1.78, 1.02, 0.13, "MAT_fabric_white"),
+            (-1.68, 0.97, 0.2, "MAT_fabric_red")]):
+        L.cyl("S_bottles_%d" % i, 0.035, h, (xx, 2.55, 0.88 + h / 2), mat,
+              segments=8, group="S_bottles")
+    L.box("S_comb", (0.15, 0.035, 0.008), (0.55, 2.55, 0.9),
+          "MAT_fabric_white", group="S_comb")
+    for i in range(5):
+        L.box("S_comb_tooth_%d" % i, (0.012, 0.03, 0.008),
+              (0.49 + i * 0.02, 2.55, 0.895), "MAT_fabric_white",
+              group="S_comb")
+    # ---- newspaper on the bench (extra copy, pages open)
+    L.box("S_newspaper_bench", (0.34, 0.26, 0.006), (0.22, -0.32, 0.49),
+          "MAT_paper", rot=(0, 0, -0.25), group="S_newspaper_bench")
+    L.box("S_newspaper_bench_page", (0.3, 0.22, 0.005), (0.3, -0.24, 0.487),
+          "MAT_paper", rot=(0, 0, 0.35), group="S_newspaper_bench")
+    # ---- hair clogging the floor drain + ceiling leak
+    L.box("S_hair_drain_patch", (0.26, 0.22, 0.004), (0.7, -1.9, 0.012),
+          "MAT_entity_hair", rot=(0, 0, 0.4), group="S_hair_drain")
+    for i in range(4):
+        L.cyl_between("S_hair_drain_strand_%d" % i,
+                      (0.56 + i * 0.05, -2.0, 0.012),
+                      (0.78 + i * 0.03, -1.8 + i * 0.03, 0.012), 0.006,
+                      "MAT_entity_hair", segments=4, group="S_hair_drain")
+    L.box("S_ceiling_leak_stain", (0.8, 0.6, 0.006), (1.7, -0.85, 2.996),
+          "MAT_stain_water", group="S_ceiling_leak")
+    L.cyl_between("S_ceiling_leak_drip", (1.7, -0.85, 2.99),
+                  (1.7, -0.85, 0.02), 0.006, "MAT_stain_water",
+                  segments=4, group="S_ceiling_leak")
+    L.box("S_ceiling_leak_puddle", (0.5, 0.4, 0.006), (1.7, -0.85, 0.006),
+          "MAT_stain_water", group="S_ceiling_leak")
+    # ---- extra low bench along the west wall
+    L.box("S_bench_extra_top", (0.9, 0.34, 0.06), (-3.05, 1.35, 0.44),
+          "MAT_wood_pale", group="S_bench_extra")
+    for i, (xx, yy) in enumerate([(-3.42, 1.22), (-2.68, 1.22),
+                                  (-3.42, 1.48), (-2.68, 1.48)]):
+        L.box("S_bench_extra_leg_%d" % i, (0.05, 0.05, 0.41),
+              (xx, yy, 0.205), "MAT_wood_pale", group="S_bench_extra")
+    L.col("COL_bench_extra", (-3.05, 1.35, 0.45), (0.95, 0.4, 0.9))
+    # ---- mop leaning by the bath door
+    L.cyl_between("S_mop_lean_handle", (3.42, 1.6, 0.08), (3.24, 1.44, 1.36),
+                  0.018, "MAT_wood_pale", segments=6, group="S_mop")
+    L.sphere("S_mop_lean_head", 0.1, (3.23, 1.43, 1.39), "MAT_fabric_white",
+             subdiv=1, scale=(1.0, 0.7, 1.3), group="S_mop")
+    # ---- hidden: handprints on the mirror surface
+    for i, (xx, zz, rot) in enumerate([(-1.1, 1.75, 0.1),
+                                       (0.4, 2.05, -0.15),
+                                       (1.55, 1.45, 0.2)]):
+        nm = "S_handprint_%d" % (i + 1)
+        L.box(nm, (0.17, 0.004, 0.23), (xx, 2.733, zz), "MAT_handprint",
+              rot=(0, 0, rot), group=nm)
+        L.props(nm, hidden=True)
+    # ---- hidden: mirror crack radiating from one impact point
+    ox, oz = 0.2, 2.0
+    for k, (length, ang) in enumerate([(0.4, 0.2), (0.34, 1.2), (0.46, 2.1),
+                                       (0.28, -0.8), (0.3, 2.8)]):
+        cx = ox + math.cos(ang) * length / 2
+        cz = oz - math.sin(ang) * length / 2
+        L.box("S_mirror_crack_%d" % k, (length, 0.004, 0.012),
+              (cx, 2.732, cz), "MAT_mirror_crack", rot=(0, ang, 0),
+              group="S_mirror_crack")
+    L.box("S_mirror_crack_chip", (0.055, 0.004, 0.055), (ox, 2.732, oz),
+          "MAT_mirror_crack", rot=(0, 0.6, 0), group="S_mirror_crack")
+    L.props("S_mirror_crack", hidden=True)
+
+
 def build_entity_lights():
     hex_humanoid("ENTITY_reflection", "ENTITY_reflection", 0.0, 1.95)
     L.props("ENTITY_reflection", hidden=True)
@@ -374,6 +556,7 @@ def main():
     build_room()
     build_mirror_wall()
     build_lockers_props()
+    build_v102_mirror()
     build_entity_lights()
     L.finalize(OUT)
     print("MIRROR BUILD DONE")

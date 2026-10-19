@@ -33,17 +33,102 @@ const LETTERS = {
     head: '一封信',
     lines: [
       '我不怪你。',
-      '你每年回来一次，我就当你每年都回来过。',
-      '卧室的椅子上，一直有人坐着。',
-      '如果你读到这封信，说明你终于进来了。',
+      '你走的那天，我把饭热了三遍。',
+      '后来每年这个时候，我都把灯开着。',
+      '照片我擦过了，挂历也一直翻到三月。',
+      '今年你终于进来了。',
       '别开灯。让我看看你。',
     ],
   },
 };
 
 const LOOP_HINTS = {
-  2: '灯灭了。你又站在楼道里。',
-  3: '这次，走廊比刚才长。',
+  2: '灯灭了。你又站在楼道里。门口多了一双鞋。',
+  3: '这次，走廊比刚才长。椅子挪到了 503 门口。',
+};
+
+/* 可查看的旧物：不推进流程，只把“她一直在等”补进空间里。 */
+const EXAMINE = {
+  photo1: {
+    prompt: '看照片',
+    head: '照片 · 一',
+    lines: [
+      '一家三口。父亲的脸被闪光灯照得发白，母亲在笑。',
+      '孩子被抱在中间，眼睛闭着，像没准备好。',
+      '相框玻璃上有一道裂纹，从父亲那边裂到母亲那边。',
+    ],
+  },
+  photo2: {
+    prompt: '看照片',
+    head: '照片 · 二',
+    lines: [
+      '母亲和孩子站在楼下。孩子手里攥着一根快化了的冰棍。',
+      '背面写着：1999，夏。',
+      '字迹被水泡过，最后一位数字看不清。',
+    ],
+  },
+  photo3: {
+    prompt: '看照片',
+    head: '照片 · 三',
+    lines: [
+      '一张结婚照。两个人都很年轻，表情认真。',
+      '后来这张照片被挪到了最里面，前面挡着一只空花瓶。',
+    ],
+  },
+  drawing: {
+    prompt: '看画',
+    head: '一张画',
+    lines: [
+      '蜡笔画的三个人，站在一栋有烟囱的房子前面。',
+      '烟囱里冒着蓝色的烟，屋顶上画了太阳，太阳有眼睛。',
+      '右下角歪歪扭扭写着：妈妈，我回来。',
+    ],
+  },
+  calendar: {
+    prompt: '看挂历',
+    head: '挂历',
+    lines: [
+      '1999 年 3 月。12 号被红笔圈住，旁边写着：早点回家。',
+      '后面的日子没有翻。纸边卷起来，像被摸过很多次。',
+      '红笔是新的，日期是旧的。',
+    ],
+  },
+  notice: {
+    prompt: '看公告栏',
+    head: '公告栏',
+    lines: [
+      '停电通知、水费单、一张寻人启事。',
+      '寻人启事上的照片被人撕掉了，只剩下一行小字：',
+      '“五楼，穿白裙子。”',
+    ],
+  },
+  couplet: {
+    prompt: '看对联',
+    head: '门框上的红纸',
+    lines: [
+      '去年的对联，红纸褪成了粉色。横批掉了一半。',
+      '“福”字倒着贴，胶带黄了，边角翘起来。',
+      '有人每年都重新贴一次，只是没有换新的。',
+    ],
+  },
+  shoes: {
+    prompt: '看那双鞋',
+    head: '门口的鞋',
+    lines: [
+      '一双女式布鞋，鞋尖朝里。',
+      '鞋底是干的，鞋面上有一点新沾的灰。',
+      '像是有人刚回来，又没来得及换鞋。',
+    ],
+  },
+  shoesChild: {
+    prompt: '看那双小鞋',
+    head: '门口的小鞋',
+    lines: [
+      '一双小孩的布鞋，鞋尖朝里，比旁边那双小两号。',
+      '鞋面很干净，像有人每年都把它擦一遍。',
+      '鞋里塞着一团旧报纸。报纸上的日期是十年前的。',
+    ],
+  },
 };
 
 const state = {
@@ -54,6 +139,7 @@ const state = {
   entity: {
     active: false,
     root: null,
+    sitting: null,
     home: new THREE.Vector3(),
     grace: 0,
     unseen: 0,
@@ -61,6 +147,7 @@ const state = {
     stepTimer: 0,
     breath: null,
     done: false,
+    seen: false,
   },
   doors: {},
   switches: { living: true, corridor: true },
@@ -68,6 +155,9 @@ const state = {
   ended: false,
   t: 0,
   hintTimer: 0,
+  glimpse: false,
+  glimpseTimer: 0,
+  extraShown: {},
 };
 
 let gameRef = null;
@@ -85,6 +175,32 @@ function playSfx(key, opts = {}) {
 }
 
 function setVis(name, v) { gameRef.setVisible(name, v); }
+
+/** 以“旧物/纸张”形式展示的查看物 */
+function examinePaper(game, name, data) {
+  const o = obj(name);
+  if (!o) return;
+  game.interact.add(o, {
+    prompt: data.prompt || '查看',
+    onUse: () => {
+      playSfx('paperRustle', { volume: 0.45 });
+      game.openPaper({ head: data.head, lines: data.lines });
+    },
+  });
+}
+
+/** 一行字的查看物 */
+function examineLine(game, name, text, prompt = '查看') {
+  const o = obj(name);
+  if (!o) return;
+  game.interact.add(o, {
+    prompt,
+    onUse: () => {
+      playSfx('lightSwitch', { volume: 0.25 });
+      game.ui.subtitle(text, 4.2);
+    },
+  });
+}
 
 function horizontalDist(a, b) { return Math.hypot(a.x - b.x, a.z - b.z); }
 
@@ -136,6 +252,15 @@ const config = {
     gameRef = game;
     game.ui.setObjective('回到 503');
 
+    // v1.0.2 临时兜底：engine/ui.js 的字幕 timer 会停在负值，导致后续字幕只入队不显示。
+    // 已作为 engine bug 交接给 Codex；引擎修好后这段可删。
+    const ui = game.ui;
+    const origSubtitle = ui.subtitle.bind(ui);
+    ui.subtitle = (text, dur) => {
+      if (ui.subtitleTimer <= 0) ui.subtitleTimer = 0;
+      origSubtitle(text, dur);
+    };
+
     // 初始隐藏：后两张字条、结局信件、实体
     setVis('INT_letter_02', false);
     setVis('INT_letter_03', false);
@@ -147,6 +272,11 @@ const config = {
       state.entity.home.copy(entity.position);
       entity.visible = false;
     }
+    const sitting = game.entities.get('ENTITY_she_sitting');
+    if (sitting) {
+      state.entity.sitting = sitting;
+      sitting.visible = false;
+    }
 
     // 门
     const door503 = game.makeDoor(obj('INT_door_503'), {
@@ -154,7 +284,11 @@ const config = {
       onOpen: () => {
         game.ui.subtitle('门没锁。', 2.2);
         game.ui.setObjective('进去看看');
+        if (door503 && door503.interact) door503.interact.setPrompt('关上 503 的门');
         if (game.audio && game.audio.ready) playSfx('doorUnlock', { volume: 0.5 });
+      },
+      onClose: () => {
+        if (door503 && door503.interact) door503.interact.setPrompt('打开 503 的门');
       },
     });
     state.doors['503'] = door503;
@@ -164,6 +298,12 @@ const config = {
       locked: true,
       lockedText: '门锁着。门缝底下透出一点光。',
       onLocked: () => tryUnlockBedroom(game),
+      onOpen: () => {
+        if (doorBed && doorBed.interact) doorBed.interact.setPrompt('关上卧室门');
+      },
+      onClose: () => {
+        if (doorBed && doorBed.interact) doorBed.interact.setPrompt('打开卧室门');
+      },
     });
     state.doors.bedroom = doorBed;
 
@@ -190,8 +330,29 @@ const config = {
     });
     game.interact.add(obj('INT_clock'), {
       prompt: '看钟',
-      onUse: () => game.ui.subtitle(`钟停在三点十七分。`, 2.6),
+      onUse: () => game.ui.subtitle('钟停在三点十七分。那天你也在。', 3.2),
     });
+
+    // 旧物 / 照片 / 挂历：给“家”补上被使用过的痕迹
+    examinePaper(game, 'INT_photo_1', EXAMINE.photo1);
+    examinePaper(game, 'INT_photo_2', EXAMINE.photo2);
+    examinePaper(game, 'INT_photo_3', EXAMINE.photo3);
+    examinePaper(game, 'INT_child_drawing', EXAMINE.drawing);
+    examinePaper(game, 'INT_calendar', EXAMINE.calendar);
+    examinePaper(game, 'INT_notice_board', EXAMINE.notice);
+    examinePaper(game, 'INT_couplet', EXAMINE.couplet);
+    examinePaper(game, 'INT_shoes_waiting', EXAMINE.shoes);
+    examinePaper(game, 'V2_drawing_corr', EXAMINE.drawing);
+    examinePaper(game, 'V2_shoes_waiting', EXAMINE.shoesChild);
+    examineLine(game, 'INT_phone', '听筒里是忙音。你按下重拨，号码键上的 0 和 6 已经磨平。', '拿起电话');
+    examineLine(game, 'INT_sewing_machine', '缝纫机停在一半。线还穿着，布上留着一道没缝完的边。', '看缝纫机');
+    examineLine(game, 'INT_thermos', '暖水瓶还是满的。壶塞上缠着一圈红绳。', '看暖水瓶');
+    examineLine(game, 'INT_chair_final', '椅子对着窗。坐垫上有一块凹下去的痕迹，像刚刚有人站起来。', '看椅子');
+    examineLine(game, 'S_bed_frame', '被子叠得很整齐。枕头上有几根白头发。', '看床');
+    examineLine(game, 'S_wardrobe', '衣柜里挂着一件男式外套，尺码不对。旁边空了一整边。', '看衣柜');
+    examineLine(game, 'S_tv_cabinet', '电视一直开着。雪花。你把音量调到最小，雪花声没有变小。', '看电视');
+    examineLine(game, 'S_photo_1', '墙上的相框空着。玻璃后面有一层灰。照片被取走了。', '看空相框');
+    examineLine(game, 'S_photo_2', '另一只相框也空了。钉子还在墙上。', '看空相框');
 
     // 手电
     game.interact.add(obj('INT_flashlight'), {
@@ -262,9 +423,13 @@ const config = {
     state.hasFlashlight = false;
     state.entity.active = false;
     state.entity.done = false;
+    state.entity.seen = false;
     state.finalStarted = false;
     state.ended = false;
-    state.hintTimer = 6;
+    state.hintTimer = 9;
+    state.glimpse = false;
+    state.glimpseTimer = 0;
+    if (state.entity.sitting) state.entity.sitting.visible = false;
 
     game.player.enabled = true;
     game.player.teleportTo('SPAWN_corridor', 'LOOK_corridor');
@@ -297,17 +462,38 @@ const config = {
       state.enteredApartment = true;
       game.audio.playAmbience('roomTone', { channel: 'main', fade: 2.5 });
       game.audio.playAmbience('tvStatic', { channel: 'extra', fade: 2, volume: 0.35 });
-      game.setLight('LIGHT_entry', true, 0.8);
-      game.setLight('LIGHT_living', true, 0.7);
+      game.setLight('LIGHT_entry', true, 1.0);
+      game.setLight('LIGHT_living', true, 0.95);
+      game.setLight('LIGHT_floor_lamp', true, 1.0);
+      game.setLight('LIGHT_kitchen', true, 0.55);
       game.ui.setObjective('找到三张字条');
       game.ui.subtitle('三年没回来了。屋里还是那个味道。', 3.8);
+      game.ui.subtitle('客厅的灯还亮着。像有人刚离开。', 4.4);
+    }
+
+    // 走廊里的“一瞥”：只出现很短一会儿，不参与追逐
+    if (state.glimpse && state.entity.root) {
+      state.glimpseTimer -= dt;
+      const root = state.entity.root;
+      const distToGlimpse = horizontalDist(game.player.pos, root.position);
+      if (state.glimpseTimer <= 0 || distToGlimpse < 8) {
+        state.glimpse = false;
+        root.visible = false;
+        game.setLight('LIGHT_corr_05', false);
+        game.setThreat(0);
+      } else {
+        game.setThreat(0.32);
+      }
     }
 
     // 实体
     updateEntity(game, dt);
 
     // 压力值
-    if (state.entity.active && !state.entity.done) {
+    if (state.glimpse) {
+      game.setThreat(0.32);
+      game.setSanity(0.18);
+    } else if (state.entity.active && !state.entity.done) {
       const dist = horizontalDist(game.player.pos, state.entity.root.position);
       const threat = clamp(1 - dist / 13, 0, 1) * (state.entity.freeze > 0 ? 0.65 : 1);
       game.setThreat(threat * 0.9);
@@ -410,6 +596,19 @@ function afterLetter(game, index) {
     game.audio.playAmbience('rainWindow', { channel: 'extra', fade: 1.5, volume: 0.4 });
     game.ui.setObjective('再回 503 看看');
     game.ui.subtitle(LOOP_HINTS[next] || '灯灭了。你又站在楼道里。', 3.6);
+    if (next === 2) {
+      setTimeout(() => {
+        if (state.loop === 2) game.ui.subtitle('门口多了一双小孩的布鞋。鞋尖朝里。', 4.2);
+      }, 1700);
+    } else if (next === 3) {
+      setTimeout(() => {
+        if (state.loop === 3) {
+          game.ui.subtitle('走廊里的椅子，挪到了 503 门口。', 4.2);
+          showGlimpse(game, 3.4);
+          if (hasSfx('whisper')) playSfx('whisper', { volume: 0.45, pos: new THREE.Vector3(0, 1.4, 16) });
+        }
+      }, 1700);
+    }
     setTimeout(() => game.ui.fadeOut(1200), 700);
   });
   setTimeout(() => {
@@ -423,16 +622,46 @@ function applyLoop(game, loop) {
     game.setLight('LIGHT_corr_02', false);
     game.setLight('LIGHT_corr_04', false);
     game.setLight('LIGHT_living', false);
+    game.setLight('LIGHT_floor_lamp', false);
     game.setLight('LIGHT_kitchen', false);
   } else if (loop >= 3) {
     game.setVariants('V2_', true);
     game.setVariants('V3_', true);
     for (const n of ['LIGHT_corr_01', 'LIGHT_corr_02', 'LIGHT_corr_04', 'LIGHT_corr_05']) game.setLight(n, false);
-    game.setLight('LIGHT_corr_03', true, 0.55);
+    game.setLight('LIGHT_corr_03', true, 0.8);
+    game.setLight('LIGHT_corr_05', true, 0.35);
     game.setLight('LIGHT_entry', false);
+    game.setLight('LIGHT_living', false);
+    game.setLight('LIGHT_floor_lamp', false);
     game.setLight('LIGHT_tv', false);
     game.setLight('LIGHT_moon_bed', true, 0.3);
+    // 椅子一点点挪到 503 门口：走廊自己在等你回去
+    const chair = obj('V2_corr_chair');
+    if (chair) {
+      chair.position.set(0.35, 0, 5.0);
+      chair.rotation.y = Math.PI;
+      chair.visible = true;
+    }
+    const shoes = obj('V2_shoes_waiting');
+    if (shoes) {
+      shoes.position.set(0.62, 0, 5.65);
+      shoes.rotation.y = Math.PI;
+      shoes.visible = true;
+    }
   }
+}
+
+function showGlimpse(game, seconds = 2.6) {
+  const root = state.entity.root;
+  if (!root) return;
+  state.glimpse = true;
+  state.glimpseTimer = seconds;
+  root.position.set(0, 0, 17.1);
+  root.visible = true;
+  root.lookAt(game.player.pos.x, root.position.y, game.player.pos.z);
+  game.setLight('LIGHT_corr_05', true, 0.8);
+  playSfx('entityStep', { volume: 0.65, rate: 0.75 });
+  game.setThreat(0.32);
 }
 
 function tryUnlockBedroom(game) {
@@ -449,10 +678,13 @@ function startChase(game) {
   state.loop = 3;
   state.entity.active = true;
   state.entity.done = false;
-  state.entity.grace = 2.6;
+  state.entity.seen = false;
+  state.entity.grace = 2.8;
   state.entity.unseen = 0;
   state.entity.freeze = 0;
   state.entity.stepTimer = 0;
+  state.glimpse = false;
+  if (state.entity.sitting) state.entity.sitting.visible = false;
   state.doors.bedroom.setLocked(false);
   game.ui.fadeIn(1000).then(() => {
     game.player.teleportTo('SPAWN_corridor', 'LOOK_corridor');
@@ -460,6 +692,7 @@ function startChase(game) {
     game.audio.playMusic('tension', { fade: 2 });
     game.ui.setObjective('回卧室');
     game.ui.subtitle('楼道里有呼吸声。她只在你看着她时停下。', 5.2);
+    game.ui.subtitle('别一直盯着她。也别一直不回头。', 5.2);
     if (state.entity.root) {
       state.entity.root.position.set(0, 0, 17.2);
       state.entity.root.visible = true;
@@ -488,15 +721,20 @@ function updateEntity(game, dt) {
 
   const looked = !st.done && game.isLookingAt(root, { maxDistance: 26, fovDot: 0.25 });
   st.freeze = looked ? 0.25 : Math.max(0, st.freeze - dt);
+  if (looked && !st.seen) {
+    st.seen = true;
+    game.ui.subtitle('她停住了。楼道里安静得能听见你的心跳。', 4.2);
+    if (hasSfx('whisper')) playSfx('whisper', { volume: 0.55, pos: root.position.clone().add(new THREE.Vector3(0, 1.3, 0)) });
+  }
 
   let moving = false;
   if (st.grace <= 0 && !looked) {
     st.unseen += dt;
     // 靠近：基础速度 + 长时间未被注视时的"闪现"
-    let speed = 2.45;
-    if (st.unseen > 3.2 && dist > 4) {
+    const speed = 2.35;
+    if (st.unseen > 3.8 && dist > 5) {
       st.unseen = 0;
-      const dash = Math.min(2.4, Math.max(0, dist - 2.8));
+      const dash = Math.min(2.2, Math.max(0, dist - 2.8));
       if (dash > 0.2) {
         root.position.add(toPlayer.normalize().multiplyScalar(dash));
         playSfx('entityStep', { volume: 0.85, rate: 0.8 });
@@ -569,21 +807,34 @@ function enterBedroomEnding(game) {
   state.finalStarted = true;
   state.entity.done = true;
   state.entity.active = false;
+  state.glimpse = false;
   if (state.entity.breath) { state.entity.breath.stop(0.6); state.entity.breath = null; }
   game.setThreat(0);
   game.setSanity(0.15);
   game.audio.playMusic('main', { fade: 3 });
   game.audio.playAmbience('roomTone', { channel: 'main', fade: 2 });
   game.ui.setObjective('看看床上');
-  // 她坐在原来的位置
-  const root = state.entity.root;
-  if (root) {
-    root.position.copy(state.entity.home);
-    root.visible = true;
-    root.lookAt(game.player.pos.x, root.position.y, game.player.pos.z);
+  // 卧室只留一盏灯：椅子上的她才是房间里唯一的光源
+  game.setLight('LIGHT_bedroom', true, 1.15);
+  game.setLight('LIGHT_moon_bed', true, 0.75);
+  game.setLight('LIGHT_living', false);
+  game.setLight('LIGHT_floor_lamp', false);
+  game.setLight('LIGHT_tv', false);
+  // 站立形态退场，换成坐在椅子上的她
+  const standing = state.entity.root;
+  if (standing) standing.visible = false;
+  const sitting = state.entity.sitting;
+  if (sitting) {
+    sitting.visible = true;
+    sitting.lookAt(game.player.pos.x, sitting.position.y, game.player.pos.z);
+  } else if (standing) {
+    standing.position.copy(state.entity.home);
+    standing.visible = true;
+    standing.lookAt(game.player.pos.x, standing.position.y, game.player.pos.z);
   }
   setVis('INT_letter_final', true);
   game.ui.subtitle('她坐在椅子上，背对着窗。床上有一封信。', 4.6);
+  game.ui.subtitle('照片里的三个人，现在只剩两个影子。', 4.6);
   if (hasSfx('whisper')) setTimeout(() => playSfx('whisper', { volume: 0.6 }), 1200);
 }
 
@@ -598,19 +849,21 @@ function readFinalLetter(game) {
     onClose: () => {
       game.audio.stopAll(2.5);
       if (game.audio.entries.music.ending) game.audio.playMusic('ending', { fade: 1 });
+      game.ui.subtitle('她抬起头。', 2.6);
       setTimeout(() => {
         game.finish({
           chapter: '一更 · 门后',
           title: '你终于回来了',
           lines: [
             '信纸上是你的字迹。你不记得自己写过。',
+            '你想起门口那双鞋，想起挂历上被圈住的日子。',
             '椅子上的她抬起头。你认出了那张脸。',
             '走廊的灯一盏一盏地灭下去。',
             '这一次，你没有走。',
           ],
           footer: '三更 · 一更 完',
         });
-      }, 1400);
+      }, 2800);
     },
   });
 }

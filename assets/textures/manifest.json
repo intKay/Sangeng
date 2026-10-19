@@ -307,6 +307,80 @@
       "tint": "#ffffff",
       "emissive": null,
       "transparent": true
+    },
+    "MAT_photo_family_1": {
+      "file": "photo_family_1.jpg",
+      "colorSpace": "srgb",
+      "tint": "#fff6e8",
+      "emissive": null
+    },
+    "MAT_photo_family_2": {
+      "file": "photo_family_2.jpg",
+      "colorSpace": "srgb",
+      "tint": "#f6eedd",
+      "emissive": null
+    },
+    "MAT_photo_family_3": {
+      "file": "photo_family_3.jpg",
+      "colorSpace": "srgb",
+      "tint": "#fff2e0",
+      "emissive": null
+    },
+    "MAT_child_drawing": {
+      "file": "child_drawing.jpg",
+      "colorSpace": "srgb",
+      "tint": "#f6f0e0",
+      "emissive": null
+    },
+    "MAT_calendar": {
+      "file": "calendar_1999.jpg",
+      "colorSpace": "srgb",
+      "tint": "#f4ecd6",
+      "emissive": null
+    },
+    "MAT_notice_board": {
+      "file": "notice_board.jpg",
+      "colorSpace": "srgb",
+      "tint": "#ffffff",
+      "emissive": null
+    },
+    "MAT_couplet": {
+      "file": "couplet.jpg",
+      "colorSpace": "srgb",
+      "tint": "#f2e0d4",
+      "emissive": null
+    },
+    "MAT_bath_poster": {
+      "file": "bath_poster.jpg",
+      "colorSpace": "srgb",
+      "tint": "#f6ecd6",
+      "emissive": null
+    },
+    "MAT_bath_notice": {
+      "file": "bath_notice.jpg",
+      "colorSpace": "srgb",
+      "tint": "#ffffff",
+      "emissive": null
+    },
+    "MAT_bath_ticket": {
+      "file": "bath_ticket.jpg",
+      "colorSpace": "srgb",
+      "tint": "#f8f4e8",
+      "emissive": null
+    },
+    "MAT_mirror_crack": {
+      "file": "mirror_crack.png",
+      "colorSpace": "srgb",
+      "tint": "#ffffff",
+      "emissive": null,
+      "transparent": true
+    },
+    "MAT_handprint": {
+      "file": "handprint.png",
+      "colorSpace": "srgb",
+      "tint": "#ffffff",
+      "emissive": null,
+      "transparent": true
     }
   }
 }

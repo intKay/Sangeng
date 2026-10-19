@@ -190,6 +190,14 @@ const config = {
     gameRef = game;
     state.game = game;
 
+    // v1.0.2 临时兜底：engine/ui.js 字幕 timer 会停在负值（已交接 Codex 修引擎）。
+    const ui = game.ui;
+    const origSubtitle = ui.subtitle.bind(ui);
+    ui.subtitle = (text, dur) => {
+      if (ui.subtitleTimer <= 0) ui.subtitleTimer = 0;
+      origSubtitle(text, dur);
+    };
+
     game.ui.setObjective(OBJECTIVE.lanterns);
     game.ui.setCounter('灯笼 0 / 5');
 
