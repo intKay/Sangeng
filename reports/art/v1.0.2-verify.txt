@@ -1,0 +1,32 @@
+《三更》v1.0.2 叙事贴图自检报告（v1.0.2-verify.txt）
+==============================================================================
+生成脚本: tools/art/build_v102_textures.py（固定 seed 20261018，numpy 2.3.5, Pillow 12.3.0）
+新增材质: 12 个；预算 ≤ 500 KB；现有 legacy 材质保留 50 条
+
+KEY                   FILE                        SIZE    BYTES  FORMAT  MANIFEST  STATUS
+MAT_photo_family_1    photo_family_1.jpg        15.6KB    15945  JPEG          OK  OK
+MAT_photo_family_2    photo_family_2.jpg         8.7KB     8921  JPEG          OK  OK
+MAT_photo_family_3    photo_family_3.jpg        16.1KB    16481  JPEG          OK  OK
+MAT_child_drawing     child_drawing.jpg         21.4KB    21945  JPEG          OK  OK
+MAT_calendar          calendar_1999.jpg         10.8KB    11094  JPEG          OK  OK
+MAT_notice_board      notice_board.jpg          35.0KB    35812  JPEG          OK  OK
+MAT_couplet           couplet.jpg               15.0KB    15394  JPEG          OK  OK
+MAT_bath_poster       bath_poster.jpg           35.9KB    36765  JPEG          OK  OK
+MAT_bath_notice       bath_notice.jpg           34.7KB    35509  JPEG          OK  OK
+MAT_bath_ticket       bath_ticket.jpg           10.7KB    10977  JPEG          OK  OK
+MAT_mirror_crack      mirror_crack.png         144.5KB   148001  PNG-a         OK  OK
+MAT_handprint         handprint.png             37.9KB    38859  PNG-a         OK  OK
+
+---- 预算 ----
+新增总字节: 395703 (386.4 KB) / 上限 500 KB
+[OK] 新增素材在 500KB 以内
+
+---- legacy 材质保留 ----
+[OK] 原有 50 个 MAT_* 键名全部保留（manifest 共 62 条）
+
+---- 文件唯一性 ----
+[OK] 新增文件名无重复
+[OK] 与旧文件名无冲突
+
+==============================================================================
+V102 VERIFY OK

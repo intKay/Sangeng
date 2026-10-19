@@ -133,3 +133,38 @@
 - 贴图文件总量 ≤ 8 MB；
 - 三张海报 + hero + seal + favicon 存在且尺寸正确；
 - 脚本固定 seed，可重跑生成同样结果；无外部素材。
+
+## 6. v1.0.2 新增材质（叙事道具，12 项）
+
+v1.0.2《门后》《镜中》加入家庭线索与澡堂环境叙事道具。以下 12 个键名追加到同一套
+`assets/textures/manifest.json`（原有 50 条保持不变），生成脚本为
+`tools/art/build_v102_textures.py`（固定 seed，可单独重跑；风格沿用 `artlib.py`）。
+**新增素材总量预算 ≤ 500KB**（当前 381.6KB），全部程序化生成、无外部图片素材。
+
+| 键名 | 内容描述 | 尺寸 | 格式 |
+|---|---|---|---|
+| MAT_photo_family_1 | 家庭合影：父母+孩子，室内，褪色偏黄；人脸刻意模糊，无清晰五官 | 256×256 | JPEG |
+| MAT_photo_family_2 | 母亲与孩子旧照：竖幅、黑白偏棕、划痕与折痕 | 128×256 | JPEG |
+| MAT_photo_family_3 | 年轻时的合影/结婚照：暗淡布景、褪色红花、右下角水渍 | 256×256 | JPEG |
+| MAT_child_drawing | 孩子蜡笔画：红屋顶房子 + 三个人牵手 + 太阳/云/草，纸边卷曲、胶带印 | 256×256 | JPEG |
+| MAT_calendar | 1999 年 3 月挂历：12 日红笔圈出，红笔手写“早点回家”；纸旧、有折痕 | 128×256 | JPEG |
+| MAT_notice_board | 小区通知板拼贴：停水通知 / 水费通知单 / 居委会通知 / 停电通知，图钉+胶带 | 512×256 | JPEG |
+| MAT_couplet | 褪色红纸对联：金字楷体竖排“天增岁月人增寿”（七言），上下端破损 | 128×512 | JPEG |
+| MAT_bath_poster | 九十年代澡堂安全须知宣传画：蓝框、红毛巾、滑倒警示三角、五条注意事项 | 256×512 | JPEG |
+| MAT_bath_notice | 澡堂票价/营业时间牌：深绿珐琅、票价表（含红笔改价 4.00 元）、营业时间 | 512×256 | JPEG |
+| MAT_bath_ticket | 旧澡票：存根+撕线、贰元、红圆章（99.3）、“当日有效” | 256×128 | JPEG |
+| MAT_mirror_crack | 镜面裂纹叠加贴图：冲击点放射裂纹+碎裂纹+断续同心环；透明背景 | 512×512 | PNG(RGBA) |
+| MAT_handprint | 水汽手印叠加贴图：掌+五指+拇指、指擦痕、向下水痕、周围水珠；透明背景 | 256×256 | PNG(RGBA) |
+
+说明：
+
+- 照片类**不出现清晰人脸**（只有模糊的肤色/发色色块与软边轮廓），符合“恐怖谷但不写实”的尺度；
+  照片边框、日期戳（`95 6 1` / `88 11 12`）属于叙事线索，可被玩家读解。
+- `MAT_mirror_crack`、`MAT_handprint` 在 manifest 中带 `"transparent": true`，引擎需按透明
+  混合（贴花 depthWrite=false）处理，与既有 `MAT_stain_*` / `MAT_mirror_grime` / `MAT_steam` 一致。
+- 新增贴图的可复现命令：
+  ```bat
+  python tools/art/build_v102_textures.py            :: 全量生成 + 追加 manifest + 自检
+  python tools/art/build_v102_textures.py --list     :: 列出 12 个新增键名
+  ```
+- 自检报告：`reports/art/v1.0.2-verify.txt`（键名/文件/尺寸/格式/manifest/预算/旧键保留）。

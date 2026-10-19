@@ -572,14 +572,14 @@ def build_furniture():
           "MAT_fabric_white", segments=12, radius2=0.26, group=G)
     L.box("S_lamp_shade_glow", (0.1, 0.1, 0.1), (3.0, -3.2, 1.62),
           "MAT_lamp_warm", group=G)
-    # wall clock LIVE (INT_clock)
-    L.cyl("INT_clock_body", 0.17, 0.05, (1.9, -2.92, 2.1), "MAT_wood_dark",
+    # wall clock LIVE (INT_clock) -- proud of the north-wall interior face (y=-3.02)
+    L.cyl("INT_clock_body", 0.17, 0.05, (1.9, -3.05, 2.1), "MAT_wood_dark",
           axis="Y", segments=12, group="INT_clock")
-    L.circle_disc("INT_clock_face", 0.155, (1.9, -2.948, 2.1), "MAT_clock_face",
+    L.circle_disc("INT_clock_face", 0.155, (1.9, -3.083, 2.1), "MAT_clock_face",
                   axis="Y", segments=12, front=(0, -1, 0), group="INT_clock")
-    L.box("INT_clock_hand_h", (0.012, 0.008, 0.09), (1.955, -2.954, 2.1),
+    L.box("INT_clock_hand_h", (0.012, 0.008, 0.09), (1.955, -3.09, 2.1),
           "MAT_entity_hair", group="INT_clock")
-    L.box("INT_clock_hand_m", (0.012, 0.008, 0.13), (1.9, -2.954, 2.135),
+    L.box("INT_clock_hand_m", (0.012, 0.008, 0.13), (1.9, -3.09, 2.135),
           "MAT_entity_hair", group="INT_clock")
     L.props("INT_clock", interact="examine", prompt="看钟", id="clock_living")
     # family photos
@@ -587,9 +587,9 @@ def build_furniture():
            "MAT_wood_dark", group="S_photo_1")
     L.slab("S_photo_1", 2.735, 2.741, -4.17, -3.81, 1.58, 1.92,
            "MAT_photo", front=(1, 0, 0), uv="unit", group="S_photo_1")
-    L.slab("S_photo_2_frame", 4.55, 4.9, -2.935, -2.90, 1.6, 1.95,
+    L.slab("S_photo_2_frame", 4.55, 4.9, -3.055, -3.02, 1.6, 1.95,
            "MAT_wood_dark", group="S_photo_2")
-    L.slab("S_photo_2", 4.58, 4.87, -2.941, -2.935, 1.63, 1.92,
+    L.slab("S_photo_2", 4.58, 4.87, -3.061, -3.055, 1.63, 1.92,
            "MAT_photo", front=(0, -1, 0), uv="unit", group="S_photo_2")
     # living light switch on the solid west wall next to the entry opening
     L.slab("S_switch_living_plate", 2.72, 2.73, -4.16, -4.04, 1.22, 1.38,
@@ -681,9 +681,9 @@ def build_furniture():
         L.cyl("S_wardrobe_knob_%d" % i, 0.018, 0.03, (7.282, yy + 0.24, 1.05),
               "MAT_metal_rust", axis="X", segments=6, group="S_wardrobe")
     L.col("COL_wardrobe", (6.995, -7.0, 1.0), (0.6, 1.4, 2.0))
-    # final chair facing the south window
-    chair("S_chair_final", "S_chair_final", 7.3, -6.55, 180, mat="MAT_wood_dark")
-    L.col("COL_chair_final", (7.3, -6.55, 0.4), (0.5, 0.5, 0.8))
+    # final chair in front of the south window (moved 0.3m clear of the wardrobe)
+    chair("S_chair_final", "S_chair_final", 7.6, -7.0, 0, mat="MAT_wood_dark")
+    L.col("COL_chair_final", (7.6, -7.0, 0.4), (0.5, 0.5, 0.8))
     # letter_final on bed (hidden)
     L.box("INT_letter_final", (0.18, 0.02, 0.24), (8.35, -4.55, 0.63),
           "MAT_paper", group="INT_letter_final")
@@ -700,49 +700,290 @@ def build_furniture():
 
 
 # ---------------------------------------------------------------------------
+# v1.0.2 -- lived-in storytelling props
+# ---------------------------------------------------------------------------
+def picture(name, x0, x1, y0, y1, z0, z1, mat, front, frame="MAT_wood_dark",
+            group=None):
+    """Thin framed picture / calendar / drawing on a wall, front UV 0-1."""
+    g = group if group else name
+    L.slab(name + "_frame", x0, x1, y0, y1, z0, z1, frame, group=g)
+    eps = 0.005
+    nx, ny = front[0], front[1]
+    fx0, fx1, fy0, fy1 = x0, x1, y0, y1
+    if nx != 0:
+        if nx < 0:
+            fx0, fx1 = x0 - eps, x0
+        else:
+            fx0, fx1 = x1, x1 + eps
+    else:
+        if ny < 0:
+            fy0, fy1 = y0 - eps, y0
+        else:
+            fy0, fy1 = y1, y1 + eps
+    L.slab(name + "_face", fx0, fx1, fy0, fy1, z0 + 0.012, z1 - 0.012, mat,
+           front=front, uv="unit", group=g)
+
+
+def shoe_pair(group, prefix, x, y, scale=1.0, mat="MAT_wood_dark",
+              facing=0):
+    """Two worn shoes standing side by side (world-space boxes)."""
+    for i, dx in enumerate((-0.07 * scale, 0.07 * scale)):
+        L.box(prefix + "_body_%d" % i, (0.09 * scale, 0.23 * scale, 0.06 * scale),
+              (x + dx, y, 0.035 * scale), mat, group=group)
+        L.box(prefix + "_toe_%d" % i, (0.095 * scale, 0.09 * scale, 0.045 * scale),
+              (x + dx, y - 0.12 * scale, 0.028 * scale), mat, group=group)
+        L.box(prefix + "_heel_%d" % i, (0.08 * scale, 0.05 * scale, 0.02 * scale),
+              (x + dx, y + 0.1 * scale, 0.012 * scale), "MAT_entity_hair",
+              group=group)
+
+
+def build_v102_props():
+    """v1.0.2 additions: 走廊 / 503 室内的生活化叙事道具（全部 INT_，examine）。"""
+    # --- 客厅北墙：全家福 1（墙面 y=-2.9，面向 -Y）
+    picture("INT_photo_1", 5.3, 5.8, -3.055, -3.02, 1.35, 1.95,
+            "MAT_photo_family_1", (0, -1, 0))
+    L.props("INT_photo_1", interact="examine", prompt="看照片", id="photo1")
+    # --- 玄关南墙：全家福 2（墙面 y=-6.3，面向 +Y）
+    picture("INT_photo_2", 1.72, 2.22, -6.3, -6.265, 1.22, 1.82,
+            "MAT_photo_family_2", (0, 1, 0))
+    L.props("INT_photo_2", interact="examine", prompt="看照片", id="photo2")
+    # --- 卧室北墙：全家福 3（墙面 y=-3.4，面向 -Y，床头之上）
+    picture("INT_photo_3", 7.6, 8.1, -3.555, -3.52, 1.45, 2.05,
+            "MAT_photo_family_3", (0, -1, 0))
+    L.props("INT_photo_3", interact="examine", prompt="看照片", id="photo3")
+    # --- 卧室东墙：旧挂历（墙面 x=9.4，面向 -X）
+    picture("INT_calendar", 9.365, 9.40, -6.55, -6.10, 1.25, 2.0,
+            "MAT_calendar", (-1, 0, 0))
+    L.slab("INT_calendar_nail", 9.36, 9.365, -6.34, -6.31, 1.98, 2.0,
+           "MAT_metal_rust", group="INT_calendar")
+    L.props("INT_calendar", interact="examine", prompt="看日历", id="calendar")
+    # --- 电视柜上的旧电话
+    L.box("INT_phone_base", (0.22, 0.15, 0.055), (6.38, -3.15, 0.527),
+          "MAT_wood_pale", group="INT_phone")
+    L.box("INT_phone_handset", (0.2, 0.05, 0.04), (6.38, -3.15, 0.575),
+          "MAT_fabric_white", group="INT_phone")
+    for i, dx in enumerate((-0.075, 0.075)):
+        L.box("INT_phone_ear_%d" % i, (0.05, 0.055, 0.05),
+              (6.38 + dx, -3.15, 0.572), "MAT_fabric_white", group="INT_phone")
+    L.cyl("INT_phone_dial", 0.045, 0.015, (6.33, -3.12, 0.565),
+          "MAT_fabric_white", segments=10, group="INT_phone")
+    L.cyl_between("INT_phone_cord", (6.27, -3.12, 0.53), (6.2, -3.05, 0.51),
+                  0.008, "MAT_entity_hair", segments=5, group="INT_phone")
+    L.cyl_between("INT_phone_cord2", (6.2, -3.05, 0.51), (6.19, -2.99, 0.5),
+                  0.008, "MAT_entity_hair", segments=5, group="INT_phone")
+    L.props("INT_phone", interact="examine", prompt="看电话", id="phone")
+    # --- 客厅西墙：孩子的蜡笔画（沙发上方，墙面 x=2.72，面向 +X）
+    picture("INT_child_drawing", 2.72, 2.755, -7.45, -7.05, 1.26, 1.58,
+            "MAT_child_drawing", (1, 0, 0), frame="MAT_paper")
+    for i, (xx, yy) in enumerate([(2.758, -7.42), (2.758, -7.08),
+                                  (2.758, -7.43), (2.758, -7.07)]):
+        L.slab("INT_child_drawing_tape_%d" % i, xx, xx + 0.004,
+               yy - 0.035, yy + 0.035, 1.23 if i < 2 else 1.53,
+               1.28 if i < 2 else 1.58, "MAT_paper", group="INT_child_drawing")
+    L.props("INT_child_drawing", interact="examine", prompt="看孩子的画",
+            id="child_drawing")
+    # --- 卧室东墙：老式缝纫机（桌 + 机头 + 轮 + 踏板）
+    L.box("INT_sewing_machine_top", (0.8, 0.46, 0.05), (8.95, -6.78, 0.72),
+          "MAT_wood_dark", group="INT_sewing_machine")
+    for i, (xx, yy) in enumerate([(8.6, -6.98), (9.3, -6.98),
+                                  (8.6, -6.58), (9.3, -6.58)]):
+        L.box("INT_sewing_machine_leg_%d" % i, (0.05, 0.05, 0.7),
+              (xx, yy, 0.36), "MAT_wood_dark", group="INT_sewing_machine")
+    L.box("INT_sewing_machine_bed", (0.5, 0.26, 0.07), (8.95, -6.78, 0.78),
+          "MAT_entity_hair", group="INT_sewing_machine")
+    L.box("INT_sewing_machine_arm", (0.14, 0.24, 0.24), (9.12, -6.78, 0.93),
+          "MAT_entity_hair", group="INT_sewing_machine")
+    L.box("INT_sewing_machine_head", (0.2, 0.2, 0.12), (8.98, -6.78, 0.97),
+          "MAT_entity_hair", group="INT_sewing_machine")
+    L.cyl("INT_sewing_wheel", 0.11, 0.03, (9.2, -6.6, 0.92),
+          "MAT_metal_rust", axis="Y", segments=12, group="INT_sewing_machine")
+    L.cyl("INT_sewing_wheel_hub", 0.025, 0.05, (9.2, -6.6, 0.92),
+          "MAT_metal_locker", axis="Y", segments=8, group="INT_sewing_machine")
+    L.cyl_between("INT_sewing_needle", (8.9, -6.78, 0.95), (8.9, -6.78, 0.83),
+                  0.008, "MAT_metal_locker", segments=4, group="INT_sewing_machine")
+    L.box("INT_sewing_pedal", (0.28, 0.14, 0.03), (8.95, -6.35, 0.03),
+          "MAT_metal_rust", group="INT_sewing_machine")
+    L.col("COL_sewing_machine", (8.95, -6.78, 0.5), (0.9, 0.5, 1.1))
+    L.props("INT_sewing_machine", interact="examine", prompt="看缝纫机",
+            id="sewing_machine")
+    # --- 厨房台面上的暖水瓶
+    L.cyl("INT_thermos_body", 0.055, 0.32, (3.62, -9.05, 1.08),
+          "MAT_wood_pale", segments=10, group="INT_thermos")
+    L.cyl("INT_thermos_band", 0.058, 0.05, (3.62, -9.05, 1.06),
+          "MAT_fabric_red", segments=10, group="INT_thermos")
+    L.cyl("INT_thermos_cap", 0.045, 0.05, (3.62, -9.05, 1.265),
+          "MAT_metal_locker", segments=8, group="INT_thermos")
+    L.cyl_between("INT_thermos_handle", (3.67, -9.05, 1.2), (3.69, -9.05, 1.1),
+                  0.01, "MAT_wood_pale", segments=5, group="INT_thermos")
+    L.props("INT_thermos", interact="examine", prompt="看暖水瓶", id="thermos")
+    # --- 客厅南窗边：一把旧椅子（她的位置）
+    chair("INT_chair_final", "INT_chair_final", 3.72, -7.18, 180,
+          mat="MAT_wood_dark")
+    L.col("COL_int_chair_final", (3.72, -7.18, 0.4), (0.5, 0.5, 0.8))
+    L.props("INT_chair_final", interact="examine", prompt="看椅子", id="chair_final")
+    # --- 走廊东墙：新的公告栏（503 门旁）
+    L.slab("INT_notice_board_back", 1.08, 1.10, -4.3, -3.2, 1.35, 2.15,
+           "MAT_wood_dark", group="INT_notice_board")
+    L.slab("INT_notice_board_face", 1.074, 1.08, -4.26, -3.24, 1.39, 2.11,
+           "MAT_notice_board", front=(-1, 0, 0), uv="unit",
+           group="INT_notice_board")
+    for i, (yy, zz, sz) in enumerate([(-4.1, 1.82, 1), (-3.75, 1.7, 2),
+                                      (-3.95, 1.5, 3)]):
+        L.slab("INT_notice_board_paper_%d" % i, 1.069, 1.074,
+               yy - 0.11 * sz, yy + 0.11 * sz, zz, zz + 0.2,
+               "MAT_paper", front=(-1, 0, 0), uv="unit",
+               group="INT_notice_board")
+    L.props("INT_notice_board", interact="examine", prompt="看公告栏",
+            id="notice_board")
+    # --- 503 门两侧春联 + 横批
+    for i, (y0, y1, z0, z1) in enumerate([
+            (-6.08, -5.93, 0.8, 2.0), (-4.77, -4.62, 0.8, 2.0),
+            (-5.72, -4.98, 2.16, 2.34)]):
+        L.slab("INT_couplet_%d" % i, 1.094, 1.10, y0, y1, z0, z1,
+               "MAT_couplet", front=(-1, 0, 0), uv="unit",
+               group="INT_couplet")
+    L.props("INT_couplet", interact="examine", prompt="看对联", id="couplet")
+    # --- 503 门口的鞋（有人在等）
+    shoe_pair("INT_shoes_waiting", "INT_shoes_waiting", 0.78, -4.6)
+    L.props("INT_shoes_waiting", interact="examine", prompt="看门口的鞋",
+            id="shoes_waiting")
+
+
+# ---------------------------------------------------------------------------
 # entities + hidden variants
 # ---------------------------------------------------------------------------
 def humanoid(group, prefix, x, y, h=1.72, body_mat="MAT_entity_white",
-             hair_mat="MAT_entity_hair", face_mat="MAT_entity_face"):
+             hair_mat="MAT_entity_hair", face_mat="MAT_entity_hair"):
+    """v1.0.2: more believable white-dress long-haired woman.
+    Origin = feet centre.  Layered dress, hands, wet long hair, dark face."""
     P = (x, y, 0.0)
-    # long dress / legs
-    L.frustum(prefix + "_dress", (0.62, 0.5), (0.34, 0.26), 0.02, 1.18,
-              (x, y), body_mat, group=group, pivot=P, bevel=0.0)
-    # torso
-    L.frustum(prefix + "_torso", (0.34, 0.26), (0.3, 0.22), 1.15, 1.44,
+    # layered long dress: wide hem -> waist
+    L.frustum(prefix + "_skirt_hem", (0.74, 0.6), (0.56, 0.44), 0.02, 0.46,
               (x, y), body_mat, group=group, pivot=P)
-    # arms
-    L.cyl_between(prefix + "_arm_l", (x - 0.17, y, 1.42), (x - 0.24, y + 0.02, 0.92),
-                  0.035, body_mat, segments=6, group=group, pivot=P)
-    L.cyl_between(prefix + "_arm_r", (x + 0.17, y, 1.42), (x + 0.24, y + 0.02, 0.92),
-                  0.035, body_mat, segments=6, group=group, pivot=P)
-    # neck + head
-    L.cyl(prefix + "_neck", 0.045, 0.1, (x, y, 1.49), body_mat, segments=8,
+    L.frustum(prefix + "_skirt_mid", (0.56, 0.44), (0.42, 0.3), 0.44, 0.86,
+              (x, y), body_mat, group=group, pivot=P)
+    L.frustum(prefix + "_waist", (0.42, 0.3), (0.34, 0.24), 0.86, 1.08,
+              (x, y), body_mat, group=group, pivot=P)
+    # torso + shoulders
+    L.frustum(prefix + "_torso", (0.34, 0.24), (0.32, 0.22), 1.08, 1.36,
+              (x, y), body_mat, group=group, pivot=P)
+    L.box(prefix + "_shoulders", (0.4, 0.2, 0.09), (x, y, 1.36),
+          body_mat, group=group, pivot=P)
+    # arms: shoulder -> elbow -> hand
+    for k, sx in enumerate((-1, 1)):
+        L.sphere(prefix + "_shoulder_%d" % k, 0.06,
+                 (x + sx * 0.19, y, 1.33), body_mat, subdiv=1,
+                 group=group, pivot=P)
+        L.cyl_between(prefix + "_upper_arm_%d" % k,
+                      (x + sx * 0.19, y, 1.32),
+                      (x + sx * 0.25, y + 0.02, 1.06), 0.04, body_mat,
+                      segments=6, group=group, pivot=P)
+        L.cyl_between(prefix + "_fore_arm_%d" % k,
+                      (x + sx * 0.25, y + 0.02, 1.06),
+                      (x + sx * 0.22, y - 0.02, 0.83), 0.032, body_mat,
+                      segments=6, group=group, pivot=P)
+        L.sphere(prefix + "_hand_%d" % k, 0.042,
+                 (x + sx * 0.22, y - 0.03, 0.8), body_mat, subdiv=1,
+                 scale=(1.0, 1.3, 0.8), group=group, pivot=P)
+    # neck + head + dark face
+    L.cyl(prefix + "_neck", 0.045, 0.1, (x, y, 1.41), body_mat, segments=8,
           group=group, pivot=P)
-    L.sphere(prefix + "_head", 0.105, (x, y, 1.6), body_mat, subdiv=2,
+    L.sphere(prefix + "_head", 0.105, (x, y, 1.52), body_mat, subdiv=2,
              scale=(0.9, 0.85, 1.12), group=group, pivot=P)
-    L.slab(prefix + "_face", x - 0.06, x + 0.06, y - 0.105, y - 0.095,
-           1.58, 1.66, face_mat, front=(0, -1, 0), uv="unit", group=group,
+    L.slab(prefix + "_face", x - 0.062, x + 0.062, y - 0.105, y - 0.095,
+           1.49, 1.58, face_mat, front=(0, -1, 0), uv="unit", group=group,
            pivot=P)
-    # hair: cap + long back sheet
-    L.sphere(prefix + "_hair_cap", 0.108, (x, y + 0.015, 1.63), hair_mat,
-             subdiv=2, scale=(0.95, 0.9, 0.95), group=group, pivot=P)
-    L.slab(prefix + "_hair_back", x - 0.13, x + 0.13, y + 0.06, y + 0.11,
-           0.75, 1.62, hair_mat, group=group, pivot=P)
-    L.slab(prefix + "_hair_l", x - 0.14, x - 0.1, y + 0.04, y + 0.1,
-           1.0, 1.62, hair_mat, group=group, pivot=P)
-    L.slab(prefix + "_hair_r", x + 0.1, x + 0.14, y + 0.04, y + 0.1,
-           1.0, 1.62, hair_mat, group=group, pivot=P)
-    # feet
+    L.slab(prefix + "_jaw", x - 0.045, x + 0.045, y - 0.104, y - 0.096,
+           1.445, 1.48, body_mat, front=(0, -1, 0), uv="unit", group=group,
+           pivot=P)
+    # pale eye glints on the dark face
+    for k, sx in enumerate((-1, 1)):
+        L.slab(prefix + "_eye_%d" % k, x + sx * 0.045 - 0.02,
+               x + sx * 0.045 + 0.02, y - 0.109, y - 0.105, 1.53, 1.55,
+               body_mat, group=group, pivot=P)
+    # wet long hair: cap + veil over face sides + back sheet + strands
+    L.sphere(prefix + "_hair_cap", 0.11, (x, y + 0.012, 1.56), hair_mat,
+             subdiv=2, scale=(0.98, 0.95, 1.0), group=group, pivot=P)
+    L.slab(prefix + "_hair_veil_l", x - 0.15, x - 0.075,
+           y - 0.1, y - 0.06, 1.2, 1.62, hair_mat, group=group, pivot=P)
+    L.slab(prefix + "_hair_veil_r", x + 0.075, x + 0.15,
+           y - 0.1, y - 0.06, 1.2, 1.62, hair_mat, group=group, pivot=P)
+    L.slab(prefix + "_hair_back", x - 0.15, x + 0.15, y + 0.07, y + 0.13,
+           0.5, 1.62, hair_mat, group=group, pivot=P)
+    for k, (dx, w, ztop, zbot) in enumerate([
+            (-0.13, 0.1, 1.5, 0.7), (-0.045, 0.1, 1.45, 0.58),
+            (0.045, 0.1, 1.45, 0.58), (0.13, 0.1, 1.5, 0.7)]):
+        L.slab(prefix + "_hair_strand_%d" % k, x + dx - w / 2, x + dx + w / 2,
+               y + 0.09, y + 0.14, zbot, ztop, hair_mat, group=group, pivot=P)
+    # feet under the hem
     L.box(prefix + "_foot_l", (0.09, 0.2, 0.05), (x - 0.1, y - 0.05, 0.025),
           body_mat, group=group, pivot=P)
     L.box(prefix + "_foot_r", (0.09, 0.2, 0.05), (x + 0.1, y - 0.05, 0.025),
           body_mat, group=group, pivot=P)
-    # dark eye hints
-    L.slab(prefix + "_eye_l", x - 0.05, x - 0.025, y - 0.108, y - 0.104,
-           1.615, 1.63, hair_mat, group=group, pivot=P)
-    L.slab(prefix + "_eye_r", x + 0.025, x + 0.05, y - 0.108, y - 0.104,
-           1.615, 1.63, hair_mat, group=group, pivot=P)
+
+
+def sitting_figure(group, prefix, x, y, facing=1):
+    """Seated woman on the bedroom chair.  facing=+1 -> faces +Y.
+    Origin = seat centre projected to the floor (z=0)."""
+    P = (x, y, 0.0)
+    body = "MAT_entity_white"
+    hair = "MAT_entity_hair"
+    # pelvis / lap (on the seat, z=0.475)
+    L.box(prefix + "_lap", (0.36, 0.42, 0.16), (x, y + facing * 0.12, 0.55),
+          body, group=group, pivot=P)
+    # dress draped over the seat and down in front
+    L.frustum(prefix + "_skirt_seat", (0.52, 0.48), (0.44, 0.4), 0.4, 0.56,
+              (x, y + facing * 0.1), body, group=group, pivot=P)
+    L.box(prefix + "_skirt_front", (0.42, 0.16, 0.46),
+          (x, y + facing * 0.26, 0.26), body, group=group, pivot=P)
+    # lower legs + feet
+    for k, sx in enumerate((-1, 1)):
+        L.box(prefix + "_shin_%d" % k, (0.1, 0.13, 0.46),
+              (x + sx * 0.11, y + facing * 0.34, 0.25), body,
+              group=group, pivot=P)
+        L.box(prefix + "_foot_%d" % k, (0.1, 0.2, 0.06),
+              (x + sx * 0.11, y + facing * 0.42, 0.03), body,
+              group=group, pivot=P)
+    # torso leaning slightly forward
+    L.frustum(prefix + "_torso", (0.34, 0.26), (0.32, 0.22), 0.62, 1.0,
+              (x, y + facing * 0.02), body, group=group, pivot=P)
+    L.box(prefix + "_shoulders", (0.38, 0.2, 0.09),
+          (x, y + facing * 0.04, 1.0), body, group=group, pivot=P)
+    # arms resting on the lap
+    for k, sx in enumerate((-1, 1)):
+        L.cyl_between(prefix + "_upper_arm_%d" % k,
+                      (x + sx * 0.18, y + facing * 0.05, 0.97),
+                      (x + sx * 0.2, y + facing * 0.18, 0.74), 0.038, body,
+                      segments=6, group=group, pivot=P)
+        L.cyl_between(prefix + "_fore_arm_%d" % k,
+                      (x + sx * 0.2, y + facing * 0.18, 0.74),
+                      (x + sx * 0.12, y + facing * 0.32, 0.62), 0.03, body,
+                      segments=6, group=group, pivot=P)
+        L.sphere(prefix + "_hand_%d" % k, 0.04,
+                 (x + sx * 0.1, y + facing * 0.36, 0.6), body, subdiv=1,
+                 group=group, pivot=P)
+    # neck + head + dark face toward facing direction
+    L.cyl(prefix + "_neck", 0.045, 0.08, (x, y + facing * 0.04, 1.06),
+          body, segments=8, group=group, pivot=P)
+    L.sphere(prefix + "_head", 0.105, (x, y + facing * 0.05, 1.16), body,
+             subdiv=2, scale=(0.9, 0.85, 1.12), group=group, pivot=P)
+    face_y = y + facing * 0.15
+    L.slab(prefix + "_face", x - 0.062, x + 0.062,
+           face_y if facing > 0 else face_y - 0.01,
+           face_y + 0.01 if facing > 0 else face_y,
+           1.13, 1.22, hair, front=(0, facing, 0), uv="unit",
+           group=group, pivot=P)
+    # long wet hair behind and down the shoulders
+    L.sphere(prefix + "_hair_cap", 0.11, (x, y + facing * 0.03, 1.2), hair,
+             subdiv=2, scale=(0.98, 0.95, 1.0), group=group, pivot=P)
+    L.slab(prefix + "_hair_back", x - 0.14, x + 0.14,
+           y - facing * 0.02, y - facing * 0.09, 0.5, 1.24, hair,
+           group=group, pivot=P)
+    for k, (dx, w) in enumerate([(-0.12, 0.05), (-0.04, 0.04),
+                                 (0.04, 0.04), (0.12, 0.05)]):
+        L.slab(prefix + "_hair_strand_%d" % k, x + dx - w / 2, x + dx + w / 2,
+               y - facing * 0.12, y - facing * 0.1, 0.62, 1.2, hair,
+               group=group, pivot=P)
 
 
 def ajar_leaf(group, x_center, hinge_y, sign_y, width, angle_deg, thick=0.045):
@@ -766,6 +1007,10 @@ def build_entities_variants():
     # entity in bedroom, origin at feet, hidden
     humanoid("ENTITY_she", "ENTITY_she", 7.3, -6.15)
     L.props("ENTITY_she", hidden=True)
+    # v1.0.2: seated apparition on the final chair, origin at feet/floor
+    sitting_figure("ENTITY_she_sitting", "ENTITY_she_sitting", 7.6, -7.0,
+                   facing=-1)
+    L.props("ENTITY_she_sitting", hidden=True)
     # --- V2 (round 2)
     chair("V2_corr_chair", "V2_corr_chair", 0.0, -9.4, 0, mat="MAT_metal_rust")
     L.props("V2_corr_chair", hidden=True)
@@ -811,6 +1056,37 @@ def build_entities_variants():
     L.box("V3_corr_water", (1.9, 6.0, 0.008), (0, -13.5, 0.006),
           "MAT_stain_water", group="V3_corr_water")
     L.props("V3_corr_water", hidden=True)
+    # ------------------------------------------------------------------
+    # v1.0.2 hidden variants
+    # ------------------------------------------------------------------
+    # 门口多出一双小孩的鞋（第二轮）
+    shoe_pair("V2_shoes_waiting", "V2_shoes_waiting", 0.86, -5.35,
+              scale=0.62, mat="MAT_fabric_red")
+    L.props("V2_shoes_waiting", hidden=True)
+    # 门缝下的暖光（第二轮；门后有人）
+    L.box("V2_light_under_door", (0.14, 0.96, 0.01), (1.18, -5.35, 0.008),
+          "MAT_lamp_warm", group="V2_light_under_door")
+    L.props("V2_light_under_door", hidden=True)
+    # 走廊墙上的儿童画（第二轮）
+    picture("V2_drawing_corr", -1.1, -1.065, -6.62, -6.24, 0.86, 1.24,
+            "MAT_child_drawing", (1, 0, 0), frame="MAT_paper",
+            group="V2_drawing_corr")
+    L.props("V2_drawing_corr", hidden=True)
+    # 503 门上的手印（第三轮）
+    for i, (yy, zz) in enumerate([(-5.6, 1.05), (-5.22, 0.62)]):
+        L.slab("V3_handprints_door_%d" % i, 1.149, 1.1525,
+               yy - 0.08, yy + 0.08, zz - 0.11, zz + 0.11,
+               "MAT_handprint", front=(-1, 0, 0), uv="unit",
+               group="V3_handprints_door")
+    L.props("V3_handprints_door", hidden=True)
+    # 走廊湿脚印（第三轮，从电梯方向走向 503 门）
+    for i in range(8):
+        yy = -1.4 - i * 0.5
+        xx = 0.22 if i % 2 == 0 else -0.08
+        L.box("V3_wet_footprints_%d" % i, (0.11, 0.27, 0.006),
+              (xx + (i / 8.0) * 0.35, yy, 0.008), "MAT_stain_water",
+              group="V3_wet_footprints")
+    L.props("V3_wet_footprints", hidden=True)
 
 
 # ---------------------------------------------------------------------------
@@ -850,6 +1126,7 @@ def main():
     build_apartment()
     build_doors()
     build_furniture()
+    build_v102_props()
     build_entities_variants()
     build_light_spawns()
     L.finalize(OUT)
