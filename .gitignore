@@ -1,4 +1,7 @@
 dist/
+node_modules/
+reports/qa/desktop-1.1.0/*.png
+reports/qa/desktop-1.1.0/failure.json
 __pycache__/
 *.py[cod]
 .venv/

@@ -1,6 +1,6 @@
 # 三更 · SANGENG
 
-三个浏览器第一人称心理恐怖短篇，共用一套低多边形 3D 引擎。当前版本 **v1.0.1**。
+三个第一人称心理恐怖短篇，共用一套低多边形 3D 引擎。当前版本 **v1.1.0**，提供内置 Chromium 的 Windows 桌面应用。
 
 | 一更《门后》 | 二更《镜中》 | 三更《夜路》 |
 |---|---|---|
@@ -11,15 +11,25 @@
 
 ## 下载游玩
 
-在本仓库 **Releases** 下载 `Sangeng-1.0.1-Windows.zip`，解压并双击 EXE。免安装 Python 或 Node；需要 Windows 10/11、.NET Framework 4.8，以及支持 WebGL2 的 Edge/Chrome。游戏资源内嵌在 EXE 中，离线可玩。游玩时保留启动器窗口，结束后点击“退出”。
+在 [Releases](https://github.com/intKay/Sangeng/releases/latest) 下载 **`Sangeng-1.1.0-Setup-x64.exe`**，双击安装后从桌面快捷方式启动。也可下载 **`Sangeng-1.1.0-Portable-x64.exe`**，直接双击游玩，无需解压 ZIP。
 
-便携版使用已安装浏览器的应用窗口，没有内置 Chromium；EXE 未数字签名。首次点击“开始”后启用声音。
+需要 Windows 10/11 x64 和支持 WebGL2 的显卡。内置 Electron/Chromium，离线运行，无需安装浏览器、Python、Node 或 .NET；保留现有 Three.js/Web Audio 引擎。图片、模型和声音全部随包提供。关闭游戏窗口即可退出。EXE 未数字签名，Windows 可能提示未知发布者。首次点击“开始”后启用声音。
 
 WASD 移动，鼠标环视，Shift 快走，**E 交互**，Esc 暂停。F 为《门后》拾取后的手电开关。暂无存档和移动端操作。
 
 内容提示：心理恐怖、闪烁画面、幽闭空间、死亡意象；无血腥画面。
 
 ## 从源码启动
+
+桌面开发与构建（需要 Node.js 22.12+，首次下载依赖需联网）：
+
+```powershell
+npm ci
+npm start
+npm run dist
+```
+
+桌面产物位于 `dist/desktop/`；构建自动使用独立临时目录。定向验收使用 `node tools/verify_desktop.cjs <安装后的 Sangeng.exe 路径>`。旧 C# 包构建脚本仅用于重现 v1.0.1 历史产物。
 
 ```powershell
 python serve.py
@@ -48,6 +58,6 @@ python serve.py
 python tools/build_release.py
 ```
 
-Windows 构建需要系统 .NET Framework C# 编译器。产物位于 `dist/`。重建资产还需要 Blender，以及 numpy、Pillow、ffmpeg 等各资产脚本列出的依赖；游玩与打包不需要安装这些资产生成依赖。
+上述历史 v1.0.1 构建需要系统 .NET Framework C# 编译器。产物位于 `dist/`。重建资产还需要 Blender，以及 numpy、Pillow、ffmpeg 等各资产脚本列出的依赖；游玩与打包不需要安装这些资产生成依赖。
 
 分享网址可使用网页 ZIP，步骤见 [分享说明](docs/SHARING.md)。原创内容与第三方许可见 [NOTICE](NOTICE.md)。

@@ -1,0 +1,10 @@
+{
+  "baselineFilesVerified": 205,
+  "archiveFiles": 208,
+  "extraFiles": [
+    "NOTICE.md",
+    "package.json",
+    "tools/desktop/main.cjs"
+  ],
+  "archiveSha256": "412461d847db560b06d1cad7729258243f10201fc4b0936c623b5de70cca7a54"
+}

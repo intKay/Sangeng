@@ -1,0 +1,19 @@
+{
+  "name": "sangeng",
+  "version": "1.1.0",
+  "description": "三更 · 三个心理恐怖短篇",
+  "author": "Sangeng contributors",
+  "private": true,
+  "main": "tools/desktop/main.cjs",
+  "scripts": {"start": "electron .", "dist": "node tools/build_desktop.cjs"},
+  "devDependencies": {"electron": "44.9.0", "electron-builder": "26.15.3", "playwright": "1.61.1"},
+  "build": {
+    "appId": "io.github.intkay.sangeng",
+    "productName": "Sangeng",
+    "directories": {"output": "dist/desktop"},
+    "files": ["index.html", "engine/**/*", "games/**/*", "assets/**/*", "vendor/**/*", "tools/desktop/main.cjs", "NOTICE.md"],
+    "win": {"target": ["nsis", "portable"], "signAndEditExecutable": false},
+    "nsis": {"artifactName": "Sangeng-${version}-Setup-x64.exe", "oneClick": false, "perMachine": false, "allowToChangeInstallationDirectory": true, "createDesktopShortcut": true},
+    "portable": {"artifactName": "Sangeng-${version}-Portable-x64.exe"}
+  }
+}

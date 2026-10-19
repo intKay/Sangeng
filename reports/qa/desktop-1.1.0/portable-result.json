@@ -1,0 +1,26 @@
+{
+  "url": "sangeng://game/games/door/index.html",
+  "textures": 50,
+  "missingAudio": 0,
+  "browser": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) sangeng/1.1.0 Chrome/152.0.7977.167 Electron/44.9.0 Safari/537.36",
+  "pictures": [
+    {
+      "width": 512,
+      "height": 512
+    },
+    {
+      "width": 900,
+      "height": 1200
+    },
+    {
+      "width": 900,
+      "height": 1200
+    },
+    {
+      "width": 900,
+      "height": 1200
+    }
+  ],
+  "launchPassed": true,
+  "closeRequested": true
+}
