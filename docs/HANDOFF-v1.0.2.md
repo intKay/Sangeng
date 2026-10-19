@@ -1,6 +1,7 @@
 # v1.0.2 交接说明（内容 / 场景 / 美术 / Blender）
 
-分支：`feat/v1.0.2-door-mirror`（基于 `main` v1.0.1 `d60a745`）
+分支：`feat/v1.0.2-door-mirror`（基于 `main` v1.0.1 `d60a745`），已推送到 `origin`；内容提交 `4827cfb`。PR 链接：<https://github.com/intKay/Sangeng/pull/new/feat/v1.0.2-door-mirror>
+本地视觉证据：`reports/v1.0.2/`（门后门口/结局、镜中手印/走出/结局、夜路路牌）。
 负责人：Lead（内容、场景、blender、美术）；引擎 / 测试 / 集成 / 打包 / Release 由 Codex 负责。
 本分支**没有修改** `engine/`、`vendor/`、`tools/build_release.py`、`package.json` 或既有测试。本地验证服务：`python serve.py 8140`。
 
