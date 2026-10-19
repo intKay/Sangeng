@@ -128,6 +128,9 @@ MAT_sign_night_2 MAT_sign_bath MAT_shrine_tablet MAT_door_number_501
 MAT_door_number_502 MAT_door_number_503 MAT_door_number_504 MAT_clock_face
 MAT_mirror_grime MAT_stain_mold MAT_stain_water MAT_entity_white MAT_entity_hair
 MAT_entity_face MAT_red_cloth MAT_paper_money MAT_steam
+MAT_photo_family_1 MAT_photo_family_2 MAT_photo_family_3 MAT_child_drawing
+MAT_calendar MAT_notice_board MAT_couplet MAT_bath_poster MAT_bath_notice
+MAT_mirror_crack MAT_handprint MAT_bath_ticket
 ```
 > 贴图内容描述见 `docs/ART_SPEC.md`。若确需新材质，先向 Lead 报告，**不要**擅自新增。
 

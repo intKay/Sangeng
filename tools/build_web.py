@@ -5,7 +5,7 @@ import json
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = '1.2.0'
+VERSION = json.loads((ROOT / 'package.json').read_text(encoding='utf-8'))['version']
 SUFFIXES = {'.html', '.js', '.css', '.json', '.glb', '.ogg', '.mp3', '.wav', '.jpg', '.jpeg', '.png', '.svg'}
 
 def main():

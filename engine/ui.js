@@ -108,6 +108,7 @@ export class UI {
     this.game = game;
     this.cfg = game.config;
     this.subtitleTimer = 0;
+    this._subtitleNextTimer = null;
     this.subtitleQueue = [];
     this.paperOnClose = null;
     const root = document.createElement('div');
@@ -275,9 +276,12 @@ export class UI {
     if (!this.game.settings.subtitles) return;
     const d = dur == null ? clamp(1.6 + text.length * 0.075, 1.8, 6.5) : dur;
     this.subtitleQueue.push({ text, dur: d });
-    if (!this.subtitleTimer) this._nextSubtitle();
+    if (this.subtitleTimer <= 0 && this._subtitleNextTimer == null) this._nextSubtitle();
   }
   clearSubtitles() {
+    // 取消旧队列的间隔回调，避免重试/转场后抢走新字幕。
+    if (this._subtitleNextTimer != null) clearTimeout(this._subtitleNextTimer);
+    this._subtitleNextTimer = null;
     this.subtitleQueue.length = 0;
     this.subtitleTimer = 0;
     this.el.subtitle.classList.remove('show');
@@ -364,8 +368,12 @@ export class UI {
     if (this.subtitleTimer > 0) {
       this.subtitleTimer -= dt;
       if (this.subtitleTimer <= 0) {
+        this.subtitleTimer = 0;
         this.el.subtitle.classList.remove('show');
-        if (this.subtitleQueue.length) setTimeout(() => this._nextSubtitle(), 120);
+        if (this.subtitleQueue.length) this._subtitleNextTimer = setTimeout(() => {
+          this._subtitleNextTimer = null;
+          this._nextSubtitle();
+        }, 120);
         else this.el.subtitle.textContent = '';
       }
     }

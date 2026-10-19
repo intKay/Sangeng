@@ -12,5 +12,5 @@ for (const file of baseline.files) assert.equal(sha(asar.extractFile(archive, pa
 const extraFiles = files.filter(p => !baseline.files.some(f => f.path === p));
 assert.deepEqual(extraFiles.sort(), ['NOTICE.md', 'package.json', 'tools/desktop/main.cjs'].sort());
 const result = { baselineFilesVerified: baseline.files.length, archiveFiles: files.length, extraFiles, archiveSha256: sha(fs.readFileSync(archive)) };
-fs.writeFileSync('reports/qa/desktop-1.1.0/resources.json', JSON.stringify(result, null, 2));
+fs.writeFileSync('reports/qa/release-1.3.0/resources.json', JSON.stringify(result, null, 2));
 console.log(result);

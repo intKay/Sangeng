@@ -190,6 +190,7 @@ const config = {
     gameRef = game;
     state.game = game;
 
+
     game.ui.setObjective(OBJECTIVE.lanterns);
     game.ui.setCounter('灯笼 0 / 5');
 

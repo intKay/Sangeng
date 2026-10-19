@@ -79,6 +79,19 @@ PALETTE = {
     "MAT_red_cloth":        ("#9a2b24", 0.92, 0.0, None, 0.0),
     "MAT_paper_money":      ("#c9b36b", 0.92, 0.0, None, 0.0),
     "MAT_steam":            ("#cfd6d2", 0.60, 0.0, None, 0.0),
+    # --- v1.0.2 story-layer materials (textures made by art agent) ----------
+    "MAT_photo_family_1":   ("#8b7d66", 0.86, 0.0, None, 0.0),
+    "MAT_photo_family_2":   ("#93836c", 0.86, 0.0, None, 0.0),
+    "MAT_photo_family_3":   ("#7e7058", 0.86, 0.0, None, 0.0),
+    "MAT_child_drawing":    ("#e0d4b4", 0.90, 0.0, None, 0.0),
+    "MAT_calendar":         ("#d6cbaa", 0.86, 0.0, None, 0.0),
+    "MAT_notice_board":     ("#7d5f3d", 0.92, 0.0, None, 0.0),
+    "MAT_couplet":          ("#a63228", 0.88, 0.0, None, 0.0),
+    "MAT_bath_poster":      ("#8f8468", 0.86, 0.0, None, 0.0),
+    "MAT_bath_notice":      ("#d7cfb3", 0.86, 0.0, None, 0.0),
+    "MAT_mirror_crack":     ("#59615e", 0.35, 0.0, None, 0.0),
+    "MAT_handprint":        ("#585d54", 0.85, 0.0, None, 0.0),
+    "MAT_bath_ticket":      ("#c9c2a8", 0.90, 0.0, None, 0.0),
 }
 ALLOWED_MATS = set(PALETTE.keys())
 
@@ -110,6 +123,18 @@ def get_mat(name):
     if emis:
         bsdf.inputs["Emission Color"].default_value = _rgba(emis)
         bsdf.inputs["Emission Strength"].default_value = estr
+    # v1.0.2: story planes are transparent decals (engine replaces the material
+    # with the textured manifest version, but the GLB preview needs alpha too)
+    _ALPHA = {"MAT_handprint": 0.55, "MAT_mirror_crack": 0.5,
+              "MAT_steam": 0.3}
+    if name in _ALPHA:
+        bsdf.inputs["Alpha"].default_value = _ALPHA[name]
+        for attr, val in (("blend_method", "BLEND"),
+                          ("surface_render_method", "BLENDED")):
+            try:
+                setattr(m, attr, val)
+            except Exception:
+                pass
     m.diffuse_color = rgba
     _MAT_CACHE[name] = m
     return m
@@ -205,8 +230,11 @@ def _uv_unit_front(ob, front):
         if fn.dot(n) > 0.35:
             for li in poly.loop_indices:
                 co = me.vertices[me.loops[li].vertex_index].co
+                # v1.0.2: engine uses THREE.TextureLoader (flipY=true), while the
+                # glTF exporter already flips V, so store v inverted here to make
+                # posters/calendars/photo faces appear upright in-game.
                 uv[li].uv = ((co.dot(u_axis) - umin) / du,
-                             (co.dot(v_axis) - vmin) / dv)
+                             (vmax - co.dot(v_axis)) / dv)
         else:
             ax = max(range(3), key=lambda i: abs(fn[i]))
             for li in poly.loop_indices:

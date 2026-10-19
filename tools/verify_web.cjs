@@ -26,7 +26,7 @@ const server = http.createServer((req,res) => {
   res.end(fs.readFileSync(p));
 });
 let base;
-const out = path.resolve('reports/qa/web-1.2.0'); fs.mkdirSync(out, { recursive: true });
+const out = path.resolve('reports/qa/release-1.3.0/web'); fs.mkdirSync(out, { recursive: true });
 const results = [];
 
 async function aim(frame, id) {
@@ -72,7 +72,7 @@ async function run(profile) {
       const resources = await frame.evaluate(() => ({ textures: __SANGENG__.textures.size, missing: __SANGENG__.audio.missing.length, touch: __SANGENG__.touchEnabled,
         scale: __SANGENG__.settings.renderScale, mp3: [...__SANGENG__.audio.buffers.keys()].every(k => k.endsWith('.mp3')) }));
       assert.equal(resources.touch, !!profile.touch);
-      assert.equal(resources.textures, 50); assert.equal(resources.missing, 0);
+      assert.equal(resources.textures, 62); assert.equal(resources.missing, 0);
       if (profile.touch && id === 'door') assert.equal(resources.scale, 0.45);
       if (profile.mp3) assert(resources.mp3);
       await frame.locator('[data-act="start"]').click();

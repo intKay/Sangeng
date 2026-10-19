@@ -3,7 +3,7 @@ const { _electron: electron } = require('playwright');
 const fs = require('node:fs');
 const path = require('node:path');
 const assert = require('node:assert/strict');
-const out = path.resolve('reports/qa/desktop-1.1.0');
+const out = path.resolve('reports/qa/release-1.3.0/desktop');
 fs.mkdirSync(out, { recursive: true });
 (async () => {
   const exe = path.resolve(process.argv[2] || 'dist/desktop/win-unpacked/Sangeng.exe');

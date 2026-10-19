@@ -5,6 +5,9 @@ reports/qa/desktop-1.1.0/failure.json
 reports/qa/web-1.2.0/*.png
 reports/qa/web-1.2.0/*failure*
 reports/qa/web-1.2.0/partial.json
+reports/qa/release-1.3.0/**/*.png
+reports/qa/release-1.3.0/**/*failure*
+reports/qa/release-1.3.0/**/partial.json
 __pycache__/
 *.py[cod]
 .venv/
