@@ -20,6 +20,7 @@ export class Player {
     this.enabled = false;
     this.sprinting = false;
     this.keys = Object.create(null);
+    this.touch = { x: 0, y: 0, run: false };
     this._stepAccum = 0;
     this.onFootstep = null;
     this.flashlightOn = false;
@@ -130,15 +131,15 @@ export class Player {
   update(dt) {
     if (!this.enabled) { this._syncCamera(dt, false); return; }
     const k = this.keys;
-    const fwd = (k.KeyW || k.ArrowUp ? 1 : 0) - (k.KeyS || k.ArrowDown ? 1 : 0);
-    const strafe = (k.KeyD || k.ArrowRight ? 1 : 0) - (k.KeyA || k.ArrowLeft ? 1 : 0);
-    this.sprinting = !!(k.ShiftLeft || k.ShiftRight) && fwd > 0;
+    const fwd = clamp((k.KeyW || k.ArrowUp ? 1 : 0) - (k.KeyS || k.ArrowDown ? 1 : 0) + this.touch.y, -1, 1);
+    const strafe = clamp((k.KeyD || k.ArrowRight ? 1 : 0) - (k.KeyA || k.ArrowLeft ? 1 : 0) + this.touch.x, -1, 1);
+    this.sprinting = !!(k.ShiftLeft || k.ShiftRight || this.touch.run) && fwd > 0;
     const targetSpeed = this.sprinting ? this.runSpeed : this.walkSpeed;
     const sin = Math.sin(this.yaw), cos = Math.cos(this.yaw);
     let wx = -sin * fwd + cos * strafe;
     let wz = -cos * fwd - sin * strafe;
     const wl = Math.hypot(wx, wz);
-    if (wl > 0.001) { wx /= wl; wz /= wl; }
+    if (wl > 1) { wx /= wl; wz /= wl; }
     this.vel.x = damp(this.vel.x, wx * targetSpeed, 14, dt);
     this.vel.z = damp(this.vel.z, wz * targetSpeed, 14, dt);
 

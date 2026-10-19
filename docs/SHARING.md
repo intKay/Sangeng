@@ -1,6 +1,6 @@
 # 三更 v1.1.0 · 桌面游玩与分享
 
-下载 [最新 Release](https://github.com/intKay/Sangeng/releases/latest) 的安装版 `Sangeng-1.1.0-Setup-x64.exe`，双击安装并使用桌面快捷方式启动。
+下载 [桌面版 Release](https://github.com/intKay/Sangeng/releases/tag/v1.1.0) 的安装版 `Sangeng-1.1.0-Setup-x64.exe`，双击安装并使用桌面快捷方式启动。
 
 免安装使用 `Sangeng-1.1.0-Portable-x64.exe`：下载后直接双击；它自动解包内置运行时，首次启动需要几秒。无需 ZIP 解压工具，也无需打开浏览器。
 
