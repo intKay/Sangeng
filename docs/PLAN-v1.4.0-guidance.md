@@ -336,3 +336,15 @@ v1.3.0 已经有三篇完整短篇、稳定的 PS1 美术、原创声音、手�
 2. Codex 在 v1.3.0 测试结束后评估 `engine/progress|discovery|hints` 的接口与排期。
 3. 我方在独立分支先做 `docs/DISCOVERY_SPEC.md` 与三篇内容清单/提示文本，不碰正在测试的 v1.3.0 发布分支。
 4. 第一轮实现只做“门后 + 手记 + 结局统计”，验证体验后再铺到镜中/夜路，避免一次性铺开。
+
+## 13. 制作进度（2026-10-20）
+
+- 方案与决策已落盘：`docs/PLAN-v1.4.0-guidance.md`（本文件）。
+- 内容规格已落盘：`docs/DISCOVERY_SPEC.md`（三篇 id/触发/提示/结局表）。
+- 内容侧第一批已提交（本地分支，未推送）：`games/shared/discovery.js`、`games/door/game.js`、`games/mirror/game.js`、`games/nightroad/game.js`。
+  - door：28 条发现 + 1 结局的目录/埋点；`finish` 带 `endingId`。
+  - mirror：16 条发现 + 1 结局的目录/埋点；`finish` 带 `endingId`。
+  - nightroad：10 条发现 + 2 结局；新增 4 个路边查看交互（路牌/牌位/纸钱/旧自行车）。
+- 引擎/UI 交接：`docs/ENGINE-HANDOFF-v1.4.0.md`（progress/手记/提示/结局页/入口页/移动端/验收）。
+- 当前未做：`engine/` 的 progress/发现/手记 UI（按分工归 Codex）；入口页进度印章（集成层）；手记美术资产。
+- 本地验证：三个 game.js 与 discovery.js `node --check` 通过；8140 下 door/mirror/nightroad 可加载、0 page error；夜路 4 个新交互可触发；引擎未接入时 `mark/ending` 为 no-op，现有流程不变。
