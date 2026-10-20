@@ -1,5 +1,7 @@
 # v1.0.2 交接说明（内容 / 场景 / 美术 / Blender）
 
+> 集成状态（2026-10-20）：本轮内容已接受并合入公开仓库 main，随 v1.3.0 发布。共享字幕队列已修复、游戏层临时兜底已移除，坐姿朝向已修正。已安装成品三篇内容回归及 339 个运行文件哈希核对通过；交互测试使用辅助定位，不替代真人正常路线试玩。详细证据见 [v1.3.0 验收记录](../reports/qa/release-1.3.0/ACCEPTANCE.md)。以下保留原始交接内容。
+
 分支：`feat/v1.0.2-door-mirror`（基于 `main` v1.0.1 `d60a745`），已推送到 `origin`；内容提交 `4827cfb`。PR 链接：<https://github.com/intKay/Sangeng/pull/new/feat/v1.0.2-door-mirror>
 本地视觉证据：`reports/v1.0.2/`（门后门口/结局、镜中手印/走出/结局、夜路路牌）。
 负责人：Lead（内容、场景、blender、美术）；引擎 / 测试 / 集成 / 打包 / Release 由 Codex 负责。

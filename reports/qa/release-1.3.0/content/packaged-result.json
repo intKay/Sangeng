@@ -12,7 +12,7 @@
         "ordered": "QA queued B"
       },
       "signal": {
-        "peak": 0.004381069913506508,
+        "peak": 0.0049761813133955,
         "state": "running"
       },
       "deathRetry": true,
@@ -31,7 +31,7 @@
         "ordered": "QA queued B"
       },
       "signal": {
-        "peak": 0.004514118656516075,
+        "peak": 0.0045401472598314285,
         "state": "running"
       },
       "wrongUseDeathRetry": true,
@@ -49,10 +49,11 @@
         "ordered": "QA queued B"
       },
       "signal": {
-        "peak": 0.003177623264491558,
+        "peak": 0.003026106394827366,
         "state": "running"
       },
-      "lanternsByE": 5
+      "lanternsByE": 5,
+      "shrineAndEndingByKeys": true
     }
   ],
   "errors": [],
