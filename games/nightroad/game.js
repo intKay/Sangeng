@@ -48,6 +48,33 @@ const ENDING_WALK = {
   ],
 };
 
+/* v1.4.0 发现册内容；引擎未接入 progress 时仅作为数据，不影响玩法。 */
+const DISCOVERY = {
+  version: 1,
+  groups: [
+    { id: 'lanterns', label: '灯', total: 5 },
+    { id: 'shrine', label: '土地庙', total: 1 },
+    { id: 'roadside', label: '路边', total: 4 },
+  ],
+  entries: [
+    { id: 'nightroad.lantern1', group: 'lanterns', title: '第一盏灯', summary: '纸罩上有一个指印。', hint: '雾里的第一点暖光。', trigger: 'INT_lantern_01' },
+    { id: 'nightroad.lantern2', group: 'lanterns', title: '第二盏灯', summary: '灯芯是湿的，还是着了。', hint: '路边还有一盏没点的灯。', trigger: 'INT_lantern_02' },
+    { id: 'nightroad.lantern3', group: 'lanterns', title: '第三盏灯', summary: '灯下压着一张没写完的纸钱。', hint: '再往前，灯在雾薄一点的地方。', trigger: 'INT_lantern_03' },
+    { id: 'nightroad.lantern4', group: 'lanterns', title: '第四盏灯', summary: '从这里能看见土地庙的檐角。', hint: '庙的檐角已经能看见了。', trigger: 'INT_lantern_04' },
+    { id: 'nightroad.lantern5', group: 'lanterns', title: '第五盏灯', summary: '最后一盏。身后的纸响停了。', hint: '最后一盏，就在庙前。', trigger: 'INT_lantern_05' },
+    { id: 'nightroad.shrine', group: 'shrine', title: '土地庙', summary: '香灰是新的。牌位上没有名字。', hint: '五盏灯之后，去庙里上香。', trigger: 'INT_incense' },
+    { id: 'nightroad.road.sign', group: 'roadside', title: '路牌', summary: '“土地庙”三个字还在，距离被人用指甲划掉。', hint: '路边的木牌被雨泡开了。', trigger: 'S_sign_1' },
+    { id: 'nightroad.road.tablet', group: 'roadside', title: '牌位', summary: '没有名字。香灰是新的。', hint: '庙里的牌位没有名字。', trigger: 'S_shrine_tablet' },
+    { id: 'nightroad.road.paper', group: 'roadside', title: '纸钱', summary: '被风压在泥里，边缘还是热的。', hint: '路上散着一些纸钱。', trigger: 'S_paper_money_01' },
+    { id: 'nightroad.road.bicycle', group: 'roadside', title: '旧自行车', summary: '倒在田埂边，车筐里有一把湿透的伞。', hint: '田埂边倒着一辆旧自行车。', trigger: 'S_bicycle' },
+  ],
+  endings: [
+    { id: 'nightroad.ending.look', title: '你回头了', isTrue: false },
+    { id: 'nightroad.ending.walk', title: '你没有回头', isTrue: false },
+  ],
+};
+
+
 /* ================= 运行状态 ================= */
 const SHRINE_POS = new THREE.Vector3(0, 0, 97.4);
 const SPAWN_POS = new THREE.Vector3(0, 0, -1.2);
@@ -157,6 +184,39 @@ function triggerWhiteFlash() {
   el.classList.add('on');
 }
 
+/* v1.4.0：发现/结局埋点。引擎没有 progress 时是 no-op。 */
+function markDiscovery(id) {
+  if (!gameRef || !gameRef.progress || typeof gameRef.progress.mark !== 'function') return;
+  try { gameRef.progress.mark(id); } catch (err) { /* 进度不影响玩法 */ }
+}
+
+function markEnding(id) {
+  if (!gameRef || !gameRef.progress || typeof gameRef.progress.ending !== 'function') return;
+  try { gameRef.progress.ending(id); } catch (err) { /* 进度不影响玩法 */ }
+}
+
+/* v1.4.0：4 个路边查看交互。复用现有模型，不推进主线。 */
+function setupRoadside(game) {
+  const add = (nodeName, prompt, text, id) => {
+    const node = game.find(nodeName);
+    if (!node) return;
+    game.interact.add(node, {
+      prompt,
+      range: 3.0,
+      onUse: () => {
+        markDiscovery(id);
+        playSfx('paperRustle', { volume: 0.32, rate: 0.9 });
+        game.ui.subtitle(text, 4.8);
+      },
+    });
+  };
+  add('S_sign_1', '看路牌', '路牌上的字被雨泡开了。“土地庙”三个字还在，下面的距离被人用指甲划掉了。', 'nightroad.road.sign');
+  add('S_sign_2', '看路牌', '另一块路牌。背面有人用铅笔写了一个“回”字，又被擦掉了。', 'nightroad.road.sign');
+  add('S_shrine_tablet', '看牌位', '牌位上没有名字。香灰是新的，像刚有人来过。', 'nightroad.road.tablet');
+  add('S_paper_money_01', '捡起纸钱', '纸钱被风压在泥里。你捡起一张，边缘还是热的。', 'nightroad.road.paper');
+  add('S_bicycle', '看旧自行车', '一辆倒在田埂边的旧自行车。车筐里有一把湿透的伞，伞骨断了一根。', 'nightroad.road.bicycle');
+}
+
 function showChoice(on) {
   const el = state.dom.choice;
   if (!el) return;
@@ -184,6 +244,7 @@ const config = {
   theme: { accent: '#9db8d8', ink: '#d8d2c0', bg: '#05070c' },
   playerStart: { spawn: 'SPAWN_night_start', look: 'LOOK_night_start' },
   renderScale: 0.6,
+  discovery: DISCOVERY,
 
   /* ---------------- 初始化（标题页之前一次） ---------------- */
   async setup(game) {
@@ -200,7 +261,12 @@ const config = {
     setupLanterns(game);
     setupShrineLighting(game);
     setupIncense(game);
+    setupRoadside(game);
     setupEntity(game);
+
+    if (game.progress && typeof game.progress.define === 'function') {
+      try { game.progress.define(DISCOVERY); } catch (err) { /* 引擎未接入时忽略 */ }
+    }
 
     // 初始威胁/理智
     game.setThreat(0.15);
@@ -672,6 +738,7 @@ function lightLantern(game, k) {
   if (L.light) L.light.visible = true;
 
   state.litCount += 1;
+  markDiscovery(`nightroad.lantern${k + 1}`);
   state.safeSpots[k] = game.player.pos.clone();
   state.lastSafeIndex = Math.max(state.lastSafeIndex, k);
 
@@ -773,6 +840,7 @@ function startIncense(game) {
   }
   state.incenseDone = true;
   state.phase = 'incense';
+  markDiscovery('nightroad.shrine');
   state.cutscene = { t: 0, stage: 0 };
   for (const h of state.incenseHandles) h.setEnabled(false);
 
@@ -899,11 +967,13 @@ function endingLookBack(game) {
   after(9.8, (g) => {
     g.ui.fade(1, 1500);
     setTimeout(() => {
+      markEnding('nightroad.ending.look');
       g.finish({
         chapter: '三更 · 夜路',
         title: ENDING_LOOK.title,
         lines: ENDING_LOOK.lines,
         footer: '三更 · 夜路 · 完',
+        endingId: 'nightroad.ending.look',
       });
       setTimeout(() => g.ui.fade(0, 1400), 320);
     }, 1700);
@@ -931,11 +1001,13 @@ function endingWalkOn(game) {
     else game.audio.stopMusic(2);
     g.ui.fade(1, 1700);
     setTimeout(() => {
+      markEnding('nightroad.ending.walk');
       g.finish({
         chapter: '三更 · 夜路',
         title: ENDING_WALK.title,
         lines: ENDING_WALK.lines,
         footer: '三更 · 夜路 · 完',
+        endingId: 'nightroad.ending.walk',
       });
       setTimeout(() => g.ui.fade(0, 1500), 340);
     }, 1900);
