@@ -47,7 +47,7 @@ export const DOOR_DISCOVERY = {
   ],
 };
 
-/* 镜中留到下一批接入；先占位，避免引擎读取时缺失。 */
+/* 镜中：内容已就绪，等引擎 progress 接入。 */
 export const MIRROR_DISCOVERY = {
   version: 1,
   groups: [
@@ -55,7 +55,24 @@ export const MIRROR_DISCOVERY = {
     { id: 'relics', label: '澡堂旧物', total: 5 },
     { id: 'diffs', label: '镜中差异', total: 8 },
   ],
-  entries: [],
+  entries: [
+    e('mirror.round1', 'rounds', '第一回合', '毛巾、柜门、凳子。镜子里是另一个摆法。', '先看镜子里最显眼的不同。', 'round1'),
+    e('mirror.round2', 'rounds', '第二回合', '灯灭了。镜中的人站到了镜子前。', '第二回合，注意灯和模特。', 'round2'),
+    e('mirror.round3', 'rounds', '第三回合', '水汽、阀门、长凳。最后一次对齐。', '最后回合，注意水汽和长凳。', 'round3'),
+    e('mirror.relic.poster', 'relics', '1999 年海报', '画上的人没有影子；十一点停止放水。', '墙上那张褪色的海报。', 'S_bath_poster'),
+    e('mirror.relic.notice', 'relics', '营业时间牌', '票价被红漆改过三次，营业时间被抠掉。', '墙上的营业时间牌。', 'S_bath_notice'),
+    e('mirror.relic.board', 'relics', '通知栏', '寻人启事没有照片，“寻人”被描了很多遍。', '角落的通知栏。', 'S_ticket_board'),
+    e('mirror.relic.ticket', 'relics', '旧澡票', '编号 0417，背面写着“给你留着”。', '地上有一张没撕过的澡票。', 'S_bath_ticket'),
+    e('mirror.relic.clothes', 'relics', '柜里的工装', '口袋里有半根没点的烟。', '开着的柜子里挂着一件工装。', 'S_open_locker_clothes'),
+    e('mirror.diff.towel', 'diffs', '毛巾', '现实中挂在钩子上，镜中在地上。', '看看毛巾挂在哪里。', 'towel'),
+    e('mirror.diff.valve', 'diffs', '阀门', '镜中开着，现实关着。', '阀门的两边不一样。', 'valve'),
+    e('mirror.diff.lights', 'diffs', '灯', '镜中灯灭了。', '灯管的两边不一样。', 'lights'),
+    e('mirror.diff.radio', 'diffs', '收音机', '亮着，不出声。', '收音机开着。', 'radio'),
+    e('mirror.diff.locker', 'diffs', '柜门', '镜中开着，现实关着。', '柜门的两边不一样。', 'locker'),
+    e('mirror.diff.mannequin', 'diffs', '模特', '镜中站到了镜子前。', '模特的位置变了。', 'mannequin'),
+    e('mirror.diff.stool01', 'diffs', '凳子 · 一', '镜中放在长凳上。', '长凳上多了一只凳子。', 'stool01'),
+    e('mirror.diff.stool02', 'diffs', '凳子 · 二', '这一只两边一样。', '另一只凳子。', 'stool02'),
+  ],
   endings: [
     { id: 'mirror.ending.leave', title: '留下的人', isTrue: false, hint: '第三次对齐之后。' },
   ],

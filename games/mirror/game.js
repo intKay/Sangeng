@@ -7,6 +7,7 @@
 import * as THREE from 'three';
 import { HorrorGame } from '../../engine/engine.js';
 import { clamp } from '../../engine/utils.js';
+import { MIRROR_DISCOVERY } from '../shared/discovery.js';
 
 /* ============================================================
  * 一、文本与数据
@@ -96,7 +97,7 @@ const MIRROR_CRACK = 'S_mirror_crack';
 /* v1.0.2 新增场景物件的「查看」交互文字（克制，不解释） */
 const EXAMINES = [
   {
-    name: 'S_bath_poster', prompt: '看墙上那张海报',
+    name: 'S_bath_poster', id: 'mirror.relic.poster', prompt: '看墙上那张海报',
     lines: [
       '一九九九年的澡堂宣传画。边角卷了，颜色褪成尿黄。',
       '画上的人都没有影子。最后一行写着：夜里十一点停止放水。',
@@ -104,28 +105,28 @@ const EXAMINES = [
     ],
   },
   {
-    name: 'S_bath_notice', prompt: '看营业时间牌',
+    name: 'S_bath_notice', id: 'mirror.relic.notice', prompt: '看营业时间牌',
     lines: [
       '票价被红漆改过三次，最后一次改到一半就停了。',
       '营业时间那一栏被人抠掉了，框边留着指甲印。',
     ],
   },
   {
-    name: 'S_ticket_board', prompt: '看通知栏',
+    name: 'S_ticket_board', id: 'mirror.relic.board', prompt: '看通知栏',
     lines: [
       '停电通知、过期水费单、一张寻人启事。寻人启事上没有照片。',
       '「寻人」两个字被人用圆珠笔描过很多遍，纸都快破了。',
     ],
   },
   {
-    name: 'S_bath_ticket', prompt: '捡起一张澡票',
+    name: 'S_bath_ticket', id: 'mirror.relic.ticket', prompt: '捡起一张澡票',
     lines: [
       '一张没撕过的澡票，编号 0417。背面用铅笔写着：给你留着。',
       '你翻过来看正面。日期停在你离开的那一年。',
     ],
   },
   {
-    name: 'S_open_locker_clothes', prompt: '看柜子里的衣服',
+    name: 'S_open_locker_clothes', id: 'mirror.relic.clothes', prompt: '看柜子里的衣服',
     lines: [
       '柜子里挂着一件洗旧的工装，口袋里有半根烟，没点。',
       '有人一直把这件衣服挂在这里，像是随时会回来换。',
@@ -166,6 +167,17 @@ const state = {
 let gameRef = null;
 let refScene = null;
 let mirror = null;
+
+/* v1.4.0：发现/结局埋点。引擎没有 progress 时是 no-op。 */
+function markDiscovery(id) {
+  if (!gameRef || !gameRef.progress || typeof gameRef.progress.mark !== 'function') return;
+  try { gameRef.progress.mark(id); } catch (err) { /* 进度不影响玩法 */ }
+}
+
+function markEnding(id) {
+  if (!gameRef || !gameRef.progress || typeof gameRef.progress.ending !== 'function') return;
+  try { gameRef.progress.ending(id); } catch (err) { /* 进度不影响玩法 */ }
+}
 
 /* rig：两侧场景里要摆弄的物件 */
 const rig = {
@@ -340,6 +352,7 @@ function boostDecal(name, emissiveHex, intensity, opacity = 0.92, alphaGain = 3.
 
 function onExamine(item, key) {
   if (!canInteract()) return;
+  if (item.id) markDiscovery(item.id);
   playSfx('towelPick', { volume: 0.28, rate: 1.12 });
   const n = state.examineCount[key] || 0;
   state.examineCount[key] = n + 1;
@@ -894,6 +907,7 @@ function onUseObject(key) {
     penalty('invalid');
     return;
   }
+  markDiscovery(`mirror.diff.${key}`);
   if (state.world[key] === state.mirror[key]) {
     if (allAligned()) {
       completeRound();
@@ -1097,6 +1111,7 @@ async function completeRound() {
   const mySeq = state.seq;
   state.completed += 1;
   state.steps += 1;
+  markDiscovery(`mirror.round${state.completed}`);
   updateHudDanger();
   gameRef.player.enabled = false;
   gameRef.ui.clearSubtitles();
@@ -1230,7 +1245,8 @@ async function endingSequence(mySeq) {
   await sleep(1200);
   await gameRef.ui.fade(1, 1100);
   await sleep(350);
-  gameRef.finish(TEXTS.ending);
+  markEnding('mirror.ending.leave');
+  gameRef.finish({ ...TEXTS.ending, endingId: 'mirror.ending.leave' });
   // 黑幕在结局页之上，必须淡出才能看到结局页
   await sleep(120);
   gameRef.ui.fade(0, 1400);
@@ -1347,9 +1363,13 @@ const config = {
   theme: { accent: '#9fb0a8', ink: '#d8d2c0', bg: '#060807' },
   playerStart: { spawn: 'SPAWN_mirror', look: 'LOOK_mirror' },
   renderScale: 0.6,
+  discovery: MIRROR_DISCOVERY,
 
   async setup(game) {
     gameRef = game;
+    if (game.progress && typeof game.progress.define === 'function') {
+      try { game.progress.define(MIRROR_DISCOVERY); } catch (err) { /* 引擎未接入时忽略 */ }
+    }
     // 1. 反射场景：同一间更衣室的克隆（灯光/雾/环境光都带走）
     refScene = game.createReflectionScene();
     // 2. 镜面实时反射
