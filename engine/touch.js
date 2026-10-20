@@ -44,12 +44,16 @@ export class TouchControls {
   }
   configure() {
     const g = this.game;
-    g.touchEnabled = g.settings.inputMode === 'touch' || (g.settings.inputMode !== 'mouse' &&
+    const mode = g.settings.inputMode;
+    g.touchEnabled = mode === 'touch' || (mode === 'auto' &&
       (prefersTouch() || typeof g.canvas.requestPointerLock !== 'function'));
     document.body.classList.toggle('sg-touch-mode', g.touchEnabled);
+    document.body.classList.toggle('sg-drag-mode', mode === 'drag' && !g.touchEnabled);
     g.ui.root.querySelector('.sg-title-hint').textContent = g.touchEnabled ?
       '建议戴耳机 · 左侧移动，右侧滑动环视 · 点击暂停可调整设置' :
-      '建议戴耳机 · 点击开始后鼠标锁定 · Esc 暂停';
+      mode === 'drag' ?
+        '建议戴耳机 · 按住左键拖动环视 · WASD 移动 · E 交互 · Esc 暂停' :
+        '建议戴耳机 · 点击开始后鼠标锁定 · Esc 暂停';
     g.ui.root.querySelector('.sg-paper-foot').textContent = g.touchEnabled ? '点击「合上」继续' : '按 E 或点击「合上」';
     this.reset();
   }

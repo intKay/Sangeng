@@ -21,6 +21,8 @@ export class Player {
     this.sprinting = false;
     this.keys = Object.create(null);
     this.touch = { x: 0, y: 0, run: false };
+    this.dragging = false;
+    this._dragLast = null;
     this._stepAccum = 0;
     this.onFootstep = null;
     this.flashlightOn = false;
@@ -41,13 +43,33 @@ export class Player {
       if (e.code === 'KeyF' && this.hasFlashlight) { e.preventDefault(); this.toggleFlashlight(); }
     });
     window.addEventListener('keyup', (e) => { this.keys[e.code] = false; });
-    window.addEventListener('blur', () => { this.keys = Object.create(null); });
+    window.addEventListener('blur', () => { this.keys = Object.create(null); this.dragging = false; });
+    // 不锁定指针的拖动环视：仅“鼠标拖动”模式生效，左键按住画布移动即可转头。
+    const canvas = this.game.canvas;
+    if (canvas) {
+      canvas.addEventListener('mousedown', (e) => {
+        if (!this.enabled || e.button !== 0) return;
+        if (this.game.touchEnabled || this.game.settings.inputMode !== 'drag') return;
+        this.dragging = true;
+        this._dragLast = { x: e.clientX, y: e.clientY };
+        e.preventDefault();
+      });
+      window.addEventListener('mouseup', (e) => { if (e.button === 0) this.dragging = false; });
+    }
     window.addEventListener('mousemove', (e) => {
       if (!this.enabled) return;
-      if (document.pointerLockElement !== this.game.canvas) return;
-      const s = this.game.settings.sensitivity * 0.0022;
-      this.yaw -= e.movementX * s;
-      this.pitch -= e.movementY * s;
+      const locked = document.pointerLockElement === this.game.canvas;
+      const dragLook = !locked && this.dragging && this.game.settings.inputMode === 'drag';
+      if (!locked && !dragLook) return;
+      const s = this.game.settings.sensitivity * (locked ? 0.0022 : 0.0034);
+      let dx = e.movementX, dy = e.movementY;
+      if (dragLook) {
+        dx = e.clientX - this._dragLast.x;
+        dy = e.clientY - this._dragLast.y;
+        this._dragLast = { x: e.clientX, y: e.clientY };
+      }
+      this.yaw -= dx * s;
+      this.pitch -= dy * s;
       this.pitch = clamp(this.pitch, -1.45, 1.45);
     });
   }

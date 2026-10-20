@@ -179,6 +179,32 @@
       display: flex; align-items: center; gap: 0.8em;
     }
     .card-enter::after { content: "→"; font-family: sans-serif; letter-spacing: 0; }
+    .card-progress {
+      margin-top: 0.9em;
+      font: 0.6rem/1.6 ui-monospace, Consolas, monospace;
+      letter-spacing: 0.12em; color: rgba(216, 210, 192, 0.42);
+    }
+    .card.done .card-progress { color: rgba(201, 165, 90, 0.8); }
+    .card-seal {
+      position: absolute; right: 12px; top: 12px; z-index: 3;
+      width: 44px; height: 44px; border-radius: 50%;
+      border: 1px solid rgba(201, 165, 90, 0.55);
+      color: rgba(201, 165, 90, 0.82);
+      font-family: "KaiTi", "STKaiti", "SimSun", serif;
+      font-size: 13px; letter-spacing: 0.06em;
+      display: none; align-items: center; justify-content: center;
+      background: rgba(42, 16, 14, 0.45);
+      transform: rotate(-8deg);
+    }
+    .card.done .card-seal { display: flex; }
+    .collection-note {
+      display: none; margin: -2.2em 0 2.6em;
+      text-align: center;
+      font-family: "KaiTi", "STKaiti", "SimSun", serif;
+      font-size: 0.9rem; letter-spacing: 0.28em;
+      color: rgba(201, 165, 90, 0.7);
+    }
+    .collection-note.show { display: block; }
 
     footer {
       border-top: 1px solid var(--line);
@@ -227,7 +253,7 @@
       </div>
       <div class="header-note">
         <b>三个 6–10 分钟</b>的互动短篇<br>
-        本地运行 · 无需联网 · 无存档<br>
+        本地运行 · 无需联网 · 本地记录<br>
         建议戴耳机，关灯。
       </div>
     </header>
@@ -239,7 +265,8 @@
     </section>
 
     <section class="cards">
-      <a class="card" href="./games/door/index.html">
+      <a class="card" href="./games/door/index.html" data-game="door">
+        <div class="card-seal">已还</div>
         <div class="card-poster"><img src="./assets/art/poster-door.jpg" alt="《门后》海报"></div>
         <div class="card-body">
           <div class="card-chapter">一更 · DOOR</div>
@@ -248,9 +275,11 @@
           <p>你每年回来一次。今年门没锁。走廊比记忆里长，503 的灯亮着，三张字条在等你把它们找齐。</p>
           <div class="card-tags"><span>老公寓</span><span>手电</span><span>潜行</span><span>约 8 分钟</span></div>
           <div class="card-enter">进入 503</div>
+          <div class="card-progress"></div>
         </div>
       </a>
-      <a class="card" href="./games/mirror/index.html">
+      <a class="card" href="./games/mirror/index.html" data-game="mirror">
+        <div class="card-seal">已还</div>
         <div class="card-poster"><img src="./assets/art/poster-mirror.jpg" alt="《镜中》海报"></div>
         <div class="card-body">
           <div class="card-chapter">二更 · MIRROR</div>
@@ -259,9 +288,11 @@
           <p>九十年代的公共澡堂，夜里还有人。镜子里那间房和这里不太一样；你每把它摆对一次，镜中人就靠近一步。</p>
           <div class="card-tags"><span>镜面解谜</span><span>替身</span><span>瓷砖</span><span>约 7 分钟</span></div>
           <div class="card-enter">看向镜面</div>
+          <div class="card-progress"></div>
         </div>
       </a>
-      <a class="card" href="./games/nightroad/index.html">
+      <a class="card" href="./games/nightroad/index.html" data-game="nightroad">
+        <div class="card-seal">已还</div>
         <div class="card-poster"><img src="./assets/art/poster-night.jpg" alt="《夜路》海报"></div>
         <div class="card-body">
           <div class="card-chapter">三更 · NIGHTROAD</div>
@@ -270,9 +301,11 @@
           <p>送完葬，你一个人走夜路回家。五盏纸灯笼等在田埂边，身后多了一个人的脚步声——你在看它的时候，它才停下。</p>
           <div class="card-tags"><span>乡野志怪</span><span>纸人</span><span>点灯</span><span>约 9 分钟</span></div>
           <div class="card-enter">点亮灯笼</div>
+          <div class="card-progress"></div>
         </div>
       </a>
     </section>
+    <div class="collection-note" id="collection-note"></div>
 
     <footer>
       <div class="cols">
@@ -283,5 +316,45 @@
       <div class="footer-brand">三更 / SANGENG · 原创程序化资产</div>
     </footer>
   </main>
+  <script>
+    (() => {
+      const TOTALS = { door: 28, mirror: 16, nightroad: 10 };
+      const ENDINGS = { door: 1, mirror: 1, nightroad: 2 };
+      const UNSET = { door: '尚未还家', mirror: '尚未看清', nightroad: '尚未走完' };
+      let data = null;
+      try { data = JSON.parse(localStorage.getItem('sangeng.progress.v1') || 'null'); } catch (err) { data = null; }
+      const games = data && data.games && typeof data.games === 'object' ? data.games : {};
+      const done = {};
+      document.querySelectorAll('.card[data-game]').forEach((card) => {
+        const id = card.dataset.game;
+        const g = games[id] || {};
+        const discovered = Object.keys(g.discovered || {}).length;
+        const endings = Array.isArray(g.endings) ? g.endings.length : 0;
+        const completed = !!(g.completed || endings);
+        done[id] = completed;
+        card.classList.toggle('done', completed);
+        const el = card.querySelector('.card-progress');
+        if (!el) return;
+        if (!completed) {
+          el.textContent = `本地记录：${UNSET[id] || '尚未走完'}`;
+          return;
+        }
+        if (id === 'nightroad') {
+          el.textContent = `已走完 · 发现 ${discovered} / ${TOTALS[id]} · 结局 ${endings} / ${ENDINGS[id]}`;
+        } else {
+          el.textContent = `已还家 · 发现 ${discovered} / ${TOTALS[id]}`;
+        }
+      });
+      const note = document.getElementById('collection-note');
+      if (note && done.door && done.mirror && done.nightroad) {
+        const allEndings = ['door', 'mirror', 'nightroad'].every((id) => {
+          const g = games[id] || {};
+          return Array.isArray(g.endings) && g.endings.length >= ENDINGS[id];
+        });
+        note.textContent = allEndings ? '三更已满 · 全结局' : '三更已满 · 三枚印章';
+        note.classList.add('show');
+      }
+    })();
+  </script>
 </body>
 </html>

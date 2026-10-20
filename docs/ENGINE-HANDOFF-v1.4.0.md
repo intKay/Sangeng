@@ -1,8 +1,8 @@
 # v1.4.0 引擎交接 · 手记 / 发现 / 指引
 
 > 给 Codex：内容侧已完成第一批数据与埋点（本地分支 `plan/v1.4.0-guidance`，提交 `0845ad4` 起）。
-> 本文件只描述**引擎/集成**范围；内容侧不修改 `engine/`。
-> 方案见 `docs/PLAN-v1.4.0-guidance.md`，目录见 `docs/DISCOVERY_SPEC.md`。
+> **2026-10-20 更新**：Codex 子任务启动失败后，用户授权 Lead 直接实现；本文件对应的最小可玩切片已在本地分支实现，请 Codex 复核/接发布。下方保留原接口约定。
+> 本文件只描述**引擎/集成**范围；方案见 `docs/PLAN-v1.4.0-guidance.md`，目录见 `docs/DISCOVERY_SPEC.md`。
 
 ## 1. 现状（内容侧已就绪）
 
