@@ -20,6 +20,8 @@ canvas#gl {
   image-rendering: pixelated;
 }
 body.sg-playing canvas#gl { cursor: none; }
+body.sg-drag-mode.sg-playing canvas#gl { cursor: grab; }
+body.sg-drag-mode.sg-playing canvas#gl:active { cursor: grabbing; }
 canvas#gl { touch-action: none; }
 
 #sg-root { position: fixed; inset: 0; z-index: 10; pointer-events: none; }

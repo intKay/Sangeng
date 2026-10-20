@@ -454,6 +454,10 @@ export class HorrorGame {
     if (this.mirror) this.mirror.setResolutionScale(s.renderScale);
     this.ui.syncSettingsLabels();
     this.touchControls?.configure();
+    // 切到拖动/触屏模式时主动释放指针锁定，避免鼠标继续被锁住。
+    if ((s.inputMode === 'drag' || this.touchEnabled) && document.pointerLockElement) {
+      document.exitPointerLock();
+    }
     this._saveSettings();
   }
 
@@ -568,7 +572,8 @@ export class HorrorGame {
   goHome() { location.href = this.config.homeUrl; }
 
   _requestLock() {
-    if (this.touchEnabled || typeof this.canvas?.requestPointerLock !== 'function') return;
+    if (this.touchEnabled || this.settings.inputMode === 'drag') return;
+    if (typeof this.canvas?.requestPointerLock !== 'function') return;
     if (!this.canvas || document.pointerLockElement === this.canvas) return;
     const p = this.canvas.requestPointerLock();
     if (p && p.catch) p.catch(() => {});
@@ -828,7 +833,9 @@ export class HorrorGame {
     window.addEventListener('resize', this._resizeHandler);
     document.addEventListener('pointerlockchange', () => {
       const locked = document.pointerLockElement === this.canvas;
-      if (!locked && this.state === 'playing') this.pause();
+      // 只有“自动/键鼠”模式依赖指针锁定；拖动与触屏模式丢锁不应触发暂停。
+      const lockMode = !this.touchEnabled && this.settings.inputMode !== 'drag';
+      if (!locked && this.state === 'playing' && lockMode) this.pause();
       if (locked && this.state === 'playing') document.body.classList.add('sg-playing');
     });
     this.canvas.addEventListener('click', () => {

@@ -26,7 +26,7 @@ const server = http.createServer((req,res) => {
   res.end(fs.readFileSync(p));
 });
 let base;
-const out = path.resolve('reports/qa/release-1.3.0/web'); fs.mkdirSync(out, { recursive: true });
+const out = path.resolve(process.env.SANGENG_QA_OUT || 'reports/qa/release-1.3.0/web'); fs.mkdirSync(out, { recursive: true });
 const results = [];
 
 async function aim(frame, id) {

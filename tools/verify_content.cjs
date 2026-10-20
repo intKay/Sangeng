@@ -2,7 +2,7 @@
 // use/close/retry actions are real keys/buttons and are reported separately.
 const { _electron: electron } = require('playwright');
 const fs=require('node:fs'), path=require('node:path'), assert=require('node:assert/strict');
-const out=path.resolve('reports/qa/release-1.3.0/content');fs.mkdirSync(out,{recursive:true});
+const out=path.resolve(process.env.SANGENG_QA_OUT || 'reports/qa/release-1.3.0/content');fs.mkdirSync(out,{recursive:true});
 const exe=path.resolve(process.argv[2] || 'dist/electron-runtime/electron.exe');
 const source=!process.argv[2] || process.argv.includes('--source');
 const result={assistedPlacement:true,chapters:[],errors:[],failedRequests:[]};
@@ -65,13 +65,26 @@ async function closePaper(){
 }
 async function subtitles(){
  const seq=await page.evaluate(async()=>{
-  const ui=__SANGENG__.ui;ui.clearSubtitles();
+  const ui=__SANGENG__.ui;
+  const waitText=(text,ms=2500)=>new Promise(resolve=>{
+   const end=performance.now()+ms;
+   const tick=()=>{
+    if(ui.el.subtitle.textContent===text)return resolve(true);
+    if(performance.now()>end)return resolve(false);
+    setTimeout(tick,40);
+   };
+   tick();
+  });
+  ui.clearSubtitles();
   // 队列在两条字幕之间保留 120ms 间隔；等待第一条约 50ms 的短字幕过期后再读。
-  ui.subtitle('QA first',.05);await new Promise(r=>setTimeout(r,400));
-  ui.subtitle('QA later',.15);await new Promise(r=>setTimeout(r,80));
+  ui.subtitle('QA first',.05);await waitText('QA first',1500);
+  await new Promise(r=>setTimeout(r,250));
+  ui.subtitle('QA later',.15);const laterOk=await waitText('QA later',2000);
   const later=ui.el.subtitle.textContent;ui.clearSubtitles();
-  ui.subtitle('QA queued A',.05);ui.subtitle('QA queued B',.2);await new Promise(r=>setTimeout(r,260));
-  const ordered=ui.el.subtitle.textContent;ui.clearSubtitles();return {later,ordered};
+  ui.subtitle('QA queued A',.05);ui.subtitle('QA queued B',.2);
+  const orderedOk=await waitText('QA queued B',2500);
+  const ordered=ui.el.subtitle.textContent;ui.clearSubtitles();
+  return {later,ordered,laterOk,orderedOk};
  });
  assert.equal(seq.later,'QA later');assert.equal(seq.ordered,'QA queued B');return seq;
 }

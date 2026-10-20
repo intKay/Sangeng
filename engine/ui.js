@@ -53,7 +53,7 @@ const TEMPLATE = `
     <div class="sg-panel-kicker">SETTINGS</div>
     <h2>设置</h2>
     <label class="sg-field"><span>视角灵敏度</span><input type="range" data-set="sensitivity" min="0.2" max="3" step="0.05"><b class="val"></b></label>
-    <label class="sg-field"><span>操作方式</span><select data-set="inputMode"><option value="auto">自动识别</option><option value="touch">触屏 / 拖动</option><option value="mouse">键盘 / 鼠标</option></select><b class="val"></b></label>
+    <label class="sg-field"><span>操作方式</span><select data-set="inputMode"><option value="auto">自动识别</option><option value="mouse">键盘 / 鼠标（锁定指针）</option><option value="drag">鼠标拖动（不锁定指针）</option><option value="touch">触屏（虚拟摇杆）</option></select><b class="val"></b></label>
     <label class="sg-field"><span>主音量</span><input type="range" data-set="volume" min="0" max="1" step="0.02"><b class="val"></b></label>
     <label class="sg-field"><span>渲染颗粒度</span>
       <select data-set="renderScale">

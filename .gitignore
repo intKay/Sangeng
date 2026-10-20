@@ -8,6 +8,10 @@ reports/qa/web-1.2.0/partial.json
 reports/qa/release-1.3.0/**/*.png
 reports/qa/release-1.3.0/**/*failure*
 reports/qa/release-1.3.0/**/partial.json
+reports/qa/release-1.3.1/**/*.png
+!reports/qa/release-1.3.1/desktop/portable-smoke.png
+reports/qa/release-1.3.1/**/*failure*
+reports/qa/release-1.3.1/**/partial.json
 __pycache__/
 *.py[cod]
 .venv/

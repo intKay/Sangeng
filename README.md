@@ -3,7 +3,7 @@
 > 三个发生在中国的第一人称心理恐怖短篇：一间反复经过的老公寓、一面比你早到的镜子、一条送完葬还要走完的夜路。每篇 6–10 分钟，低多边形 3D，程序化贴图与合成声音；没有跳吓音效，没有血腥画面。
 
 [![itch.io](https://img.shields.io/badge/itch.io-在线游玩-c9a55a?style=flat-square)](https://kay-setsuna.itch.io/horror-demo)
-[![version](https://img.shields.io/badge/version-1.3.0-8a1e1e?style=flat-square)](https://github.com/intKay/Sangeng/releases/tag/v1.3.0)
+[![version](https://img.shields.io/badge/version-1.3.1-8a1e1e?style=flat-square)](https://github.com/intKay/Sangeng/releases/tag/v1.3.1)
 ![platform](https://img.shields.io/badge/platform-Windows%20%7C%20Web%20%7C%20Mobile-3b4a44?style=flat-square)
 ![engine](https://img.shields.io/badge/engine-Three.js%20r160-1f2a26?style=flat-square)
 
@@ -19,11 +19,11 @@
 
 | 平台 | 文件 | 说明 |
 |---|---|---|
-| 手机 / 桌面浏览器 | [`Sangeng-1.3.0-web.zip`](https://github.com/intKay/Sangeng/releases/download/v1.3.0/Sangeng-1.3.0-web.zip) | 同一个包适配电脑与触屏；用于静态托管或上传 itch.io。请勿在 ZIP 内直接双击 HTML。 |
-| Windows 10/11 x64 | [`Sangeng-1.3.0-Setup-x64.exe`](https://github.com/intKay/Sangeng/releases/download/v1.3.0/Sangeng-1.3.0-Setup-x64.exe) | 安装版，内置 Electron/Chromium，离线运行。 |
-| Windows 免安装 | [`Sangeng-1.3.0-Portable-x64.exe`](https://github.com/intKay/Sangeng/releases/download/v1.3.0/Sangeng-1.3.0-Portable-x64.exe) | 单文件便携版，双击即玩，首次启动会解包运行时。 |
+| 手机 / 桌面浏览器 | [`Sangeng-1.3.1-web.zip`](https://github.com/intKay/Sangeng/releases/download/v1.3.1/Sangeng-1.3.1-web.zip) | 同一个包适配电脑与触屏；用于静态托管或上传 itch.io。请勿在 ZIP 内直接双击 HTML。 |
+| Windows 10/11 x64 | [`Sangeng-1.3.1-Setup-x64.exe`](https://github.com/intKay/Sangeng/releases/download/v1.3.1/Sangeng-1.3.1-Setup-x64.exe) | 安装版，内置 Electron/Chromium，离线运行。 |
+| Windows 免安装 | [`Sangeng-1.3.1-Portable-x64.exe`](https://github.com/intKay/Sangeng/releases/download/v1.3.1/Sangeng-1.3.1-Portable-x64.exe) | 单文件便携版，双击即玩，首次启动会解包运行时。 |
 
-全部文件、`SHA256SUMS.txt` 与构建 manifest 见 [v1.3.0 Release](https://github.com/intKay/Sangeng/releases/tag/v1.3.0)。网页包约 33 MB；桌面版约 144 MB，未数字签名，Windows 可能提示未知发布者。
+全部文件、`SHA256SUMS.txt` 与构建 manifest 见 [v1.3.1 Release](https://github.com/intKay/Sangeng/releases/tag/v1.3.1)。网页包约 33 MB；桌面版约 144 MB，未数字签名，Windows 可能提示未知发布者。
 
 浏览器需要支持 WebGL2 与 Web Audio 的现代版本；Edge / Chrome / Safari 均可。移动端建议横屏，竖屏也保留操作。第一次点击“开始”后解锁声音。
 
@@ -39,6 +39,10 @@
 | 暂停 / 设置 | `Esc` | 右上“暂停” |
 
 触屏和键鼠可以随时在设置里切换；摇杆在松手、失焦、旋转或暂停时清零。不支持 Ogg/Vorbis 的浏览器会自动改用同名 MP3 备用音频。
+
+**不想被锁定鼠标**：设置 → 操作方式 → **鼠标拖动（不锁定指针）**。此时按住左键拖动环视，`WASD` / `E` / `Shift` 照常使用，`Esc` 仍然暂停，浏览器不会再捕获指针。默认的“键盘 / 鼠标（锁定指针）”手感更接近第一人称，可按需切换；选择会保存在本地。
+
+![操作方式设置](docs/screenshots/07-input-modes.png)
 
 **内容提示**：心理恐怖、闪烁画面、幽闭空间、死亡意象；无血腥画面。建议戴耳机，在安静、光线较暗的环境游玩。
 
@@ -107,14 +111,16 @@ python serve.py          # 本地静态服务器，只用标准库
 npm ci                   # Node.js 22.12+，首次需联网
 npm start                # Electron 开发运行
 npm run dist             # 构建 Windows 安装版 + 便携版
-python tools/build_web.py  # 构建 Sangeng-1.3.0-web.zip
+python tools/build_web.py  # 构建 Sangeng-1.3.1-web.zip
 ```
 
 产物位于 `dist/desktop/` 与 `dist/web/`，附带 SHA-256、manifest 和 itch.io 上传说明。重建资产还需要 Blender、numpy、Pillow、ffmpeg 等各脚本列出的依赖；游玩与打包不需要这些依赖。
 
 ## 验证
 
-v1.3.0 在本机完成：网页包 Android 横屏 / 小屏手机模拟、桌面 Chromium 与独立 Electron 运行；三篇核心交互、门后手电、暂停/设置、字幕队列、死亡重试与结局；62 张贴图与 121 个音频就绪；GLB 命名、碰撞、材质与面数预算。339 个运行文件打包进网页 ZIP。当前证据、测试方法和未覆盖项见 [`reports/qa/release-1.3.0/ACCEPTANCE.md`](reports/qa/release-1.3.0/ACCEPTANCE.md)。
+v1.3.0 的完整验收见 [`reports/qa/release-1.3.0/ACCEPTANCE.md`](reports/qa/release-1.3.0/ACCEPTANCE.md)：网页包 Android 横屏 / 小屏手机模拟、桌面 Chromium 与独立 Electron 运行；三篇核心交互、门后手电、暂停/设置、字幕队列、死亡重试与结局；62 张贴图与 121 个音频就绪；GLB 命名、碰撞、材质与面数预算。339 个运行文件打包进网页 ZIP。
+
+v1.3.1 在此基础上补充输入模式验收：默认键鼠模式仍会锁定指针，`Esc` 释放；切到“鼠标拖动（不锁定指针）”后不申请指针锁定，左键拖动可环视，点击画布也不会重新锁定；切回键鼠模式会恢复锁定。见 [`reports/qa/release-1.3.1/ACCEPTANCE.md`](reports/qa/release-1.3.1/ACCEPTANCE.md)。
 
 ## 已知限制
 
@@ -128,6 +134,7 @@ v1.3.0 在本机完成：网页包 Android 横屏 / 小屏手机模拟、桌面 
 
 | 版本 | 内容 |
 |---|---|
+| v1.3.1 | 新增“鼠标拖动（不锁定指针）”操作方式，解决测试/录屏时鼠标频繁被指针锁定；默认键鼠锁定手感不变。 |
 | v1.3.0 | 接收场景内容打磨；网页包、安装版与便携版统一到 1.3.0；字幕队列修复；手机触控保留。 |
 | v1.2.0 | 手机/桌面通用 HTML5 包：摇杆、拖动环视、屏幕按钮与安全区适配。 |
 | v1.1.0 | 内置 Electron/Chromium 的 Windows 独立桌面版。 |
