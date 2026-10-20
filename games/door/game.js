@@ -2,6 +2,7 @@
 import * as THREE from 'three';
 import { HorrorGame } from '../../engine/engine.js';
 import { clamp } from '../../engine/utils.js';
+import { DOOR_DISCOVERY } from '../shared/discovery.js';
 
 /* ---------------- 文本 ---------------- */
 const LETTERS = {
@@ -50,6 +51,7 @@ const LOOP_HINTS = {
 /* 可查看的旧物：不推进流程，只把“她一直在等”补进空间里。 */
 const EXAMINE = {
   photo1: {
+    id: 'door.relic.photo1',
     prompt: '看照片',
     head: '照片 · 一',
     lines: [
@@ -59,6 +61,7 @@ const EXAMINE = {
     ],
   },
   photo2: {
+    id: 'door.relic.photo2',
     prompt: '看照片',
     head: '照片 · 二',
     lines: [
@@ -68,6 +71,7 @@ const EXAMINE = {
     ],
   },
   photo3: {
+    id: 'door.relic.photo3',
     prompt: '看照片',
     head: '照片 · 三',
     lines: [
@@ -76,6 +80,7 @@ const EXAMINE = {
     ],
   },
   drawing: {
+    id: 'door.relic.drawing',
     prompt: '看画',
     head: '一张画',
     lines: [
@@ -85,6 +90,7 @@ const EXAMINE = {
     ],
   },
   calendar: {
+    id: 'door.relic.calendar',
     prompt: '看挂历',
     head: '挂历',
     lines: [
@@ -94,6 +100,7 @@ const EXAMINE = {
     ],
   },
   notice: {
+    id: 'door.relic.notice',
     prompt: '看公告栏',
     head: '公告栏',
     lines: [
@@ -103,6 +110,7 @@ const EXAMINE = {
     ],
   },
   couplet: {
+    id: 'door.relic.couplet',
     prompt: '看对联',
     head: '门框上的红纸',
     lines: [
@@ -112,6 +120,7 @@ const EXAMINE = {
     ],
   },
   shoes: {
+    id: 'door.relic.shoes',
     prompt: '看那双鞋',
     head: '门口的鞋',
     lines: [
@@ -121,6 +130,7 @@ const EXAMINE = {
     ],
   },
   shoesChild: {
+    id: 'door.relic.child_shoes',
     prompt: '看那双小鞋',
     head: '门口的小鞋',
     lines: [
@@ -162,6 +172,17 @@ const state = {
 
 let gameRef = null;
 
+/* v1.4.0：发现/结局埋点。引擎没有 progress 时是 no-op。 */
+function markDiscovery(id) {
+  if (!gameRef || !gameRef.progress || typeof gameRef.progress.mark !== 'function') return;
+  try { gameRef.progress.mark(id); } catch (err) { /* 进度不影响玩法 */ }
+}
+
+function markEnding(id) {
+  if (!gameRef || !gameRef.progress || typeof gameRef.progress.ending !== 'function') return;
+  try { gameRef.progress.ending(id); } catch (err) { /* 进度不影响玩法 */ }
+}
+
 /* ---------------- 小工具 ---------------- */
 function obj(name) { return gameRef ? gameRef.find(name) : null; }
 
@@ -183,6 +204,7 @@ function examinePaper(game, name, data) {
   game.interact.add(o, {
     prompt: data.prompt || '查看',
     onUse: () => {
+      if (data.id) markDiscovery(data.id);
       playSfx('paperRustle', { volume: 0.45 });
       game.openPaper({ head: data.head, lines: data.lines });
     },
@@ -190,12 +212,13 @@ function examinePaper(game, name, data) {
 }
 
 /** 一行字的查看物 */
-function examineLine(game, name, text, prompt = '查看') {
+function examineLine(game, name, text, prompt = '查看', id = null) {
   const o = obj(name);
   if (!o) return;
   game.interact.add(o, {
     prompt,
     onUse: () => {
+      if (id) markDiscovery(id);
       playSfx('lightSwitch', { volume: 0.25 });
       game.ui.subtitle(text, 4.2);
     },
@@ -247,10 +270,15 @@ const config = {
   theme: { accent: '#c9a55a', ink: '#d8d2c0', bg: '#060807' },
   playerStart: { spawn: 'SPAWN_corridor', look: 'LOOK_corridor' },
   renderScale: 0.6,
+  discovery: DOOR_DISCOVERY,
 
   async setup(game) {
     gameRef = game;
     game.ui.setObjective('回到 503');
+
+    if (game.progress && typeof game.progress.define === 'function') {
+      try { game.progress.define(DOOR_DISCOVERY); } catch (err) { /* 引擎未接入时忽略 */ }
+    }
 
 
     // 初始隐藏：后两张字条、结局信件、实体
@@ -274,6 +302,7 @@ const config = {
     const door503 = game.makeDoor(obj('INT_door_503'), {
       prompt: '打开 503 的门',
       onOpen: () => {
+        markDiscovery('door.main.entry');
         game.ui.subtitle('门没锁。', 2.2);
         game.ui.setObjective('进去看看');
         if (door503 && door503.interact) door503.interact.setPrompt('关上 503 的门');
@@ -322,7 +351,10 @@ const config = {
     });
     game.interact.add(obj('INT_clock'), {
       prompt: '看钟',
-      onUse: () => game.ui.subtitle('钟停在三点十七分。那天你也在。', 3.2),
+      onUse: () => {
+        markDiscovery('door.relic.clock');
+        game.ui.subtitle('钟停在三点十七分。那天你也在。', 3.2);
+      },
     });
 
     // 旧物 / 照片 / 挂历：给“家”补上被使用过的痕迹
@@ -336,15 +368,15 @@ const config = {
     examinePaper(game, 'INT_shoes_waiting', EXAMINE.shoes);
     examinePaper(game, 'V2_drawing_corr', EXAMINE.drawing);
     examinePaper(game, 'V2_shoes_waiting', EXAMINE.shoesChild);
-    examineLine(game, 'INT_phone', '听筒里是忙音。你按下重拨，号码键上的 0 和 6 已经磨平。', '拿起电话');
-    examineLine(game, 'INT_sewing_machine', '缝纫机停在一半。线还穿着，布上留着一道没缝完的边。', '看缝纫机');
-    examineLine(game, 'INT_thermos', '暖水瓶还是满的。壶塞上缠着一圈红绳。', '看暖水瓶');
-    examineLine(game, 'INT_chair_final', '椅子对着窗。坐垫上有一块凹下去的痕迹，像刚刚有人站起来。', '看椅子');
-    examineLine(game, 'S_bed_frame', '被子叠得很整齐。枕头上有几根白头发。', '看床');
-    examineLine(game, 'S_wardrobe', '衣柜里挂着一件男式外套，尺码不对。旁边空了一整边。', '看衣柜');
-    examineLine(game, 'S_tv_cabinet', '电视一直开着。雪花。你把音量调到最小，雪花声没有变小。', '看电视');
-    examineLine(game, 'S_photo_1', '墙上的相框空着。玻璃后面有一层灰。照片被取走了。', '看空相框');
-    examineLine(game, 'S_photo_2', '另一只相框也空了。钉子还在墙上。', '看空相框');
+    examineLine(game, 'INT_phone', '听筒里是忙音。你按下重拨，号码键上的 0 和 6 已经磨平。', '拿起电话', 'door.relic.phone');
+    examineLine(game, 'INT_sewing_machine', '缝纫机停在一半。线还穿着，布上留着一道没缝完的边。', '看缝纫机', 'door.relic.sewing');
+    examineLine(game, 'INT_thermos', '暖水瓶还是满的。壶塞上缠着一圈红绳。', '看暖水瓶', 'door.relic.thermos');
+    examineLine(game, 'INT_chair_final', '椅子对着窗。坐垫上有一块凹下去的痕迹，像刚刚有人站起来。', '看椅子', 'door.relic.chair');
+    examineLine(game, 'S_bed_frame', '被子叠得很整齐。枕头上有几根白头发。', '看床', 'door.relic.bed');
+    examineLine(game, 'S_wardrobe', '衣柜里挂着一件男式外套，尺码不对。旁边空了一整边。', '看衣柜', 'door.relic.wardrobe');
+    examineLine(game, 'S_tv_cabinet', '电视一直开着。雪花。你把音量调到最小，雪花声没有变小。', '看电视', 'door.relic.tv');
+    examineLine(game, 'S_photo_1', '墙上的相框空着。玻璃后面有一层灰。照片被取走了。', '看空相框', 'door.relic.frames');
+    examineLine(game, 'S_photo_2', '另一只相框也空了。钉子还在墙上。', '看空相框', 'door.relic.frames');
 
     // 手电
     game.interact.add(obj('INT_flashlight'), {
@@ -534,6 +566,7 @@ const config = {
 function pickupFlashlight(game) {
   const f = obj('INT_flashlight');
   if (f) f.visible = false;
+  markDiscovery('door.main.flashlight');
   state.hasFlashlight = true;
   game.player.giveFlashlight();
   playSfx('pickupLetter', { volume: 0.5 });
@@ -559,6 +592,7 @@ function pickupLetter(game, index) {
   const o = obj(name);
   if (!o || !o.visible) return;
   state.letters.push(index);
+  markDiscovery(`door.main.letter${index}`);
   o.visible = false;
   playSfx('pickupLetter', { volume: 0.8 });
   game.setThreat(0);
@@ -647,6 +681,7 @@ function showGlimpse(game, seconds = 2.6) {
   const root = state.entity.root;
   if (!root) return;
   state.glimpse = true;
+  markDiscovery('door.her.glimpse');
   state.glimpseTimer = seconds;
   root.position.set(0, 0, 17.1);
   root.visible = true;
@@ -659,6 +694,7 @@ function showGlimpse(game, seconds = 2.6) {
 function tryUnlockBedroom(game) {
   if (state.letters.length >= 3) {
     state.doors.bedroom.setLocked(false);
+    markDiscovery('door.main.bedroom');
     playSfx('doorUnlock', { volume: 0.8 });
     game.ui.subtitle('门开了。里面有人坐着。', 3);
     game.ui.setObjective('进去');
@@ -715,6 +751,7 @@ function updateEntity(game, dt) {
   st.freeze = looked ? 0.25 : Math.max(0, st.freeze - dt);
   if (looked && !st.seen) {
     st.seen = true;
+    markDiscovery('door.her.first_look');
     game.ui.subtitle('她停住了。楼道里安静得能听见你的心跳。', 4.2);
     if (hasSfx('whisper')) playSfx('whisper', { volume: 0.55, pos: root.position.clone().add(new THREE.Vector3(0, 1.3, 0)) });
   }
@@ -800,6 +837,7 @@ function enterBedroomEnding(game) {
   state.entity.done = true;
   state.entity.active = false;
   state.glimpse = false;
+  markDiscovery('door.her.sitting');
   if (state.entity.breath) { state.entity.breath.stop(0.6); state.entity.breath = null; }
   game.setThreat(0);
   game.setSanity(0.15);
@@ -843,6 +881,8 @@ function readFinalLetter(game) {
       if (game.audio.entries.music.ending) game.audio.playMusic('ending', { fade: 1 });
       game.ui.subtitle('她抬起头。', 2.6);
       setTimeout(() => {
+        markDiscovery('door.main.final');
+        markEnding('door.ending.home');
         game.finish({
           chapter: '一更 · 门后',
           title: '你终于回来了',
@@ -854,6 +894,7 @@ function readFinalLetter(game) {
             '这一次，你没有走。',
           ],
           footer: '三更 · 一更 完',
+          endingId: 'door.ending.home',
         });
       }, 2800);
     },

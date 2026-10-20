@@ -461,3 +461,82 @@ canvas#gl { touch-action: none; }
   .sg-ending-inner { max-height: 100%; overflow: auto; padding: 12px; }
   .sg-paper-sheet { max-height: 100%; width: min(620px, 100%); padding: 22px; transform: none; }
 }
+
+/* ---------- v1.4.0 手记 / 发现 / 结局统计 ---------- */
+#sg-journal {
+  z-index: 79; background: rgba(2, 3, 2, 0.94);
+  align-items: center; justify-content: center;
+}
+.sg-journal-panel {
+  width: min(860px, 92vw); max-height: 88vh;
+  display: flex; flex-direction: column;
+}
+.sg-journal-panel h2 { margin-bottom: 0.8em; }
+.sg-journal-scroll {
+  overflow-y: auto; overflow-x: hidden;
+  padding-right: 8px; min-height: 120px; max-height: 56vh;
+  scrollbar-width: thin; scrollbar-color: rgba(201,165,90,.35) transparent;
+}
+.sg-journal-scroll::-webkit-scrollbar { width: 4px; }
+.sg-journal-scroll::-webkit-scrollbar-thumb { background: rgba(201,165,90,.35); }
+.sg-journal-objective {
+  font: 0.68rem/1.8 ui-monospace, Consolas, monospace;
+  letter-spacing: 0.08em; color: rgba(216,210,192,.55);
+  border-left: 1px solid rgba(201,165,90,.4);
+  padding-left: 0.9em; margin-bottom: 1.2em;
+}
+.sg-journal-count {
+  margin: 0 0 1em; color: var(--sg-accent);
+  font: 0.7rem/1.6 ui-monospace, Consolas, monospace;
+  letter-spacing: 0.16em;
+}
+.sg-journal-group {
+  margin: 1.4em 0 0.7em; padding-bottom: 0.35em;
+  border-bottom: 1px solid rgba(216,210,192,.1);
+  color: rgba(216,210,192,.6);
+  font: 0.64rem/1.5 ui-monospace, Consolas, monospace;
+  letter-spacing: 0.16em;
+}
+.sg-journal-card {
+  padding: 0.55em 0.8em; margin: 0.35em 0;
+  border-left: 1px solid rgba(216,210,192,.1);
+  background: rgba(216,210,192,.025);
+}
+.sg-journal-card.found { border-left-color: rgba(201,165,90,.55); background: rgba(201,165,90,.045); }
+.sg-journal-card .title { font-size: 0.82rem; color: rgba(232,226,210,.85); letter-spacing: 0.06em; }
+.sg-journal-card.found .title { color: var(--sg-accent); }
+.sg-journal-card .summary { margin-top: 0.25em; font-size: 0.75rem; line-height: 1.75; color: rgba(216,210,192,.6); }
+.sg-journal-hint {
+  min-height: 1.5em; margin-top: 1.1em;
+  color: rgba(201,165,90,.8); font-size: 0.82rem; line-height: 1.7;
+}
+#sg-toast {
+  position: fixed; left: max(22px, env(safe-area-inset-left)); bottom: max(8vh, calc(env(safe-area-inset-bottom) + 36px));
+  z-index: 96; pointer-events: none;
+  padding: 0.55em 0.9em;
+  border-left: 1px solid rgba(201,165,90,.55);
+  background: rgba(6,8,7,.82);
+  color: rgba(232,226,210,.78);
+  font-family: "KaiTi", "STKaiti", "Kaiti SC", "SimSun", serif;
+  font-size: 0.92rem; letter-spacing: 0.08em;
+  opacity: 0; transform: translateY(8px);
+  transition: opacity .5s ease, transform .5s ease;
+}
+#sg-toast.show { opacity: 1; transform: none; }
+.sg-ending-stats {
+  margin-top: 1.8em; padding-top: 1.2em;
+  border-top: 1px solid rgba(216,210,192,.1);
+  font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+  font-size: 0.75rem; line-height: 1.9;
+  color: rgba(216,210,192,.55);
+}
+.sg-ending-stats .line { margin: 0.1em 0; }
+.sg-ending-stats .ending-name { margin: 0.1em 0; color: rgba(201,165,90,.8); letter-spacing: 0.08em; }
+.sg-ending-stats .ending-unknown { margin: 0.1em 0; color: rgba(216,210,192,.25); }
+.sg-ending-stats .hint { margin-top: 0.5em; color: rgba(201,165,90,.65); }
+@media (max-width: 620px), (max-height: 520px) {
+  .sg-journal-panel { width: min(680px, 100%); max-height: 100%; padding: 20px; }
+  .sg-journal-scroll { max-height: 52vh; }
+  .sg-journal-card { padding: 0.5em 0.65em; }
+  .sg-ending-stats { font-size: 0.7rem; }
+}

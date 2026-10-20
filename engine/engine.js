@@ -7,6 +7,7 @@ import { UI } from './ui.js';
 import { Player } from './player.js';
 import { TouchControls, prefersTouch } from './touch.js';
 import { PlanarMirror } from './mirror.js';
+import { Progress } from './progress.js';
 import { clamp, damp, loadJSON } from './utils.js';
 
 const SETTINGS_KEY = 'sangeng-settings-v1';
@@ -147,6 +148,7 @@ export class HorrorGame {
     this.mirror = null;
     this.reflectionScene = null;
     this._fadeAlpha = 0;
+    this._journalFromEnding = false;
     this._resizeHandler = () => this._onResize();
   }
 
@@ -168,6 +170,8 @@ export class HorrorGame {
     this._initRenderer();
     this.ui = new UI(this);
     this.ui.setConfig(this.config);
+    this.progress = new Progress(this);
+    if (this.config.discovery) this.progress.define(this.config.discovery);
     this.ui.showLoading();
     this.ui.setLoading(0.01, '正在打开门…');
     this.audio = new AudioManager();
@@ -538,15 +542,61 @@ export class HorrorGame {
     try { if (this.config.onFail) this.config.onFail(this); } catch (err) { console.error(err); }
   }
 
-  finish({ chapter, title, lines, footer } = {}) {
+  finish({ chapter, title, lines, footer, endingId } = {}) {
     if (this.state === 'ending') return;
     this.state = 'ending';
     this.player.enabled = false;
     if (document.pointerLockElement) document.exitPointerLock();
-    this.ui.showEnding({ chapter: chapter || this.config.chapter, title: title || '', lines, footer });
+    let stats = null;
+    if (this.progress) {
+      if (endingId) this.progress.ending(endingId);
+      stats = this.progress.summary();
+    }
+    this.ui.showEnding({ chapter: chapter || this.config.chapter, title: title || '', lines, footer, stats });
     this.audio.duck(false);
     document.body.classList.remove('sg-playing');
     try { if (this.config.onFinish) this.config.onFinish(this); } catch (err) { console.error(err); }
+  }
+
+  /* v1.4.0：暂停中的手记 / 玩家主动取提示；默认沉浸，不自动弹。 */
+  openJournal() {
+    if (this.state !== 'paused' || !this.progress) return false;
+    this.ui.hidePause();
+    this.ui.showJournal(this.progress.summary());
+    return true;
+  }
+
+  closeJournal() {
+    this.ui.hideJournal();
+    if (this._journalFromEnding) {
+      this._journalFromEnding = false;
+      this.ui.showEndingPanel();
+      return;
+    }
+    if (this.state === 'paused') this.ui.showPause();
+  }
+
+  openEndingJournal() {
+    if (this.state !== 'ending' || !this.progress) return false;
+    this._journalFromEnding = true;
+    this.ui.hideEnding();
+    this.ui.showJournal(this.progress.summary());
+    return true;
+  }
+
+  requestHint() {
+    if (!this.progress) return false;
+    const summary = this.progress.summary();
+    // 沉浸档不自动提示；玩家主动取时按目录组顺序，先给主线，避免随机剧透后段。
+    for (const group of summary.groups) {
+      const pick = summary.entries.find((e) => e.group === group.id && !e.discovered);
+      if (pick) {
+        this.ui.showJournalHint(pick.hint || '再仔细看看这个房间。');
+        return true;
+      }
+    }
+    this.ui.showJournalHint('这一篇的东西，你已经都看过了。');
+    return false;
   }
 
   openPaper({ head, lines, onClose }) {
@@ -849,6 +899,11 @@ export class HorrorGame {
         if (e.repeat) return;
         if (this.state === 'paper') { e.preventDefault(); this.closePaper(); return; }
         if (this.state === 'playing') { e.preventDefault(); this.interact.use(); }
+      }
+      if (e.code === 'Escape' && this.ui.isJournalOpen()) {
+        e.preventDefault();
+        this.closeJournal();
+        return;
       }
       if (e.code === 'Escape' && this.state === 'playing') {
         // pointerlock 退出会触发 pause，这里兜底

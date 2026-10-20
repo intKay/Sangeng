@@ -42,6 +42,7 @@ const TEMPLATE = `
     <h2>暂停</h2>
     <div class="sg-buttons column">
       <button data-act="resume" class="sg-btn primary">继续</button>
+      <button data-act="journal" class="sg-btn">手记</button>
       <button data-act="settings" class="sg-btn">设置</button>
       <button data-act="back" class="sg-btn">返回入口</button>
     </div>
@@ -83,9 +84,11 @@ const TEMPLATE = `
     <div class="sg-chapter"></div>
     <h1 class="sg-ending-title"></h1>
     <div class="sg-ending-lines"></div>
+    <div class="sg-ending-stats"></div>
     <div class="sg-ending-footer"></div>
     <div class="sg-buttons row">
       <button data-act="replay" class="sg-btn primary">再走一遍</button>
+      <button data-act="ending-journal" class="sg-btn">看手记</button>
       <button data-act="back" class="sg-btn">返回入口</button>
     </div>
   </div>
@@ -98,6 +101,22 @@ const TEMPLATE = `
     <button data-act="paper-close" class="sg-btn primary">合上</button>
   </div>
 </div>
+<div id="sg-journal" class="sg-screen">
+  <div class="sg-panel wide sg-journal-panel">
+    <div class="sg-panel-kicker">NOTES</div>
+    <h2>留在桌上的纸</h2>
+    <div class="sg-journal-scroll">
+      <div class="sg-journal-objective"></div>
+      <div class="sg-journal-body"></div>
+    </div>
+    <div class="sg-journal-hint" aria-live="polite"></div>
+    <div class="sg-buttons row">
+      <button data-act="journal-hint" class="sg-btn">要一句提示</button>
+      <button data-act="journal-close" class="sg-btn primary">合上</button>
+    </div>
+  </div>
+</div>
+<div id="sg-toast" aria-live="polite"></div>
 <div id="sg-transition"></div>
 `;
 
@@ -143,10 +162,16 @@ export class UI {
       endingChapter: root.querySelector('#sg-ending .sg-chapter'),
       endingTitle: root.querySelector('#sg-ending .sg-ending-title'),
       endingLines: root.querySelector('#sg-ending .sg-ending-lines'),
+      endingStats: root.querySelector('#sg-ending .sg-ending-stats'),
       endingFooter: root.querySelector('#sg-ending .sg-ending-footer'),
       paper: root.querySelector('#sg-paper'),
       paperHead: root.querySelector('#sg-paper .sg-paper-head'),
       paperBody: root.querySelector('#sg-paper .sg-paper-body'),
+      journal: root.querySelector('#sg-journal'),
+      journalObjective: root.querySelector('#sg-journal .sg-journal-objective'),
+      journalBody: root.querySelector('#sg-journal .sg-journal-body'),
+      journalHint: root.querySelector('#sg-journal .sg-journal-hint'),
+      toast: root.querySelector('#sg-toast'),
     };
     this._applyTheme();
     this._bind();
@@ -172,6 +197,10 @@ export class UI {
         case 'settings-back': this.game.closeSettings(); break;
         case 'back': this.game.goHome(); break;
         case 'resume': this.game.resume(); break;
+        case 'journal': this.game.openJournal(); break;
+        case 'ending-journal': this.game.openEndingJournal(); break;
+        case 'journal-close': this.game.closeJournal(); break;
+        case 'journal-hint': this.game.requestHint(); break;
         case 'retry': this.game.retry(); break;
         case 'replay': this.game.replay(); break;
         case 'paper-close': this._closePaper(); break;
@@ -322,7 +351,7 @@ export class UI {
     this.setHudVisible(false);
   }
   hideDeath() { this.el.death.classList.remove('show'); }
-  showEnding({ chapter, title, lines, footer }) {
+  showEnding({ chapter, title, lines, footer, stats }) {
     this.el.endingChapter.textContent = chapter || '';
     this.el.endingTitle.textContent = title || '';
     this.el.endingLines.innerHTML = '';
@@ -332,11 +361,112 @@ export class UI {
       p.style.animationDelay = `${0.5 + i * 0.9}s`;
       this.el.endingLines.appendChild(p);
     });
+    this.el.endingStats.innerHTML = '';
+    if (stats) this._renderEndingStats(stats);
     this.el.endingFooter.textContent = footer || '';
     this.el.ending.classList.add('show');
     this.setHudVisible(false);
   }
+  _renderEndingStats(stats) {
+    const box = this.el.endingStats;
+    const add = (cls, text) => {
+      const p = document.createElement('p');
+      p.className = cls;
+      p.textContent = text;
+      box.appendChild(p);
+    };
+    if (stats.total) add('line', `发现 ${stats.discovered} / ${stats.total}`);
+    stats.groups.filter((g) => g.total).forEach((g) => {
+      add('line', `${g.label} ${g.got} / ${g.total}`);
+    });
+    if (stats.endingTotal) {
+      const got = stats.endings.filter((e) => e.unlocked).length;
+      add('line', `结局 ${got} / ${stats.endingTotal}`);
+      stats.endings.forEach((e) => {
+        add(e.unlocked ? 'ending-name' : 'ending-unknown', e.unlocked ? `「${e.title}」` : '？？？');
+      });
+      if (stats.id === 'nightroad' && got < stats.endingTotal) {
+        const first = stats.endings.find((e) => e.unlocked);
+        if (first && first.id === 'nightroad.ending.look') add('hint', '另一条路：这次别回头。');
+        else if (first) add('hint', '另一条路：这次回头看看。');
+      }
+    }
+  }
   hideEnding() { this.el.ending.classList.remove('show'); }
+  showEndingPanel() { this.el.ending.classList.add('show'); }
+
+  /* ---------- v1.4.0 手记 / 发现 ---------- */
+  showJournal(summary) {
+    if (!summary) return;
+    this.el.pause.classList.remove('show');
+    this.el.journalHint.textContent = '';
+    const obj = this.el.objective.textContent || '还没想好下一步。';
+    this.el.journalObjective.textContent = `当前：${obj}`;
+    const body = this.el.journalBody;
+    body.innerHTML = '';
+    const headline = document.createElement('p');
+    headline.className = 'sg-journal-count';
+    headline.textContent = `发现 ${summary.discovered} / ${summary.total}`;
+    body.appendChild(headline);
+    for (const group of summary.groups) {
+      if (!group.total) continue;
+      const h = document.createElement('div');
+      h.className = 'sg-journal-group';
+      h.textContent = `${group.label} · ${group.got} / ${group.total}`;
+      body.appendChild(h);
+      for (const entry of summary.entries.filter((e) => e.group === group.id)) {
+        const card = document.createElement('div');
+        card.className = `sg-journal-card${entry.discovered ? ' found' : ''}`;
+        const t = document.createElement('div');
+        t.className = 'title';
+        t.textContent = entry.discovered ? entry.title : '未发现';
+        card.appendChild(t);
+        const s = document.createElement('div');
+        s.className = 'summary';
+        s.textContent = entry.discovered ? entry.summary : (entry.hint || '再走走看。');
+        card.appendChild(s);
+        body.appendChild(card);
+      }
+    }
+    if (summary.endings.length) {
+      const h = document.createElement('div');
+      h.className = 'sg-journal-group';
+      const got = summary.endings.filter((e) => e.unlocked).length;
+      h.textContent = `结局 · ${got} / ${summary.endings.length}`;
+      body.appendChild(h);
+      for (const ending of summary.endings) {
+        const card = document.createElement('div');
+        card.className = `sg-journal-card${ending.unlocked ? ' found' : ''}`;
+        const t = document.createElement('div');
+        t.className = 'title';
+        t.textContent = ending.unlocked ? ending.title : '？？？';
+        card.appendChild(t);
+        const s = document.createElement('div');
+        s.className = 'summary';
+        s.textContent = ending.unlocked ? '已解锁' : (ending.hint || '换一条路试试。');
+        card.appendChild(s);
+        body.appendChild(card);
+      }
+    }
+    this.el.journal.classList.add('show');
+    this.setHudVisible(false);
+  }
+  hideJournal() {
+    this.el.journal.classList.remove('show');
+  }
+  isJournalOpen() { return this.el.journal.classList.contains('show'); }
+  showJournalHint(text) {
+    this.el.journalHint.textContent = text || '';
+  }
+  showDiscovery(title) {
+    if (!title || !this.el.toast) return;
+    this.el.toast.textContent = `记下：${title}`;
+    this.el.toast.classList.remove('show');
+    void this.el.toast.offsetWidth;
+    this.el.toast.classList.add('show');
+    clearTimeout(this._toastTimer);
+    this._toastTimer = setTimeout(() => this.el.toast.classList.remove('show'), 2600);
+  }
 
   /* ---------- 信纸 ---------- */
   showPaper({ head, lines, onClose }) {
