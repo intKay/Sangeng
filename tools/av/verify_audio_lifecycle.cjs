@@ -43,6 +43,6 @@ const fs=require('node:fs'),path=require('node:path');
   assert(result.muted<1e-6);assert.equal(result.pausedAfterUnlock,'suspended');
   assert(result.resumed>1e-5);assert.equal(result.resumedContext,'running');assert.equal(result.finalContext,'suspended');
   const report={...result,mutationRejected:true,scope:'production WebAudio graph in an isolated browser; final output sampled, no human listening acceptance'};
-  fs.writeFileSync(path.resolve('reports/av-v1.4/audio-lifecycle.json'),JSON.stringify(report,null,2));console.log(JSON.stringify(report));
+  fs.writeFileSync(path.resolve(process.env.SANGENG_AV_REPORT||'reports/av-v1.4','audio-lifecycle.json'),JSON.stringify(report,null,2));console.log(JSON.stringify(report));
  }finally{await browser.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;});

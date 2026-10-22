@@ -8,9 +8,10 @@ import { Player } from './player.js';
 import { TouchControls, prefersTouch } from './touch.js';
 import { PlanarMirror } from './mirror.js';
 import { clamp, damp, loadJSON } from './utils.js';
+import { Atmosphere } from './atmosphere.js';
 
 const SETTINGS_KEY = 'sangeng-settings-v1';
-const DEFAULT_SETTINGS = { sensitivity: 1.0, volume: 0.8, subtitles: true, renderScale: 0.6, inputMode: 'auto' };
+const DEFAULT_SETTINGS = { sensitivity: 1.0, volume: 0.8, subtitles: true, renderScale: 0.8, inputMode: 'auto' };
 
 class CollisionWorld {
   constructor() { this.boxes = []; }
@@ -217,6 +218,12 @@ export class HorrorGame {
     this.renderer.setSize(window.innerWidth, window.innerHeight, false);
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     this.renderer.toneMapping = THREE.NoToneMapping;
+    this.renderer.shadowMap.enabled = true;
+    this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    // Static interiors do not need to redraw shadow depth maps every frame.
+    // Moving doors refresh immediately; other small changes refresh at 5 Hz.
+    this.renderer.shadowMap.autoUpdate = false;
+    this.renderer.shadowMap.needsUpdate = true;
     try { this.renderer.useLegacyLights = true; } catch (e) { /* r160 */ }
     this.renderer.setClearColor(0x000000, 1);
 
@@ -231,6 +238,7 @@ export class HorrorGame {
   /* ---------- 贴图 ---------- */
   async _loadTextures() {
     this.textures = new Map();
+    this.bumpTextures = new Map();
     this.textureDefs = {};
     this.materials = new Map();
     if (!this.config.textures) return;
@@ -252,9 +260,9 @@ export class HorrorGame {
       loader.load(url, (tex) => {
         tex.colorSpace = def.colorSpace === 'none' ? THREE.NoColorSpace : THREE.SRGBColorSpace;
         tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
-        tex.magFilter = THREE.NearestFilter;
+        tex.magFilter = def.filter === 'linear' ? THREE.LinearFilter : THREE.NearestFilter;
         tex.minFilter = THREE.LinearMipmapLinearFilter;
-        tex.anisotropy = 1;
+        tex.anisotropy = Math.min(4, this.renderer.capabilities.getMaxAnisotropy());
         tex.generateMipmaps = true;
         this.textures.set(key, tex);
         done++;
@@ -265,6 +273,15 @@ export class HorrorGame {
         resolve();
       });
     })));
+    await Promise.all(entries.filter(([,def])=>def.bump).map(async ([key,def])=>{
+      try {
+        const tex=await loader.loadAsync(new URL(def.bump,manifestUrl).href);
+        tex.colorSpace=THREE.NoColorSpace;
+        tex.wrapS=tex.wrapT=THREE.RepeatWrapping;
+        tex.anisotropy=Math.min(4,this.renderer.capabilities.getMaxAnisotropy());
+        this.bumpTextures.set(key,tex);
+      } catch(err) { console.warn('[textures] bump missing:',key,err); }
+    }));
     this.ui.setLoading(0.18, `正在晒干 ${done} 张墙纸…`);
   }
 
@@ -284,7 +301,18 @@ export class HorrorGame {
       params.depthWrite = false;
       params.alphaTest = 0.02;
     }
-    const mat = new THREE.MeshLambertMaterial(params);
+    // Baked vertex occlusion affects diffuse surfaces; the new height maps
+    // give glaze, grain and chipped plaster a readable response to local light.
+    params.vertexColors = true;
+    const height = this.bumpTextures.get(name);
+    let mat;
+    if (height || /MAT_(metal|glass|tile)/.test(name)) {
+      params.bumpMap=height||null;
+      params.bumpScale=def.bumpScale||0.025;
+      params.shininess=def.shininess||48;
+      params.specular=new THREE.Color(def.specular||'#29302b');
+      mat = new THREE.MeshPhongMaterial(params);
+    } else mat = new THREE.MeshLambertMaterial(params);
     mat.name = name;
     // 未知材质兜底颜色
     if (!tex && !def.tint) mat.color.setHex(0x6f6a60);
@@ -315,6 +343,7 @@ export class HorrorGame {
     this._applyMaterials(this.level);
     this._extractLevelData();
     this._setupLights();
+    this.atmosphere = new Atmosphere(this);
   }
 
   _applyMaterials(root) {
@@ -329,6 +358,8 @@ export class HorrorGame {
         return this.getMaterial(name);
       });
       o.material = Array.isArray(o.material) ? mats : mats[0];
+      o.castShadow = !o.name.startsWith('COL_');
+      o.receiveShadow = true;
     });
     this.usedMaterials = seen;
   }
@@ -381,15 +412,17 @@ export class HorrorGame {
 
     for (const [name, empty] of this.lights) {
       const ud = empty.userData || {};
-      const kind = ud.light_kind || 'point';
+      const shaped = (this.config.id === 'door' && /^LIGHT_corr_/.test(name)) ||
+        (this.config.id === 'mirror' && /^LIGHT_tube_/.test(name));
+      const kind = shaped ? 'spot' : (ud.light_kind || 'point');
       const power = typeof ud.light_power === 'number' ? ud.light_power : 20;
       const color = new THREE.Color(ud.light_color || '#ffffff');
-      const radius = typeof ud.light_radius === 'number' ? ud.light_radius : 8;
+      const radius = shaped ? 5.2 : (typeof ud.light_radius === 'number' ? ud.light_radius : 8);
       const flicker = typeof ud.light_flicker === 'number' ? ud.light_flicker : 0;
       const pos = empty.getWorldPosition(new THREE.Vector3());
       let light;
       if (kind === 'spot') {
-        const cone = ((typeof ud.light_cone_deg === 'number' ? ud.light_cone_deg : 60) * Math.PI) / 180;
+        const cone = ((typeof ud.light_cone_deg === 'number' ? ud.light_cone_deg : (shaped ? 68 : 60)) * Math.PI) / 180;
         light = new THREE.SpotLight(color, 1, radius, cone, 0.5, 1.2);
         const target = new THREE.Object3D();
         target.position.copy(pos).add(new THREE.Vector3(0, -3, 0));
@@ -400,8 +433,16 @@ export class HorrorGame {
       }
       light.position.copy(pos);
       this.scene.add(light);
-      const intensity = Math.max(0.05, power / (kind === 'spot' ? 30 : 28));
+      const intensity = Math.max(0.05, power / (shaped ? 13 : (kind === 'spot' ? 30 : 28)));
       light.intensity = intensity;
+      if (name === 'LIGHT_corr_02' || name === 'LIGHT_tube_01') {
+        light.castShadow = true;
+        light.shadow.mapSize.set(prefersTouch()?256:512,prefersTouch()?256:512);
+        light.shadow.bias=-0.0006;
+        light.shadow.normalBias=0.018;
+        light.shadow.camera.near=.15;
+        light.shadow.camera.far=radius;
+      }
       const entry = { light, base: intensity, flicker, seed: Math.random() * 10, name, kind };
       this._lightEntries.push(entry);
       entry.handle = entry;
@@ -774,6 +815,7 @@ export class HorrorGame {
     this.touchControls?.update();
 
     if (this.state === 'playing') {
+      this.atmosphere?.update(dt);
       this.player.update(dt);
       this.interact.update(dt);
       try { if (this.config.update) this.config.update(this, dt); } catch (err) { console.error('update 出错', err); }
@@ -783,6 +825,10 @@ export class HorrorGame {
     }
 
     this._updateDoors(dt);
+    if(this._doorAnims.length || !this._lastShadowUpdate || this.time-this._lastShadowUpdate>.2) {
+      this.renderer.shadowMap.needsUpdate=true;
+      this._lastShadowUpdate=this.time;
+    }
     this._updateLightFlicker(dt);
 
     this._sanitySmooth = damp(this._sanitySmooth, this.sanity, 3.5, dt);
@@ -793,12 +839,16 @@ export class HorrorGame {
     u.uThreat.value = this._threatSmooth;
     // Keep the low-resolution texture language, but let near-view material
     // and silhouettes survive the screen-space grain at rest.
-    u.uGrain.value = 0.035 + this._sanitySmooth * 0.065 + this._threatSmooth * 0.025;
-    u.uChroma.value = 0.8 + this._sanitySmooth * 2.6;
-    u.uVignette.value = 0.44 + this._sanitySmooth * 0.25 + this._threatSmooth * 0.1;
+    u.uGrain.value = 0.009 + this._sanitySmooth * 0.035 + this._threatSmooth * 0.02;
+    u.uChroma.value = 0.22 + this._sanitySmooth * 2.6;
+    u.uVignette.value = 0.32 + this._sanitySmooth * 0.25 + this._threatSmooth * 0.1;
 
     if (this.mirror && this.state !== 'title') {
+      // Reflection and main scene have separate light clones / shadow maps.
+      // A reflection pass must not consume the main scene's refresh request.
+      const refreshShadows=this.renderer.shadowMap.needsUpdate;
       try { this.mirror.update(this.time, dt); } catch (err) { console.warn('mirror 渲染失败', err); this.mirror = null; }
+      finally { this.renderer.shadowMap.needsUpdate=refreshShadows; }
     }
     this.postfx.render(this.scene, this.camera);
   }

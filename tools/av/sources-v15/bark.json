@@ -1,0 +1,10 @@
+{
+  "name": "bark",
+  "model": "Z-Image-Turbo bf16 loaded as fp8_e4m3fn",
+  "seed": 2026102207,
+  "prompt": "Rough aged tree bark, deep vertical fissures, charcoal brown and cool grey ridges, occasional dusty green lichen. Broad irregular natural ridges and fine fibrous details. Bark surface fills image.",
+  "job": {
+    "prompt_id": "bfa6990a-d28d-4219-8661-4c44ca07ac4a",
+    "elapsed_seconds": 46.39
+  }
+}

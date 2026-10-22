@@ -1,0 +1,10 @@
+{
+  "name": "plaster",
+  "model": "Z-Image-Turbo bf16 loaded as fp8_e4m3fn",
+  "seed": 2026102200,
+  "prompt": "Weathered lime plaster from a 1980s Chinese residential stairwell. Faded warm ivory paint, broad irregular peeling areas exposing grey lime, soft damp tide marks, small chips and hairline cracks. No graffiti. Large quiet patches between wear. Authentic unrenovated building material.",
+  "job": {
+    "prompt_id": "e9b07343-553f-4f76-8bd0-a379f926bbe4",
+    "elapsed_seconds": 80.06
+  }
+}

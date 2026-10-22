@@ -1,0 +1,10 @@
+{
+  "name": "wood_door",
+  "model": "Z-Image-Turbo bf16 loaded as fp8_e4m3fn",
+  "seed": 2026102204,
+  "prompt": "Aged reddish brown Chinese plywood apartment door surface. Vertical straight wood veneer grain, broad worn varnish, shallow scratches and rubbed lighter patches, muted dark red brown. No handle, no frame, no numbers.",
+  "job": {
+    "prompt_id": "522de37e-af12-467c-ba58-0c967761b0b3",
+    "elapsed_seconds": 44.14
+  }
+}

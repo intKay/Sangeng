@@ -1,0 +1,10 @@
+{
+  "name": "grass",
+  "model": "Z-Image-Turbo bf16 loaded as fp8_e4m3fn",
+  "seed": 2026102209,
+  "prompt": "A top down ground material of short dark rural field grass, small thin sparse blades growing through brown earth, natural patchy ground coverage, subdued moss olive green, dry pale straw mixed into grass. No tall plants, no individual large leaves.",
+  "job": {
+    "prompt_id": "f8b1e356-bdd0-431a-9cce-689db011a955",
+    "elapsed_seconds": 58.5
+  }
+}

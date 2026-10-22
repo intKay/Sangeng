@@ -1,0 +1,9 @@
+{
+  "model": "Stable Audio Open 1.0",
+  "seed": 2026102280,
+  "prompt": "Quiet old apartment corridor at night, steady low electrical fluorescent hum, distant ventilation rattling, a faint hollow indoor room tone, realistic field recording, no music no speech no voices no melody",
+  "job": {
+    "prompt_id": "1509bb0c-5ffe-41fa-8fbb-14fc0b30fe77",
+    "elapsed_seconds": 53.69
+  }
+}

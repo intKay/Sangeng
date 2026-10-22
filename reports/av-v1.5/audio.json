@@ -1,0 +1,57 @@
+[
+  {
+    "file": "door/ambience/corridor_hum.ogg",
+    "source": "tools\\av\\sources-v15\\corridor.flac",
+    "seconds": 30.0,
+    "rmsDbFS": -20.782837745879554,
+    "peakDbFS": -9.761580447292197,
+    "seamRatio": 4.321560437199796,
+    "neuralCoefficient": 0.85,
+    "baselineCoefficient": 0.25,
+    "humanListeningAccepted": false
+  },
+  {
+    "file": "mirror/ambience/fluorescent_buzz.ogg",
+    "source": "tools\\av\\sources-v15\\bathhouse.flac",
+    "seconds": 20.0,
+    "rmsDbFS": -20.874482611755482,
+    "peakDbFS": -5.524598168102555,
+    "seamRatio": 1.4524464845050071,
+    "neuralCoefficient": 0.85,
+    "baselineCoefficient": 0.25,
+    "humanListeningAccepted": false
+  },
+  {
+    "file": "door/ambience/rain_window.ogg",
+    "source": "tools\\av\\sources\\door-rain_window.flac",
+    "seconds": 30.0,
+    "rmsDbFS": -20.923987177444133,
+    "peakDbFS": -4.759583804164377,
+    "seamRatio": 0.4827323390150097,
+    "neuralCoefficient": 0.85,
+    "baselineCoefficient": 0.25,
+    "humanListeningAccepted": false
+  },
+  {
+    "file": "mirror/ambience/distant_water.ogg",
+    "source": "tools\\av\\sources\\mirror-distant_water.flac",
+    "seconds": 30.0,
+    "rmsDbFS": -21.58955380446025,
+    "peakDbFS": -2.172663057371425,
+    "seamRatio": 1.5301974716009163,
+    "neuralCoefficient": 0.85,
+    "baselineCoefficient": 0.25,
+    "humanListeningAccepted": false
+  },
+  {
+    "file": "nightroad/ambience/wind_field.ogg",
+    "source": "tools\\av\\sources\\nightroad-wind_field.flac",
+    "seconds": 30.0,
+    "rmsDbFS": -20.896916341374666,
+    "peakDbFS": -3.9306658855204897,
+    "seamRatio": 0.673530102429506,
+    "neuralCoefficient": 0.85,
+    "baselineCoefficient": 0.25,
+    "humanListeningAccepted": false
+  }
+]

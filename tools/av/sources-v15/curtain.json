@@ -1,0 +1,10 @@
+{
+  "name": "curtain",
+  "model": "Z-Image-Turbo bf16 loaded as fp8_e4m3fn",
+  "seed": 2026102208,
+  "prompt": "Old faded beige woven cotton cloth with a very small subtle muted green repeating floral print, visible coarse soft fabric weave, sun faded irregular patches and light brown age marks. Flat fabric surface with no folds, no scene, no vertical striped pattern.",
+  "job": {
+    "prompt_id": "11f91d6e-d440-4ac0-b913-f8a2afda0b86",
+    "elapsed_seconds": 46.11
+  }
+}

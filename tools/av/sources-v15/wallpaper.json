@@ -1,0 +1,10 @@
+{
+  "name": "wallpaper",
+  "model": "Z-Image-Turbo bf16 loaded as fp8_e4m3fn",
+  "seed": 2026102201,
+  "prompt": "Faded vintage Chinese apartment wallpaper, small sparse sage green floral sprigs on yellowed cream paper. Frayed paper fibers, curling small tears and pale damp marks. Quiet modest 1980s home. Small repeated flowers, no large central motif.",
+  "job": {
+    "prompt_id": "f27cd28e-2082-4838-b288-0f88f5f2bdb7",
+    "elapsed_seconds": 38.19
+  }
+}

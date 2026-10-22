@@ -1,10 +1,10 @@
-三更 GLB validation  2026-10-22 13:09:34
+三更 GLB validation  2026-10-22 13:40:54
 ASSET_SPEC: horror-demos/docs/ASSET_SPEC.md
 ==============================================================================
 SCENE: door   (door.glb)
 ==============================================================================
 file      : C:\AIProjects\文艺漫游\.scratch\sangeng-publish\assets\models\door.glb
-size      : 692.5 KB
+size      : 895.5 KB
 meshes    : 97   tris: 8764   (target <= 6000, cap <= 9000)
 materials : 43  -> MAT_calendar, MAT_child_drawing, MAT_clock_face, MAT_concrete, MAT_couplet, MAT_curtain, MAT_door_number_501, MAT_door_number_502, MAT_door_number_503, MAT_door_number_504, MAT_entity_hair, MAT_entity_white, MAT_fabric_blue, MAT_fabric_red, MAT_fabric_white, MAT_glass_dirty, MAT_handprint, MAT_lamp_tube, MAT_lamp_warm, MAT_metal_locker, MAT_metal_rust, MAT_mirror_grime, MAT_notice_board, MAT_paint_ceiling, MAT_paper, MAT_photo, MAT_photo_family_1, MAT_photo_family_2, MAT_photo_family_3, MAT_plaster, MAT_red_cloth, MAT_stain_mold, MAT_stain_water, MAT_tile_floor, MAT_tile_white, MAT_tv_static, MAT_wallpaper, MAT_wallpaper_dark, MAT_window_night, MAT_wood_dark, MAT_wood_door, MAT_wood_floor, MAT_wood_pale
 nodes     : 115   empties: 18
@@ -24,7 +24,7 @@ spawn/look pairs: 3/3
 SCENE: mirror   (mirror.glb)
 ==============================================================================
 file      : C:\AIProjects\文艺漫游\.scratch\sangeng-publish\assets\models\mirror.glb
-size      : 403.1 KB
+size      : 548.0 KB
 meshes    : 127   tris: 4716   (target <= 5000, cap <= 7000)
 materials : 31  -> MAT_bath_notice, MAT_bath_poster, MAT_bath_ticket, MAT_clock_face, MAT_concrete, MAT_entity_hair, MAT_entity_white, MAT_fabric_blue, MAT_fabric_red, MAT_fabric_white, MAT_handprint, MAT_lamp_tube, MAT_lamp_warm, MAT_metal_locker, MAT_metal_rust, MAT_mirror_crack, MAT_mirror_grime, MAT_notice_board, MAT_paint_ceiling, MAT_paper, MAT_plaster, MAT_sign_bath, MAT_stain_mold, MAT_stain_water, MAT_steam, MAT_tile_floor, MAT_tile_green, MAT_tile_white, MAT_window_night, MAT_wood_dark, MAT_wood_pale
 nodes     : 138   empties: 11
@@ -43,7 +43,7 @@ spawn/look pairs: 1/1
 SCENE: nightroad   (nightroad.glb)
 ==============================================================================
 file      : C:\AIProjects\文艺漫游\.scratch\sangeng-publish\assets\models\nightroad.glb
-size      : 466.0 KB
+size      : 643.5 KB
 meshes    : 60   tris: 5710   (target <= 9000, cap <= 12000)
 materials : 22  -> MAT_bark, MAT_concrete, MAT_entity_face, MAT_entity_hair, MAT_fabric_white, MAT_glass_dirty, MAT_grass, MAT_lamp_warm, MAT_lantern_paper, MAT_leaves, MAT_metal_rust, MAT_paper, MAT_paper_money, MAT_plaster, MAT_red_cloth, MAT_shrine_tablet, MAT_shrine_wood, MAT_sign_night_1, MAT_sign_night_2, MAT_soil, MAT_stone, MAT_wood_dark
 nodes     : 64   empties: 4

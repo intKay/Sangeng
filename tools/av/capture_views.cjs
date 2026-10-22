@@ -2,10 +2,11 @@
 const {chromium}=require('playwright');
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
 const stage=process.argv[2]||'after';
-const out=path.resolve('reports/av-v1.4',stage);fs.mkdirSync(out,{recursive:true});
+const out=path.resolve(process.env.SANGENG_AV_REPORT||'reports/av-v1.4',stage);fs.mkdirSync(out,{recursive:true});
 const base=process.env.SANGENG_AV_URL||'http://127.0.0.1:8138';
 (async()=>{
- const browser=await chromium.launch({headless:true});
+ const hardware=process.env.SANGENG_AV_HARDWARE==='1';
+ const browser=await chromium.launch(hardware?{channel:'msedge',headless:true,args:['--use-angle=d3d11','--enable-gpu']}:{headless:true});
  const context=await browser.newContext({viewport:{width:1280,height:800},deviceScaleFactor:1});
  await context.addInitScript(()=>{
   const original=AudioNode.prototype.connect;
@@ -27,15 +28,26 @@ const base=process.env.SANGENG_AV_URL||'http://127.0.0.1:8138';
    await page.waitForTimeout(1300);
    const resources=await page.evaluate(()=>{
     const g=__SANGENG__,gl=g.renderer.getContext(),debug=gl.getExtension('WEBGL_debug_renderer_info');
-    return {textures:g.textures.size,audioMissing:g.audio.missing,placeholder:!!g.placeholder,state:g.state,gpu:debug?gl.getParameter(debug.UNMASKED_RENDERER_WEBGL):'unavailable'};
+    let coloredMeshes=0;g.level.traverse(o=>{if(o.geometry?.attributes.color)coloredMeshes++;});
+    return {textures:g.textures.size,bumpTextures:g.bumpTextures?.size||0,coloredMeshes,
+      shadowLights:g._lightEntries.filter(e=>e.light.castShadow).length,roomProfile:g.audio.roomProfile,
+      audioMissing:g.audio.missing,placeholder:!!g.placeholder,state:g.state,gpu:debug?gl.getParameter(debug.UNMASKED_RENDERER_WEBGL):'unavailable'};
    });
    assert.equal(resources.textures,62);assert.deepEqual(resources.audioMissing,[]);assert(!resources.placeholder);
    await page.screenshot({path:path.join(out,id+'-entry.jpg'),type:'jpeg',quality:88});
    const frames=await page.evaluate(async()=>{
-    const r=__SANGENG__.renderer,times=[],autoReset=r.info.autoReset;r.info.autoReset=false;let last=performance.now(),calls=0,tris=0;
+    const g=__SANGENG__,r=g.renderer,times=[],autoReset=r.info.autoReset;r.info.autoReset=false;let last=performance.now(),calls=0,tris=0;
+    const shadowRender=r.shadowMap.render,shadowScenes=new Set();
+    r.shadowMap.render=function(lights,scene,camera){if(this.needsUpdate)shadowScenes.add(scene.uuid);return shadowRender.call(this,lights,scene,camera);};
     for(let i=0;i<50;i++){r.info.reset();await new Promise(requestAnimationFrame);const now=performance.now();if(i>=5)times.push(now-last);last=now;calls=Math.max(calls,r.info.render.calls);tris=Math.max(tris,r.info.render.triangles);}
-    r.info.autoReset=autoReset;times.sort((a,b)=>a-b);return {medianMs:times[22],p95Ms:times[42],calls,triangles:tris};
+    r.shadowMap.render=shadowRender;r.info.autoReset=autoReset;times.sort((a,b)=>a-b);
+    return {medianMs:times[22],p95Ms:times[42],calls,triangles:tris,mainShadowRefreshed:shadowScenes.has(g.scene.uuid),reflectionShadowRefreshed:g.reflectionScene?shadowScenes.has(g.reflectionScene.uuid):null};
    });
+   if(hardware&&stage==='after'){
+    assert.equal(resources.bumpTextures,16);assert(resources.coloredMeshes>20);
+    assert(frames.mainShadowRefreshed);
+    if(id==='mirror')assert(frames.reflectionShadowRefreshed,'reflection must not consume main shadow refresh');
+   }
    const audio=await page.evaluate(async()=>{
     const a=__SANGENG__.audio,an=a.ctx.createAnalyser();an.fftSize=2048;
     window.__SG_FINAL_AUDIO_NODE.connect(an);

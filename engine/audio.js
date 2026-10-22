@@ -141,11 +141,17 @@ export class AudioManager {
       this.buses[name] = g;
     }
 
-    // 混响：合成的暗房间脉冲
+    // Different acoustic spaces; outdoor wind must not inherit bathhouse tails.
+    const profiles = {
+      door: { seconds: 1.65, decay: 3.1, wet: .27 },
+      mirror: { seconds: 3.3, decay: 2.6, wet: .46 },
+      nightroad: { seconds: .48, decay: 4.2, wet: .07 },
+    };
+    this.roomProfile = profiles[this.manifest?.id] || profiles.door;
     this.reverb = ctx.createConvolver();
-    this.reverb.buffer = this._impulse(2.6, 2.4);
+    this.reverb.buffer = this._impulse(this.roomProfile.seconds, this.roomProfile.decay);
     const wet = ctx.createGain();
-    wet.gain.value = 0.5;
+    wet.gain.value = this.roomProfile.wet;
     this.reverb.connect(wet);
     wet.connect(this.master);
     this.reverbSend = {};
@@ -241,11 +247,11 @@ export class AudioManager {
     return this.entries[cat] && this.entries[cat][key] ? this.entries[cat][key] : null;
   }
 
-  _makePanner(pos) {
+  _makePanner(pos, opts = {}) {
     const p = this.ctx.createPanner();
     p.panningModel = 'HRTF';
     p.distanceModel = 'inverse';
-    p.refDistance = 1.4;
+    p.refDistance = opts.refDistance || 1.4;
     p.maxDistance = 30;
     p.rolloffFactor = 1.4;
     if (p.positionX) {
@@ -290,8 +296,10 @@ export class AudioManager {
     gain.gain.setValueAtTime(0.0001, ctx.currentTime);
     gain.gain.linearRampToValueAtTime(target, ctx.currentTime + attack);
     let dest = gain;
+    let panner = null;
     if (opts.pos) {
-      const p = this._makePanner(opts.pos);
+      const p = this._makePanner(opts.pos, opts);
+      panner = p;
       gain.connect(p);
       dest = p;
     }
@@ -314,7 +322,7 @@ export class AudioManager {
       // nothing; ended cleanup
     }
     const handle = {
-      source: src, gain, entry,
+      source: src, gain, entry, panner,
       setVolume: (v) => gain.gain.setTargetAtTime(Math.max(0.0001, v), ctx.currentTime, 0.05),
       stop: (fade = 0.15) => {
         try {
@@ -361,7 +369,8 @@ export class AudioManager {
     const old = this.ambiences.get(channel);
     if (old && old.key === key) return old.handle;
     if (old) { old.handle.stop(opts.fade == null ? 2 : opts.fade); this.ambiences.delete(channel); }
-    const handle = this._play(entry, { loop: true, volume: opts.volume == null ? 1 : opts.volume, attack: 1.2, wet: 0.35, category: 'ambience' });
+    const handle = this._play(entry, { loop: true, volume: opts.volume == null ? 1 : opts.volume, attack: 1.2,
+      wet: opts.wet == null ? 0.22 : opts.wet, pos: opts.pos, refDistance: opts.refDistance, category: 'ambience' });
     if (!handle) return null;
     this.ambiences.set(channel, { key, handle });
     return handle;

@@ -242,7 +242,7 @@ const config = {
   audio: '../../assets/audio/door/manifest.json',
   footstepSfx: 'stepWood',
   flashlight: { batterySeconds: 120, intensity: 2.2 },
-  ambient: { color: 0x232f28, intensity: 0.36 },
+  ambient: { color: 0x8b9b88, intensity: 0.28 },
   fog: { color: 0x070a08, density: 0.05 },
   theme: { accent: '#c9a55a', ink: '#d8d2c0', bg: '#060807' },
   playerStart: { spawn: 'SPAWN_corridor', look: 'LOOK_corridor' },
@@ -427,7 +427,8 @@ const config = {
     game.player.teleportTo('SPAWN_corridor', 'LOOK_corridor');
     game.audio.playMusic('main', { fade: 3 });
     game.audio.playAmbience('corridor', { channel: 'main', fade: 2 });
-    game.audio.playAmbience('rainWindow', { channel: 'extra', fade: 2, volume: 0.4 });
+    game.audio.playAmbience('rainWindow', { channel: 'window', fade: 2, volume: 0.95,
+      pos: new THREE.Vector3(1.05, 1.9, 14), refDistance: 4, wet: .12 });
     game.ui.setObjective('回到 503');
     game.ui.setBattery(null);
     game.ui.subtitle('每年回来一次。今年，门没锁。', 4.4);
@@ -587,7 +588,8 @@ function afterLetter(game, index) {
     game.player.teleportTo('SPAWN_corridor', 'LOOK_corridor');
     if (state.doors['503'] && !state.doors['503'].isOpen) state.doors['503'].open(true);
     game.audio.playAmbience('corridor', { channel: 'main', fade: 1.5 });
-    game.audio.playAmbience('rainWindow', { channel: 'extra', fade: 1.5, volume: 0.4 });
+    game.audio.playAmbience('rainWindow', { channel: 'window', fade: 1.5, volume: 0.95,
+      pos: new THREE.Vector3(1.05, 1.9, 14), refDistance: 4, wet: .12 });
     game.ui.setObjective('再回 503 看看');
     game.ui.subtitle(LOOP_HINTS[next] || '灯灭了。你又站在楼道里。', 3.6);
     if (next === 2) {

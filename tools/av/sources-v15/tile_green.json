@@ -1,0 +1,10 @@
+{
+  "name": "tile_green",
+  "model": "Z-Image-Turbo bf16 loaded as fp8_e4m3fn",
+  "seed": 2026102202,
+  "prompt": "Old square jade green glazed ceramic tiles in a Chinese public bathhouse, straight uniform horizontal and vertical dark grout, worn glossy glaze, white mineral tide marks, subtle fine cracks, damp mottling. Four by four square tiles filling the entire image.",
+  "job": {
+    "prompt_id": "fbe0d0f0-2ec7-4770-a9ea-04ad32530db7",
+    "elapsed_seconds": 44.17
+  }
+}

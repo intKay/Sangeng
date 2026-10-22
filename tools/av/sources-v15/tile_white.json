@@ -1,0 +1,10 @@
+{
+  "name": "tile_white",
+  "model": "Z-Image-Turbo bf16 loaded as fp8_e4m3fn",
+  "seed": 2026102210,
+  "prompt": "Old small square off-white glazed ceramic tiles from a Chinese bathhouse sink, straight regular four by four grid with narrow dark grey grout. Ivory worn glaze, tiny crazing, subtle pale mineral stains, realistic scale. Surface fills frame.",
+  "job": {
+    "prompt_id": "1c62e136-7f65-4b28-91d7-ca289c351406",
+    "elapsed_seconds": 36.3
+  }
+}

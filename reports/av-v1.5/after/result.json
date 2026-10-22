@@ -1,0 +1,148 @@
+{
+  "stage": "after",
+  "errors": [],
+  "results": [
+    {
+      "id": "door",
+      "resources": {
+        "textures": 62,
+        "bumpTextures": 16,
+        "coloredMeshes": 122,
+        "shadowLights": 1,
+        "roomProfile": {
+          "seconds": 1.65,
+          "decay": 3.1,
+          "wet": 0.27
+        },
+        "audioMissing": [],
+        "placeholder": false,
+        "state": "playing",
+        "gpu": "ANGLE (NVIDIA, NVIDIA GeForce RTX 3050 Laptop GPU (0x000025E2) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+      },
+      "frames": {
+        "medianMs": 6.9000000059604645,
+        "p95Ms": 7.299999997019768,
+        "calls": 173,
+        "triangles": 11224,
+        "mainShadowRefreshed": true,
+        "reflectionShadowRefreshed": null
+      },
+      "audio": {
+        "playing": 0.07642363604908825,
+        "paused": 0,
+        "pausedContext": "suspended",
+        "contextState": "suspended",
+        "scope": "final gate measured even with context forcibly resumed while paused"
+      },
+      "resumed": "running",
+      "assistedFraming": {
+        "name": "INT_thermos",
+        "center": [
+          3.654229521751404,
+          1.1044999659061432,
+          9.050000190734863
+        ],
+        "position": [
+          4.0042295217514035,
+          0,
+          8.400000190734863
+        ]
+      }
+    },
+    {
+      "id": "mirror",
+      "resources": {
+        "textures": 62,
+        "bumpTextures": 16,
+        "coloredMeshes": 140,
+        "shadowLights": 1,
+        "roomProfile": {
+          "seconds": 3.3,
+          "decay": 2.6,
+          "wet": 0.46
+        },
+        "audioMissing": [],
+        "placeholder": false,
+        "state": "playing",
+        "gpu": "ANGLE (NVIDIA, NVIDIA GeForce RTX 3050 Laptop GPU (0x000025E2) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+      },
+      "frames": {
+        "medianMs": 6.800000011920929,
+        "p95Ms": 7.799999997019768,
+        "calls": 458,
+        "triangles": 14138,
+        "mainShadowRefreshed": true,
+        "reflectionShadowRefreshed": true
+      },
+      "audio": {
+        "playing": 0.08532390856039812,
+        "paused": 0,
+        "pausedContext": "suspended",
+        "contextState": "suspended",
+        "scope": "final gate measured even with context forcibly resumed while paused"
+      },
+      "resumed": "running",
+      "assistedFraming": {
+        "name": "S_basin",
+        "center": [
+          -0.5799999833106995,
+          0.5324999690055847,
+          0.42000000178813934
+        ],
+        "position": [
+          0.07000001668930056,
+          0,
+          1.4200000017881393
+        ]
+      }
+    },
+    {
+      "id": "nightroad",
+      "resources": {
+        "textures": 62,
+        "bumpTextures": 16,
+        "coloredMeshes": 97,
+        "shadowLights": 0,
+        "roomProfile": {
+          "seconds": 0.48,
+          "decay": 4.2,
+          "wet": 0.07
+        },
+        "audioMissing": [],
+        "placeholder": false,
+        "state": "playing",
+        "gpu": "ANGLE (NVIDIA, NVIDIA GeForce RTX 3050 Laptop GPU (0x000025E2) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+      },
+      "frames": {
+        "medianMs": 7,
+        "p95Ms": 7.299999997019768,
+        "calls": 89,
+        "triangles": 4768,
+        "mainShadowRefreshed": true,
+        "reflectionShadowRefreshed": null
+      },
+      "audio": {
+        "playing": 0.08428054863927636,
+        "paused": 0,
+        "pausedContext": "suspended",
+        "contextState": "suspended",
+        "scope": "final gate measured even with context forcibly resumed while paused"
+      },
+      "resumed": "running",
+      "assistedFraming": {
+        "name": "INT_lantern_01",
+        "center": [
+          3.172923043370247,
+          0.949999988079071,
+          12
+        ],
+        "position": [
+          3.822923043370247,
+          0,
+          13
+        ]
+      }
+    }
+  ],
+  "scope": "real production browser; detail framing is assisted; no human listening acceptance"
+}

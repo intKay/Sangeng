@@ -1,0 +1,130 @@
+[
+  {
+    "material": "MAT_plaster",
+    "source": "av14_plaster.png",
+    "file": "av15_plaster.jpg",
+    "bump": "av15_plaster_height.png",
+    "meanPixelDifference": 32.75163141886393,
+    "generatedSource": "tools\\av\\sources-v15\\plaster.png"
+  },
+  {
+    "material": "MAT_paint_ceiling",
+    "source": "paint_ceiling.jpg",
+    "file": "av15_plaster.jpg",
+    "bump": "av15_plaster_height.png",
+    "meanPixelDifference": 24.327880859375,
+    "generatedSource": "tools\\av\\sources-v15\\plaster.png"
+  },
+  {
+    "material": "MAT_wallpaper",
+    "source": "av14_wallpaper.png",
+    "file": "av15_wallpaper.jpg",
+    "bump": "av15_wallpaper_height.png",
+    "meanPixelDifference": 14.38339360555013,
+    "generatedSource": "tools\\av\\sources-v15\\wallpaper.png"
+  },
+  {
+    "material": "MAT_wallpaper_dark",
+    "source": "av14_wallpaper_dark.png",
+    "file": "av15_wallpaper.jpg",
+    "bump": "av15_wallpaper_height.png",
+    "meanPixelDifference": 46.1366221110026,
+    "generatedSource": "tools\\av\\sources-v15\\wallpaper.png"
+  },
+  {
+    "material": "MAT_tile_green",
+    "source": "av14_tile_green.png",
+    "file": "av15_tile_green.jpg",
+    "bump": "av15_tile_green_height.png",
+    "meanPixelDifference": 27.90530776977539,
+    "generatedSource": "tools\\av\\sources-v15\\tile_green.png"
+  },
+  {
+    "material": "MAT_tile_floor",
+    "source": "tile_floor.jpg",
+    "file": "av15_tile_floor.jpg",
+    "bump": "av15_tile_floor_height.png",
+    "meanPixelDifference": 61.03070322672526,
+    "generatedSource": "tools\\av\\sources-v15\\tile_floor.png"
+  },
+  {
+    "material": "MAT_wood_door",
+    "source": "wood_door.jpg",
+    "file": "av15_wood_door.jpg",
+    "bump": "av15_wood_door_height.png",
+    "meanPixelDifference": 16.406056722005207,
+    "generatedSource": "tools\\av\\sources-v15\\wood_door.png"
+  },
+  {
+    "material": "MAT_wood_dark",
+    "source": "wood_dark.jpg",
+    "file": "av15_wood_door.jpg",
+    "bump": "av15_wood_door_height.png",
+    "meanPixelDifference": 24.47974141438802,
+    "generatedSource": "tools\\av\\sources-v15\\wood_door.png"
+  },
+  {
+    "material": "MAT_shrine_wood",
+    "source": "shrine_wood.jpg",
+    "file": "av15_wood_door.jpg",
+    "bump": "av15_wood_door_height.png",
+    "meanPixelDifference": 12.237800598144531,
+    "generatedSource": "tools\\av\\sources-v15\\wood_door.png"
+  },
+  {
+    "material": "MAT_wood_pale",
+    "source": "av14_wood_pale.png",
+    "file": "av15_wood_pale.jpg",
+    "bump": "av15_wood_pale_height.png",
+    "meanPixelDifference": 51.607470194498696,
+    "generatedSource": "tools\\av\\sources-v15\\wood_pale.png"
+  },
+  {
+    "material": "MAT_wood_floor",
+    "source": "wood_floor.jpg",
+    "file": "av15_wood_pale.jpg",
+    "bump": "av15_wood_pale_height.png",
+    "meanPixelDifference": 55.18765131632487,
+    "generatedSource": "tools\\av\\sources-v15\\wood_pale.png"
+  },
+  {
+    "material": "MAT_soil",
+    "source": "soil.jpg",
+    "file": "av15_soil.jpg",
+    "bump": "av15_soil_height.png",
+    "meanPixelDifference": 15.46975072224935,
+    "generatedSource": "tools\\av\\sources-v15\\soil.png"
+  },
+  {
+    "material": "MAT_bark",
+    "source": "bark.jpg",
+    "file": "av15_bark.jpg",
+    "bump": "av15_bark_height.png",
+    "meanPixelDifference": 30.74340565999349,
+    "generatedSource": "tools\\av\\sources-v15\\bark.png"
+  },
+  {
+    "material": "MAT_curtain",
+    "source": "curtain.jpg",
+    "file": "av15_curtain.jpg",
+    "bump": "av15_curtain_height.png",
+    "meanPixelDifference": 30.4081548055013,
+    "generatedSource": "tools\\av\\sources-v15\\curtain.png"
+  },
+  {
+    "material": "MAT_grass",
+    "source": "grass.jpg",
+    "file": "av15_grass.jpg",
+    "bump": "av15_grass_height.png",
+    "meanPixelDifference": 21.09312693277995,
+    "generatedSource": "tools\\av\\sources-v15\\grass.png"
+  },
+  {
+    "material": "MAT_tile_white",
+    "source": "tile_white.jpg",
+    "file": "av15_tile_white.jpg",
+    "bump": "av15_tile_white_height.png",
+    "meanPixelDifference": 33.484474182128906,
+    "generatedSource": "tools\\av\\sources-v15\\tile_white.png"
+  }
+]

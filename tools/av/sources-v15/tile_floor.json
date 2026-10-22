@@ -1,0 +1,10 @@
+{
+  "name": "tile_floor",
+  "model": "Z-Image-Turbo bf16 loaded as fp8_e4m3fn",
+  "seed": 2026102203,
+  "prompt": "Old small square ivory and dark green ceramic mosaic floor in a Chinese apartment stairwell, broad repeated checker pattern, chipped corners, dirty dark grout and grey dust along seams. Flat top view, uniform tile scale. Four by four tiles filling the entire image.",
+  "job": {
+    "prompt_id": "af9c1a3e-0df2-4421-bc90-d007085d5281",
+    "elapsed_seconds": 48.09
+  }
+}

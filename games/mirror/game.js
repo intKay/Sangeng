@@ -1138,8 +1138,10 @@ function syncAudio() {
   updateMusic();
   if (!a.ready) return;
   a.playAmbience('fluorescent', { channel: 'main', fade: 2.2 });
-  a.playAmbience('waterDrip', { channel: 'extra', fade: 2.2, volume: 0.6 });
-  a.playAmbience('distantWater', { channel: 'far', fade: 2.2, volume: 0.45 });
+  a.playAmbience('waterDrip', { channel: 'extra', fade: 2.2, volume: 0.8,
+    pos: new THREE.Vector3(-.6, .5, .4), refDistance: 2.5, wet: .55 });
+  a.playAmbience('distantWater', { channel: 'far', fade: 2.2, volume: 0.85,
+    pos: new THREE.Vector3(3.1, 1.0, -.4), refDistance: 3, wet: .35 });
   syncLoops();
 }
 

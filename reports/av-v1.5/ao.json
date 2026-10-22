@@ -1,0 +1,29 @@
+[
+  {
+    "chapter": "door",
+    "samples": 24,
+    "radiusMeters": 0.65,
+    "min": 0.6,
+    "mean": 0.7161389019089188,
+    "coloredCorners": 19752,
+    "scope": "static geometric occlusion; no topology or collision modification"
+  },
+  {
+    "chapter": "mirror",
+    "samples": 24,
+    "radiusMeters": 0.65,
+    "min": 0.6,
+    "mean": 0.7440345878533504,
+    "coloredCorners": 11772,
+    "scope": "static geometric occlusion; no topology or collision modification"
+  },
+  {
+    "chapter": "nightroad",
+    "samples": 24,
+    "radiusMeters": 0.65,
+    "min": 0.6,
+    "mean": 0.8483444711229237,
+    "coloredCorners": 15786,
+    "scope": "static geometric occlusion; no topology or collision modification"
+  }
+]

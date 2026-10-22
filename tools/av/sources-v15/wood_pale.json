@@ -1,0 +1,10 @@
+{
+  "name": "wood_pale",
+  "model": "Z-Image-Turbo bf16 loaded as fp8_e4m3fn",
+  "seed": 2026102205,
+  "prompt": "Old honey beige plywood cabinet veneer, straight narrow grain, water rings, worn amber varnish, light grey scratches and a few chipped flakes. Cheap familiar domestic furniture. No handle, no frame.",
+  "job": {
+    "prompt_id": "4e4dea85-547a-46bc-a10f-d229c499921c",
+    "elapsed_seconds": 44.16
+  }
+}

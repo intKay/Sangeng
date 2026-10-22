@@ -1,0 +1,10 @@
+{
+  "name": "soil",
+  "model": "Z-Image-Turbo bf16 loaded as fp8_e4m3fn",
+  "seed": 2026102206,
+  "prompt": "Damp compacted dark brown rural footpath earth. Uneven fine gravel, small muddy clods, a few embedded pale stones, shallow irregular footprints and pressed straw fibers. Ground fills frame, natural quiet scale, no plants.",
+  "job": {
+    "prompt_id": "a7d79302-dc63-4cb3-81d0-84e51fb077d1",
+    "elapsed_seconds": 44.17
+  }
+}

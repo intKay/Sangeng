@@ -3,7 +3,7 @@
   "music": {
     "main": {
       "file": "music/main.ogg",
-      "volume": 0.5,
+      "volume": 0.34,
       "loop": true,
       "fade": 4.0
     },

@@ -1,0 +1,107 @@
+{
+  "models": [
+    {
+      "chapter": "door",
+      "gameplayNodesPreserved": 107,
+      "collisionBoundsPreserved": 37,
+      "trianglesUnchanged": 8764,
+      "coloredPrimitives": 122
+    },
+    {
+      "chapter": "mirror",
+      "gameplayNodesPreserved": 33,
+      "collisionBoundsPreserved": 12,
+      "trianglesUnchanged": 4716,
+      "coloredPrimitives": 140
+    },
+    {
+      "chapter": "nightroad",
+      "gameplayNodesPreserved": 28,
+      "collisionBoundsPreserved": 17,
+      "trianglesUnchanged": 5710,
+      "coloredPrimitives": 97
+    }
+  ],
+  "bumpMaterials": [
+    "MAT_wallpaper",
+    "MAT_wallpaper_dark",
+    "MAT_plaster",
+    "MAT_wood_floor",
+    "MAT_wood_door",
+    "MAT_wood_dark",
+    "MAT_wood_pale",
+    "MAT_paint_ceiling",
+    "MAT_tile_green",
+    "MAT_tile_white",
+    "MAT_tile_floor",
+    "MAT_curtain",
+    "MAT_soil",
+    "MAT_grass",
+    "MAT_bark",
+    "MAT_shrine_wood"
+  ],
+  "retainedSources": [
+    {
+      "file": "tools/av/sources-v15/bark.png",
+      "sha256": "c069c28d4ca2ecf0656df64f47efec27ced58c9099e29ffa31149f44e3768eb2"
+    },
+    {
+      "file": "tools/av/sources-v15/bathhouse.flac",
+      "sha256": "cc1704d0a90e1a8d579c08ad13dac500ed82e0fe5099361458495cca2b6d3e4b"
+    },
+    {
+      "file": "tools/av/sources-v15/corridor.flac",
+      "sha256": "2f5f206c80e67e83f05600f0609cd744d7b08f8c0c6b4d5a0978689a22422ad2"
+    },
+    {
+      "file": "tools/av/sources-v15/curtain.png",
+      "sha256": "a8f15942096eabf3d4fcd399b0209ac8f869c134a36a2884a82fe40674664a24"
+    },
+    {
+      "file": "tools/av/sources-v15/grass.png",
+      "sha256": "8757cb25fda1e31bbfeedc4133c76b118ea9beec69e70e175432e5c4bf0327d8"
+    },
+    {
+      "file": "tools/av/sources-v15/plaster.png",
+      "sha256": "97179082fd42f25421562951f376cad628e1ec2ed0cb615542688edc637013c2"
+    },
+    {
+      "file": "tools/av/sources-v15/soil.png",
+      "sha256": "8a5d7a2e53457d9baecfd31bbab1cc032759c210d69d3a5fce0f52d6e080a3ab"
+    },
+    {
+      "file": "tools/av/sources-v15/tile_floor.png",
+      "sha256": "f486a77edb818e47acb5b923fa0fa105219b6d08a969d867dbc2e058112e536e"
+    },
+    {
+      "file": "tools/av/sources-v15/tile_green.png",
+      "sha256": "015faf831bd6355d2b72935eeebd2c093f5465cca58f3ce89a7351f61c73eb02"
+    },
+    {
+      "file": "tools/av/sources-v15/tile_white.png",
+      "sha256": "b30f9bc0c8352b9d8573375fd70524ada8761b3eee86b2064b76f4d24f11c762"
+    },
+    {
+      "file": "tools/av/sources-v15/wallpaper.png",
+      "sha256": "7307af48afd87114386c70fdc64cc40fb57e9baf3dbded3b276493fc48aaba9f"
+    },
+    {
+      "file": "tools/av/sources-v15/wood_door.png",
+      "sha256": "49180d6d82ee25a68072e46169246ece55bfb58196862dc68bc80e3240355ffb"
+    },
+    {
+      "file": "tools/av/sources-v15/wood_pale.png",
+      "sha256": "0b72b6067acff413fe88a0f71087f802c3241977c924b8e92aef8f9031670ce4"
+    }
+  ],
+  "webBundle": {
+    "version": "1.5.0",
+    "name": "Sangeng-1.5.0-web.zip",
+    "sha256": "63c79fc937fabc84ab25702ad61bb984aaaeaebb6ad27fc3c7bf902dafb4d3ce",
+    "bytes": 36970202,
+    "itch_limits_checked": true,
+    "runtime_files": 368
+  },
+  "runtimeMatchesBundle": true,
+  "scope": "static geometry, transform, collision and texture verification; browser evidence is separate"
+}

@@ -6,4 +6,6 @@
 
 Three.js 及所附 addons 依 MIT 许可分发，完整声明见 [vendor/three/LICENSE](vendor/three/LICENSE)。Windows 下载 ZIP 同时附带该声明。
 
+1.5.0 候选另使用用户已下载的 [Comfy-Org Z-Image Turbo](https://huggingface.co/Comfy-Org/z_image_turbo) 在本机生成 11 份材质源，实际覆盖 16 个材质槽；Stable Audio Open 新生成两份声场并重混五条环境床。制作参数、原始生成源和实际运行证据见 [1.5 说明](docs/av_iteration_v1.5.md)。模型权重、账号与凭据不随仓库分发。
+
 本仓库只包含游戏及其开发资料，不包含制作环境的账号、私人兴趣档案、原始会话或凭据。

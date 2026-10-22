@@ -22,9 +22,9 @@
 door/music/main.ogg                           60.00  44100  2   -6.55  -20.49   0.45 OK
 door/music/tension.ogg                        45.00  44100  2   -7.38  -20.47   1.65 OK
 door/music/ending.ogg                         40.00  44100  2   -6.72  -19.96   0.00 OK
-door/ambience/corridor_hum.ogg                30.00  44100  2   -8.58  -20.53   0.03 OK
+door/ambience/corridor_hum.ogg                30.00  44100  2   -9.76  -20.78   1.41 OK
 door/ambience/room_tone.ogg                   30.00  44100  2   -3.97  -20.58   1.50 OK
-door/ambience/rain_window.ogg                 30.00  44100  2   -5.45  -21.45   0.42 OK
+door/ambience/rain_window.ogg                 30.00  44100  2   -4.76  -20.92   0.02 OK
 door/ambience/tv_static.ogg                   15.00  44100  2   -4.44  -21.22   0.49 OK
 door/sfx/step_wood_1.ogg                       0.34  44100  1   -2.10  -12.63   0.00 OK
 door/sfx/step_wood_2.ogg                       0.34  44100  1   -1.90  -10.82   0.00 OK
@@ -67,9 +67,9 @@ shared/ui_confirm.ogg                          0.26  44100  1   -4.65  -14.50   
 mirror/music/main.ogg                         60.00  44100  2   -5.80  -20.50   1.41 OK
 mirror/music/tension.ogg                      45.00  44100  2   -3.52  -20.50   0.77 OK
 mirror/music/ending.ogg                       35.00  44100  2   -1.24  -20.46   0.00 OK
-mirror/ambience/fluorescent_buzz.ogg          20.00  44100  2  -10.45  -20.51   0.59 OK
+mirror/ambience/fluorescent_buzz.ogg          20.00  44100  2   -5.52  -20.87   0.61 OK
 mirror/ambience/water_drip.ogg                30.00  44100  2   -2.75  -20.70   1.67 OK
-mirror/ambience/distant_water.ogg             30.00  44100  2   -5.82  -21.48   2.06 OK
+mirror/ambience/distant_water.ogg             30.00  44100  2   -2.17  -21.59   0.59 OK
 mirror/ambience/steam_hiss.ogg                15.00  44100  2   -5.33  -20.53   0.93 OK
 mirror/sfx/step_tile_1.ogg                     0.34  44100  1   -2.41  -19.72   0.00 OK
 mirror/sfx/step_tile_2.ogg                     0.34  44100  1   -1.89  -20.35   0.00 OK
@@ -106,7 +106,7 @@ mirror/sfx/blackout.ogg                        2.60  44100  1   -2.16  -18.73   
 nightroad/music/main.ogg                      60.00  44100  2   -7.43  -20.50   0.91 OK
 nightroad/music/tension.ogg                   45.00  44100  2  -10.39  -20.47   0.61 OK
 nightroad/music/ending.ogg                    40.00  44100  2   -3.90  -20.01   0.00 OK
-nightroad/ambience/wind_field.ogg             30.00  44100  2   -6.04  -21.39   0.29 OK
+nightroad/ambience/wind_field.ogg             30.00  44100  2   -3.93  -20.90   1.78 OK
 nightroad/ambience/insects.ogg                30.00  44100  2   -5.65  -20.64   0.23 OK
 nightroad/ambience/night_room_tone.ogg        30.00  44100  2   -9.45  -22.01   1.25 OK
 nightroad/ambience/distant_dog.ogg            12.00  44100  2   -7.63  -21.64   0.81 OK
@@ -144,11 +144,11 @@ nightroad/sfx/blackout.ogg                     2.40  44100  1   -1.91  -18.83   
 3) 汇总
 ------------------------------------------------------------------------------
   文件数: 121，总时长: 953.7s (15.9 min)
-  峰值范围: -10.45 ~ -1.10 dBFS（上限 -1）
+  峰值范围: -10.39 ~ -1.10 dBFS（上限 -1）
   音乐 RMS: -20.50 ~ -19.96 dBFS
-  环境 RMS: -22.01 ~ -20.51 dBFS
+  环境 RMS: -22.01 ~ -20.53 dBFS
   音效峰值: -2.95 ~ -1.10 dBFS
-  循环接缝 jump_rel: 平均 0.87，最差 door/sfx/heartbeat.ogg = 3.71（<6 视为听不出）
+  循环接缝 jump_rel: 平均 0.90，最差 door/sfx/heartbeat.ogg = 3.71（<6 视为听不出）
   分组文件数: door=41，mirror=39，nightroad=37，shared=4
 
 4) 结论

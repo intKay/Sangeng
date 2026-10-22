@@ -1,6 +1,6 @@
 # 三更 · SANGENG
 
-> 三个发生在中国的第一人称心理恐怖短篇：一间反复经过的老公寓、一面比你早到的镜子、一条送完葬还要走完的夜路。每篇 6–10 分钟，低多边形 3D，程序化贴图与合成声音；没有跳吓音效，没有血腥画面。
+> 三个发生在中国的第一人称心理恐怖短篇：一间反复经过的老公寓、一面比你早到的镜子、一条送完葬还要走完的夜路。每篇 6–10 分钟，低多边形 3D、旧物材质与空间声场；没有跳吓音效，没有血腥画面。
 
 [![itch.io](https://img.shields.io/badge/itch.io-在线游玩-c9a55a?style=flat-square)](https://kay-setsuna.itch.io/horror-demo)
 [![version](https://img.shields.io/badge/version-1.3.1-8a1e1e?style=flat-square)](https://github.com/intKay/Sangeng/releases/tag/v1.3.1)
@@ -15,11 +15,11 @@
 | 老公寓里的夜间探访 | 公共澡堂更衣室 | 乡野夜路上的灯火 |
 | 约 6–8 分钟 | 约 5–7 分钟 | 约 7–10 分钟 |
 
-## 1.4.0 音画候选
+## 1.5.0 音画候选
 
-候选分支 `codex/v1.4.0-audiovisual`：保持原有低多边形风格，调整颗粒、暗角与局部照明，补暖水瓶结构，并为三篇加入克制的材质细节和环境声。已实现 Blender → 本机 ComfyUI → Blender 材质往返，以及暂停时最终音频输出静音。
+候选分支 `codex/v1.5.0-audiovisual`：11 份 Z-Image 新生成源实际替换 16 种材质，加入表面凹凸、静态接触遮蔽、局部软阴影、湿面与更清晰的后期；五条环境声重混，三篇区分混响和声源方位。已在本机 RTX 3050 实际运行，并以正常按键完成走廊到公寓入口路线。
 
-运行 `python serve.py 8138` 后，打开 `http://127.0.0.1:8138/` 游玩；`http://127.0.0.1:8138/reports/av-v1.4/` 可审看前后画面与声音 A/B。[制作、验证范围与复现说明](docs/av_iteration_v1.4.md)。原版回退标签为 `codex/av-baseline-20261021`。本候选未替换下方 1.3.1 稳定发行，尚待真人试听与游玩确认。
+运行 `python serve.py 8139` 后，打开 `http://127.0.0.1:8139/` 游玩；`http://127.0.0.1:8139/reports/av-v1.5/` 可拖动对照前后画面并试听声音。[制作、验证范围与复现说明](docs/av_iteration_v1.5.md)。上一版回退标签为 `codex/av-v1.4-before-upgrade`，更早原版为 `codex/av-baseline-20261021`。本候选未替换下方 1.3.1 稳定发行，尚待真人试听与完整游玩确认；沿用旧画质设置时可在设置选择“清晰”。
 
 ## 下载游玩
 

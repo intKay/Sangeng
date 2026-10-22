@@ -455,7 +455,20 @@ function setupSky(game) {
   grad.addColorStop(1.0, '#' + fog.getHexString());
   ctx.fillStyle = grad;
   ctx.fillRect(0, 0, 4, 128);
-  const skyTex = new THREE.CanvasTexture(canvas);
+  // Sparse high clouds, with a periodic horizontal coordinate to avoid a
+  // visible sphere seam. The horizon stays dark enough to preserve silhouettes.
+  const cloudCanvas=document.createElement('canvas');cloudCanvas.width=512;cloudCanvas.height=256;
+  const cloudCtx=cloudCanvas.getContext('2d'),pixels=cloudCtx.createImageData(512,256);
+  for(let y=0;y<256;y++)for(let x=0;x<512;x++){
+    const u=x/511*Math.PI*2,v=y/255;
+    const bands=Math.sin(u*3+v*19)+.55*Math.sin(u*7-v*33)+.25*Math.sin(u*17+v*71);
+    const cloud=Math.pow(Math.max(0,(bands-.1)/1.7),2)*Math.sin(Math.PI*v)*.26;
+    const horizon=Math.pow(Math.max(0,1-Math.abs(v-.5)*2),4);
+    const i=(y*512+x)*4;
+    pixels.data[i]=5+cloud*37+horizon*2;pixels.data[i+1]=10+cloud*49+horizon*4;pixels.data[i+2]=18+cloud*67+horizon*7;pixels.data[i+3]=255;
+  }
+  cloudCtx.putImageData(pixels,0,0);
+  const skyTex = new THREE.CanvasTexture(cloudCanvas);
   skyTex.colorSpace = THREE.SRGBColorSpace;
 
   const dome = new THREE.Mesh(
@@ -487,14 +500,14 @@ function setupSky(game) {
   // 月亮 + 极淡月晕
   const moonDir = new THREE.Vector3(-0.34, 0.42, 0.84).normalize();
   const moon = new THREE.Mesh(
-    new THREE.CircleGeometry(1.5, 24),
-    new THREE.MeshBasicMaterial({ color: 0xdde8f8, fog: false, transparent: true, opacity: 0.85, depthWrite: false })
+    new THREE.CircleGeometry(.85, 32),
+    new THREE.MeshBasicMaterial({ color: 0xc4d1dc, fog: false, transparent: true, opacity: 0.82, depthWrite: false })
   );
   moon.renderOrder = -19;
   const halo = new THREE.Mesh(
-    new THREE.CircleGeometry(3.4, 28),
+    new THREE.CircleGeometry(2.5, 32),
     new THREE.MeshBasicMaterial({
-      color: 0x7fa4d8, fog: false, transparent: true, opacity: 0.07,
+      color: 0x7fa4d8, fog: false, transparent: true, opacity: 0.025,
       blending: THREE.AdditiveBlending, depthWrite: false,
     })
   );

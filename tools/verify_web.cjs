@@ -49,7 +49,9 @@ async function aim(frame, id) {
 const interactionState = (frame, id) => frame.evaluate(id => id === 'door' ? __DOOR__.state.doors['503'].isOpen : id === 'mirror' ? __MIRROR__.debug.info().world.towel : __NIGHT__.state.litCount, id);
 
 async function run(profile) {
-  const browser = await (profile.webkit ? webkit : chromium).launch({ headless: true });
+  const hardware = !profile.webkit && process.env.SANGENG_AV_HARDWARE === '1';
+  const browser = await (profile.webkit ? webkit : chromium).launch(hardware ?
+    { channel:'msedge', headless:true, args:['--use-angle=d3d11','--enable-gpu'] } : { headless: true });
   const context = await browser.newContext({ viewport: profile.size, isMobile: !!profile.touch, hasTouch: !!profile.touch, deviceScaleFactor: 1 });
   if (profile.mp3) await context.addInitScript(() => {
     const original = HTMLMediaElement.prototype.canPlayType;

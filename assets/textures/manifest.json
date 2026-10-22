@@ -1,56 +1,104 @@
 {
   "materials": {
     "MAT_wallpaper": {
-      "file": "av14_wallpaper.png",
+      "file": "av15_wallpaper.jpg",
       "colorSpace": "srgb",
-      "tint": "#efe8d4",
+      "tint": "#ffffff",
       "emissive": null,
-      "av14Source": "wallpaper_old.jpg"
+      "av14Source": "wallpaper_old.jpg",
+      "av15Source": "av14_wallpaper.png",
+      "bump": "av15_wallpaper_height.png",
+      "bumpScale": 0.018,
+      "shininess": 55,
+      "specular": "#11130f",
+      "filter": "linear"
     },
     "MAT_wallpaper_dark": {
-      "file": "av14_wallpaper_dark.png",
+      "file": "av15_wallpaper.jpg",
       "colorSpace": "srgb",
-      "tint": "#d8d2b8",
+      "tint": "#b2b2a2",
       "emissive": null,
-      "av14Source": "wallpaper_old_dark.jpg"
+      "av14Source": "wallpaper_old_dark.jpg",
+      "av15Source": "av14_wallpaper_dark.png",
+      "bump": "av15_wallpaper_height.png",
+      "bumpScale": 0.018,
+      "shininess": 55,
+      "specular": "#11130f",
+      "filter": "linear"
     },
     "MAT_plaster": {
-      "file": "av14_plaster.png",
+      "file": "av15_plaster.jpg",
       "colorSpace": "srgb",
       "tint": "#ffffff",
       "emissive": null,
-      "av14Source": "plaster.jpg"
+      "av14Source": "plaster.jpg",
+      "av15Source": "av14_plaster.png",
+      "bump": "av15_plaster_height.png",
+      "bumpScale": 0.025,
+      "shininess": 75,
+      "specular": "#11130f",
+      "filter": "linear"
     },
     "MAT_wood_floor": {
-      "file": "wood_floor.jpg",
+      "file": "av15_wood_pale.jpg",
       "colorSpace": "srgb",
-      "tint": "#f0dcc8",
-      "emissive": null
+      "tint": "#ffffff",
+      "emissive": null,
+      "av15Source": "wood_floor.jpg",
+      "bump": "av15_wood_pale_height.png",
+      "bumpScale": 0.016,
+      "shininess": 32,
+      "specular": "#11130f",
+      "filter": "linear"
     },
     "MAT_wood_door": {
-      "file": "wood_door.jpg",
+      "file": "av15_wood_door.jpg",
       "colorSpace": "srgb",
-      "tint": "#f2e2d2",
-      "emissive": null
+      "tint": "#ffffff",
+      "emissive": null,
+      "av15Source": "wood_door.jpg",
+      "bump": "av15_wood_door_height.png",
+      "bumpScale": 0.018,
+      "shininess": 36,
+      "specular": "#11130f",
+      "filter": "linear"
     },
     "MAT_wood_dark": {
-      "file": "wood_dark.jpg",
+      "file": "av15_wood_door.jpg",
       "colorSpace": "srgb",
       "tint": "#ffffff",
-      "emissive": null
+      "emissive": null,
+      "av15Source": "wood_dark.jpg",
+      "bump": "av15_wood_door_height.png",
+      "bumpScale": 0.018,
+      "shininess": 36,
+      "specular": "#11130f",
+      "filter": "linear"
     },
     "MAT_wood_pale": {
-      "file": "av14_wood_pale.png",
-      "colorSpace": "srgb",
-      "tint": "#f6ecd8",
-      "emissive": null,
-      "av14Source": "wood_pale.jpg"
-    },
-    "MAT_paint_ceiling": {
-      "file": "paint_ceiling.jpg",
+      "file": "av15_wood_pale.jpg",
       "colorSpace": "srgb",
       "tint": "#ffffff",
-      "emissive": null
+      "emissive": null,
+      "av14Source": "wood_pale.jpg",
+      "av15Source": "av14_wood_pale.png",
+      "bump": "av15_wood_pale_height.png",
+      "bumpScale": 0.016,
+      "shininess": 32,
+      "specular": "#11130f",
+      "filter": "linear"
+    },
+    "MAT_paint_ceiling": {
+      "file": "av15_plaster.jpg",
+      "colorSpace": "srgb",
+      "tint": "#ffffff",
+      "emissive": null,
+      "av15Source": "paint_ceiling.jpg",
+      "bump": "av15_plaster_height.png",
+      "bumpScale": 0.025,
+      "shininess": 75,
+      "specular": "#11130f",
+      "filter": "linear"
     },
     "MAT_concrete": {
       "file": "concrete.jpg",
@@ -59,23 +107,41 @@
       "emissive": null
     },
     "MAT_tile_green": {
-      "file": "av14_tile_green.png",
+      "file": "av15_tile_green.jpg",
       "colorSpace": "srgb",
       "tint": "#ffffff",
       "emissive": null,
-      "av14Source": "tile_green.jpg"
+      "av14Source": "tile_green.jpg",
+      "av15Source": "av14_tile_green.png",
+      "bump": "av15_tile_green_height.png",
+      "bumpScale": 0.035,
+      "shininess": 28,
+      "specular": "#202822",
+      "filter": "linear"
     },
     "MAT_tile_white": {
-      "file": "tile_white.jpg",
+      "file": "av15_tile_white.jpg",
       "colorSpace": "srgb",
       "tint": "#ffffff",
-      "emissive": null
+      "emissive": null,
+      "av15Source": "tile_white.jpg",
+      "bump": "av15_tile_white_height.png",
+      "bumpScale": 0.025,
+      "shininess": 55,
+      "specular": "#202822",
+      "filter": "linear"
     },
     "MAT_tile_floor": {
-      "file": "tile_floor.jpg",
+      "file": "av15_tile_floor.jpg",
       "colorSpace": "srgb",
-      "tint": "#ffffff",
-      "emissive": null
+      "tint": "#a4aca0",
+      "emissive": null,
+      "av15Source": "tile_floor.jpg",
+      "bump": "av15_tile_floor_height.png",
+      "bumpScale": 0.028,
+      "shininess": 44,
+      "specular": "#202822",
+      "filter": "linear"
     },
     "MAT_metal_locker": {
       "file": "metal_locker.jpg",
@@ -102,28 +168,52 @@
       "emissive": null
     },
     "MAT_curtain": {
-      "file": "curtain.jpg",
+      "file": "av15_curtain.jpg",
       "colorSpace": "srgb",
-      "tint": "#f4e8c8",
-      "emissive": null
+      "tint": "#ffffff",
+      "emissive": null,
+      "av15Source": "curtain.jpg",
+      "bump": "av15_curtain_height.png",
+      "bumpScale": 0.012,
+      "shininess": 6,
+      "specular": "#11130f",
+      "filter": "linear"
     },
     "MAT_soil": {
-      "file": "soil.jpg",
+      "file": "av15_soil.jpg",
       "colorSpace": "srgb",
       "tint": "#ffffff",
-      "emissive": null
+      "emissive": null,
+      "av15Source": "soil.jpg",
+      "bump": "av15_soil_height.png",
+      "bumpScale": 0.055,
+      "shininess": 90,
+      "specular": "#11130f",
+      "filter": "linear"
     },
     "MAT_grass": {
-      "file": "grass.jpg",
+      "file": "av15_grass.jpg",
       "colorSpace": "srgb",
       "tint": "#ffffff",
-      "emissive": null
+      "emissive": null,
+      "av15Source": "grass.jpg",
+      "bump": "av15_grass_height.png",
+      "bumpScale": 0.035,
+      "shininess": 5,
+      "specular": "#11130f",
+      "filter": "linear"
     },
     "MAT_bark": {
-      "file": "bark.jpg",
+      "file": "av15_bark.jpg",
       "colorSpace": "srgb",
       "tint": "#ffffff",
-      "emissive": null
+      "emissive": null,
+      "av15Source": "bark.jpg",
+      "bump": "av15_bark_height.png",
+      "bumpScale": 0.075,
+      "shininess": 85,
+      "specular": "#11130f",
+      "filter": "linear"
     },
     "MAT_leaves": {
       "file": "leaves.jpg",
@@ -138,10 +228,16 @@
       "emissive": null
     },
     "MAT_shrine_wood": {
-      "file": "shrine_wood.jpg",
+      "file": "av15_wood_door.jpg",
       "colorSpace": "srgb",
       "tint": "#ffffff",
-      "emissive": null
+      "emissive": null,
+      "av15Source": "shrine_wood.jpg",
+      "bump": "av15_wood_door_height.png",
+      "bumpScale": 0.018,
+      "shininess": 36,
+      "specular": "#11130f",
+      "filter": "linear"
     },
     "MAT_fabric_red": {
       "file": "fabric_red.jpg",

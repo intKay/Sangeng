@@ -100,14 +100,14 @@ export class PostFX {
       uTime: { value: 0 },
       uGrain: { value: 0.035 },
       uVignette: { value: 0.44 },
-      uScanline: { value: 0.12 },
+      uScanline: { value: 0.035 },
       uChroma: { value: 1.1 },
       uSanity: { value: 0 },
       uThreat: { value: 0 },
       uFade: { value: 0 },
       uContrast: { value: 1.06 },
       uTint: { value: new THREE.Color(0xffffff) },
-      uDither: { value: 0.008 },
+      uDither: { value: 0.002 },
     };
     this.material = new THREE.ShaderMaterial({
       uniforms: this.uniforms,
