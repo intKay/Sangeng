@@ -1,13 +1,13 @@
-三更 GLB validation  2026-10-22 13:40:54
+三更 GLB validation  2026-10-22 16:55:56
 ASSET_SPEC: horror-demos/docs/ASSET_SPEC.md
 ==============================================================================
 SCENE: door   (door.glb)
 ==============================================================================
 file      : C:\AIProjects\文艺漫游\.scratch\sangeng-publish\assets\models\door.glb
-size      : 895.5 KB
-meshes    : 97   tris: 8764   (target <= 6000, cap <= 9000)
-materials : 43  -> MAT_calendar, MAT_child_drawing, MAT_clock_face, MAT_concrete, MAT_couplet, MAT_curtain, MAT_door_number_501, MAT_door_number_502, MAT_door_number_503, MAT_door_number_504, MAT_entity_hair, MAT_entity_white, MAT_fabric_blue, MAT_fabric_red, MAT_fabric_white, MAT_glass_dirty, MAT_handprint, MAT_lamp_tube, MAT_lamp_warm, MAT_metal_locker, MAT_metal_rust, MAT_mirror_grime, MAT_notice_board, MAT_paint_ceiling, MAT_paper, MAT_photo, MAT_photo_family_1, MAT_photo_family_2, MAT_photo_family_3, MAT_plaster, MAT_red_cloth, MAT_stain_mold, MAT_stain_water, MAT_tile_floor, MAT_tile_white, MAT_tv_static, MAT_wallpaper, MAT_wallpaper_dark, MAT_window_night, MAT_wood_dark, MAT_wood_door, MAT_wood_floor, MAT_wood_pale
-nodes     : 115   empties: 18
+size      : 998.4 KB
+meshes    : 97   tris: 9776   (target <= 6000, cap <= 10000)
+materials : 46  -> MAT_bakelite, MAT_calendar, MAT_child_drawing, MAT_clock_face, MAT_concrete, MAT_couplet, MAT_curtain, MAT_door_number_501, MAT_door_number_502, MAT_door_number_503, MAT_door_number_504, MAT_enamel_worn, MAT_entity_hair, MAT_entity_white, MAT_fabric_blue, MAT_fabric_red, MAT_fabric_white, MAT_glass_dirty, MAT_handprint, MAT_lamp_tube, MAT_lamp_warm, MAT_metal_locker, MAT_metal_rust, MAT_mirror_grime, MAT_notice_board, MAT_paint_ceiling, MAT_paper, MAT_photo, MAT_photo_family_1, MAT_photo_family_2, MAT_photo_family_3, MAT_plaster, MAT_red_cloth, MAT_rug_faded, MAT_stain_mold, MAT_stain_water, MAT_tile_floor, MAT_tile_white, MAT_tv_static, MAT_wallpaper, MAT_wallpaper_dark, MAT_window_night, MAT_wood_dark, MAT_wood_door, MAT_wood_floor, MAT_wood_pale
+nodes     : 116   empties: 19
 required names: all 74 present
 material names: all in ASSET_SPEC list
 every non-COL mesh has a material
@@ -60,5 +60,5 @@ spawn/look pairs: 1/1
 
 ==============================================================================
 WARNINGS (1):
-  - door: tris 8764 above target 6000 (under cap)
+  - door: tris 9776 above target 6000 (under cap)
 VALIDATE OK

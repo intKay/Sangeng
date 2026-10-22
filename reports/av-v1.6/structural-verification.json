@@ -1,0 +1,62 @@
+{
+  "models": [
+    {
+      "chapter": "door",
+      "gameplayNodesChecked": 107,
+      "collisionBoundsPreserved": 37,
+      "triangles": 9776,
+      "previousTriangles": 8764,
+      "cap": 10000
+    },
+    {
+      "chapter": "mirror",
+      "gameplayNodesChecked": 33,
+      "collisionBoundsPreserved": 12,
+      "triangles": 4716,
+      "previousTriangles": 4716,
+      "cap": 7000
+    },
+    {
+      "chapter": "nightroad",
+      "gameplayNodesChecked": 28,
+      "collisionBoundsPreserved": 17,
+      "triangles": 5710,
+      "previousTriangles": 5710,
+      "cap": 12000
+    }
+  ],
+  "bumpMaterials": [
+    "MAT_wallpaper",
+    "MAT_wallpaper_dark",
+    "MAT_plaster",
+    "MAT_wood_floor",
+    "MAT_wood_door",
+    "MAT_wood_dark",
+    "MAT_wood_pale",
+    "MAT_paint_ceiling",
+    "MAT_tile_green",
+    "MAT_tile_white",
+    "MAT_tile_floor",
+    "MAT_metal_locker",
+    "MAT_curtain",
+    "MAT_fabric_white",
+    "MAT_fabric_blue",
+    "MAT_rug_faded",
+    "MAT_enamel_worn",
+    "MAT_bakelite"
+  ],
+  "knownChanges": [
+    "INT_letter_03 moved from behind backboard to visible shelf front",
+    "door hard cap 9000 to 10000 for near-view geometry; target 6000 warning retained"
+  ],
+  "bundle": {
+    "version": "1.6.0",
+    "name": "Sangeng-1.6.0-web.zip",
+    "sha256": "b3fbd062c6b025ecc0c20e8c8a46d86957bb1ce9ba5bf6c63e5c30e315dd9821",
+    "bytes": 40971025,
+    "itch_limits_checked": true,
+    "runtime_files": 405
+  },
+  "runtimeMatchesBundle": true,
+  "scope": "static contracts and hashes, not aesthetic or play acceptance"
+}

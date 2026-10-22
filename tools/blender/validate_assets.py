@@ -18,6 +18,7 @@ MODELS = os.path.join(ROOT, "assets", "models")
 REPORT = os.path.join(ROOT, "reports", "modeler", "validate.txt")
 
 ALLOWED_MATS = {
+    "MAT_rug_faded", "MAT_enamel_worn", "MAT_bakelite",
     "MAT_wallpaper", "MAT_wallpaper_dark", "MAT_plaster", "MAT_wood_floor",
     "MAT_wood_door", "MAT_wood_dark", "MAT_wood_pale", "MAT_paint_ceiling",
     "MAT_concrete", "MAT_tile_green", "MAT_tile_white", "MAT_tile_floor",
@@ -50,7 +51,7 @@ NIGHT_LIGHTS = ["LIGHT_shrine", "LIGHT_village"]
 SCENES = {
     "door": {
         "file": "door.glb",
-        "target": 6000, "cap": 9000, "min_col": 18,
+        "target": 6000, "cap": 10000, "min_col": 18,
         "required_names": [
             "SPAWN_corridor", "LOOK_corridor",
             "SPAWN_apartment", "LOOK_apartment",

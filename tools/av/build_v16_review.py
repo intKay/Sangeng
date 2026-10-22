@@ -1,0 +1,26 @@
+"""Build a local, evidence-linked comparison page; no external publication."""
+from pathlib import Path
+import json
+ROOT=Path(__file__).resolve().parents[2]
+OUT=ROOT/'reports/av-v1.6'
+views=[('01-corridor','走廊','灰褐小砖与褪色墙纸恢复主次；墙顶水痕有局部来源。'),
+ ('02-living','客厅','木材、地毯和窗帘分开；暖灯主光与有限的窗边冷光。'),
+ ('03-kitchen','厨房','暖水瓶恢复搪瓷与胶木；瓷砖保留旧缝，木柜不再共享门板噪点。'),
+ ('04-window','窗边','压低印花与污斑对比，靠真实折面、挂耳和下沿积灰表现织物。'),
+ ('05-door','门口','门洞下半部无遮挡；漆木细纹与把手、下沿局部磨损。'),
+ ('06-bookshelf','书柜','开放柜体、成组书本和书页；第三张字条移到前沿。'),
+ ('07-sofa','沙发','靠垫和扶手软化轮廓，织物压低像素噪点，保持褪色灰蓝。')]
+html='''<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>三更 · 旧屋美术返工对照</title><style>
+*{box-sizing:border-box}body{margin:0;background:#151813;color:#ddd9c8;font:16px/1.65 system-ui,sans-serif}main{max-width:1480px;margin:auto;padding:24px}h1{font-size:27px;font-weight:500;margin:8px 0}p{max-width:980px;color:#b9bcad}a{color:#dec389}nav,.versions{display:flex;gap:8px;flex-wrap:wrap;margin:15px 0}button{font:inherit;background:#262b22;border:1px solid #59614f;color:inherit;padding:7px 16px;cursor:pointer;border-radius:4px}button[aria-pressed=true]{background:#c5b27c;color:#171c14;border-color:#c5b27c}figure{margin:0;background:#080b08;position:relative}figure img{display:block;width:100%;height:auto;aspect-ratio:1.6;object-fit:contain}figcaption{padding:8px 14px;background:#252b23}#note{min-height:2em}.limits{font-size:14px;border-top:1px solid #46503f;padding-top:16px}details{margin:18px 0}li{margin:7px 0}button:focus-visible,a:focus-visible{outline:3px solid #fff;outline-offset:3px}</style>
+<main><h1>《门后》· 旧屋美术返工</h1><p>先看材料是否可信、磨损是否有来源、空间是否有层次。七个相同机位可随时切换，避免只挑一张画面。1.5 是已被用户否定的候选，保留用于核对问题。</p>
+<p><a href="../../games/door/">进入当前游戏</a> · <a href="../../docs/art_direction_v1.6.md">六项美术门槛</a> · <a href="../../docs/av_iteration_v1.6.md">制作与验证范围</a></p>
+<nav aria-label="视角" id="views"></nav><div class="versions" id="versions" aria-label="版本"></div>
+<figure><img id="shot" alt=""><figcaption id="caption" aria-live="polite"></figcaption></figure><p id="note"></p>
+<details><summary>这轮舍弃了什么</summary><ul><li>A：缺失顶点颜色导致黑面，修复材质回退，不能当作审美结论。</li><li>B—C：顶面死黑、木纹过红、重复水环，返工受光与色彩。</li><li>D—G：发现门洞被墙裙覆盖、书柜实心、窗帘印花像污斑，修复结构并降低纹理干扰。</li><li>H：保留更连贯的漆木细纹，进一步收敛织物、书组与物件接触关系。</li></ul></details>
+<p class="limits">画面来自真实生产 renderer / RTX 3050，固定辅助机位、时间与灯光闪烁；这些画面不证明正常通关。正常按键入屋与辅助内容回归分别记录。声音沿用 1.5，本轮没有新增 ComfyUI 生成，使用已保存的生成源继续加工。当前是内部审看通过的候选，尚无用户审美验收；仍保留低多边形风格。</p></main>
+<script>const views=__VIEWS__,versions=[['v1.4','1.4 原对照'],['v1.5','1.5 被否定候选'],['final','1.6 本轮返工']];let view=1,version='final';
+function draw(){document.querySelectorAll('#views button').forEach((b,i)=>b.setAttribute('aria-pressed',i===view));document.querySelectorAll('#versions button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.version===version));const v=views[view],name=versions.find(v=>v[0]===version)[1];shot.src=version+'/'+v[0]+'.jpg';shot.alt=v[1]+'，'+name;caption.textContent=v[1]+' / '+name;note.textContent=v[2];}
+views.forEach((v,i)=>{const b=document.createElement('button');b.textContent=v[1];b.onclick=()=>{view=i;draw()};document.querySelector('#views').append(b)});versions.forEach(v=>{const b=document.createElement('button');b.textContent=v[1];b.dataset.version=v[0];b.onclick=()=>{version=v[0];draw()};document.querySelector('#versions').append(b)});draw();</script></html>'''
+(OUT/'index.html').write_text(html.replace('__VIEWS__',json.dumps(views,ensure_ascii=False)),encoding='utf-8')
+print('Review page built: seven views, three versions')

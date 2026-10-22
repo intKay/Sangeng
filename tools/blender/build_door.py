@@ -80,11 +80,12 @@ def build_corridor():
              openings=[(-5.85, -4.85, 0.0, 2.05),
                        (-14.6, -13.4, 1.5, 2.3)],
              group=G, col_prefix="corr_e")
-    L.slab("S_corr_e_dado", 1.075, 1.1, -18.0, 0.0, 0.0, 1.05,
-           "MAT_plaster", group=G)
-    baseboard("corr_e", "y", 1.06, 1.1, -18.0, 0.0)
-    L.slab("S_corr_e_rail", 1.07, 1.1, -18.0, 0.0, 1.02, 1.08,
-           "MAT_wood_dark", group=G)
+    # The dado and trim must respect the actual 503 doorway. The old unbroken
+    # slabs visually covered the lower half of the open door despite clear COL.
+    for suffix,a,b in [('south',-18.0,-5.85),('north',-4.85,0.0)]:
+        L.slab('S_corr_e_dado_'+suffix,1.075,1.1,a,b,0.0,1.05,'MAT_plaster',group=G)
+        baseboard('corr_e_'+suffix,'y',1.06,1.1,a,b)
+        L.slab('S_corr_e_rail_'+suffix,1.07,1.1,a,b,1.02,1.08,'MAT_wood_dark',group=G)
     # north / south end walls
     wall_run("corr_n", "x", 0.0, 0.15, -1.25, 1.25, 0.0, 2.7,
              "MAT_wallpaper_dark", group=G, col_prefix="corr_n")
@@ -286,6 +287,9 @@ def build_apartment():
         L.grid_panel("S_curtain_%s_R" % nm, (x0 + x1) / 2 + 0.05, x1 + 0.15,
                      y + 0.12, 0.12, 2.35, "MAT_curtain", folds=4, amp=0.04,
                      group=G)
+        for j,xx in enumerate([x0-.05,x0+.19,x0+.43,x1-.43,x1-.19,x1+.05]):
+            L.box('S_curtain_tab_%s_%d'%(nm,j),(.035,.02,.08),(xx,y+.12,2.365),
+                  'MAT_curtain',group=G)
         L.cyl_between("S_curtain_rod_%s" % nm, (x0 - 0.2, y + 0.12, 2.38),
                       (x1 + 0.2, y + 0.12, 2.38), 0.014, "MAT_metal_rust",
                       segments=6, group=G)
@@ -433,9 +437,9 @@ def chair(group, prefix, x, y, facing_deg, mat="MAT_wood_dark"):
         return (x + lx * c - ly * s, y + lx * s + ly * c, lz)
 
     L.box(prefix + "_seat", (0.42, 0.42, 0.05), P(0, 0, 0.45), mat,
-          rot=(0, 0, rot), group=group)
+          rot=(0, 0, rot), bevel=.008, group=group)
     L.box(prefix + "_back", (0.42, 0.05, 0.42), P(0, 0.2, 0.7), mat,
-          rot=(0, 0, rot), group=group)
+          rot=(0, 0, rot), bevel=.008, group=group)
     for i, (lx, ly) in enumerate([(-0.17, -0.17), (0.17, -0.17),
                                   (-0.17, 0.17), (0.17, 0.17)]):
         L.box(prefix + "_leg_%d" % i, (0.04, 0.04, 0.45), P(lx, ly, 0.225),
@@ -490,19 +494,19 @@ def build_furniture():
            "MAT_mirror_grime", group=G)
     # ---------------- living: sofa along west wall
     L.box("S_sofa_base", (0.78, 2.1, 0.32), (3.0, -5.45, 0.18),
-          "MAT_fabric_blue", group=G)
+          "MAT_fabric_blue", bevel=.025, group=G)
     L.box("S_sofa_back", (0.2, 2.1, 0.72), (2.72, -5.45, 0.52),
-          "MAT_fabric_blue", group=G)
+          "MAT_fabric_blue", bevel=.025, group=G)
     for i, yy in enumerate([-6.38, -4.52]):
         L.box("S_sofa_arm_%d" % i, (0.72, 0.18, 0.5), (3.0, yy, 0.35),
               "MAT_fabric_blue", group=G)
     for i, yy in enumerate([-6.05, -5.45, -4.85]):
         L.box("S_sofa_cushion_%d" % i, (0.62, 0.52, 0.12), (3.06, yy, 0.4),
-              "MAT_fabric_white", group=G)
+              "MAT_fabric_white", bevel=.018, group=G)
     L.col("COL_sofa", (3.0, -5.45, 0.4), (0.9, 2.2, 0.9))
     # coffee table
     L.box("S_coffee_top", (1.0, 0.62, 0.06), (4.45, -5.45, 0.42),
-          "MAT_wood_dark", group=G)
+          "MAT_wood_dark", bevel=.012, group=G)
     for i, (xx, yy) in enumerate([(4.02, -5.7), (4.88, -5.7),
                                   (4.02, -5.2), (4.88, -5.2)]):
         L.box("S_coffee_leg_%d" % i, (0.05, 0.05, 0.42), (xx, yy, 0.21),
@@ -532,23 +536,34 @@ def build_furniture():
           "MAT_metal_locker", segments=8, group="INT_battery_01")
     L.props("INT_battery_01", interact="pickup", prompt="捡起电池", id="battery1")
     # bookshelf on north wall
-    L.box("S_bookshelf", (1.5, 0.3, 1.9), (4.1, -3.08, 0.95),
-          "MAT_wood_dark", group=G)
+    # Open carcass: the former solid box hid every shelf and book inside it.
+    L.box('S_bookshelf_back',(1.5,.025,1.9),(4.1,-2.9425,.95),'MAT_wood_dark',group=G)
+    for side,xx in [('l',3.3725),('r',4.8275)]:
+        L.box('S_bookshelf_side_'+side,(.045,.3,1.9),(xx,-3.08,.95),'MAT_wood_dark',group=G)
+    L.box('S_bookshelf_top',(1.5,.3,.045),(4.1,-3.08,1.8775),'MAT_wood_dark',group=G)
     for i in range(4):
         L.box("S_shelf_board_%d" % i, (1.42, 0.28, 0.04),
               (4.1, -3.08, 0.05 + i * 0.46), "MAT_wood_pale", group=G)
-    for i in range(6):
-        L.box("S_book_%d" % i, (0.06, 0.2, 0.3),
-              (3.5 + i * 0.22, -3.08, 0.35 + (i % 3) * 0.46),
-              "MAT_fabric_red" if i % 2 else "MAT_curtain", group=G)
+    # Groups rest on the shelves and against a side; avoid evenly spaced floating books.
+    for row,start,count in [(0,3.43,4),(1,4.48,5),(2,3.43,3)]:
+        for i in range(count):
+            width=.05+(i%3)*.012;height=.25+(i%3)*.035
+            xx=start+i*.075;bottom=.07+row*.46
+            L.box('S_book_%d_%d'%(row,i),(width,.205,height),(xx,-3.08,bottom+height/2),
+                  ['MAT_fabric_red','MAT_curtain','MAT_fabric_blue'][i%3],group=G)
+            L.box('S_book_pages_%d_%d'%(row,i),(width-.012,.183,height-.018),
+                  (xx,-3.095,bottom+height/2),'MAT_paper',group=G)
+    for i in range(3):
+        L.box('S_book_stack_%d'%i,(.27-i*.012,.19,.045),(4.47,-3.08,.0925+i*.045),
+              'MAT_curtain' if i%2 else 'MAT_fabric_red',group=G)
     L.col("COL_bookshelf", (4.1, -3.08, 0.95), (1.55, 0.36, 1.9))
     # INT_letter_03 on bookshelf
-    L.box("INT_letter_03", (0.16, 0.012, 0.22), (4.32, -2.92, 1.26),
+    L.box("INT_letter_03", (0.16, 0.012, 0.22), (4.32, -3.225, 1.12),
           "MAT_paper", group="INT_letter_03")
     L.props("INT_letter_03", interact="pickup", prompt="捡起字条", id="letter3")
     # dining table + 2 chairs
     L.box("S_dining_table", (1.15, 0.8, 0.06), (5.25, -6.95, 0.73),
-          "MAT_wood_dark", group=G)
+          "MAT_wood_dark", bevel=.012, group=G)
     for i, (xx, yy) in enumerate([(4.75, -7.28), (5.75, -7.28),
                                   (4.75, -6.62), (5.75, -6.62)]):
         L.box("S_dining_leg_%d" % i, (0.055, 0.055, 0.72), (xx, yy, 0.36),
@@ -561,8 +576,8 @@ def build_furniture():
           "MAT_paper", group="INT_letter_01")
     L.props("INT_letter_01", interact="pickup", prompt="捡起字条", id="letter1")
     # rug
-    L.box("S_rug", (2.2, 1.7, 0.02), (4.5, -4.9, 0.01), "MAT_curtain",
-          group=G)
+    L.box("S_rug", (2.2, 1.7, 0.02), (4.5, -4.9, 0.01), "MAT_rug_faded",
+          uv="unit", front=(0,0,1), group=G)
     # floor lamp (north-west living corner)
     L.cyl("S_floor_lamp_base", 0.16, 0.04, (3.0, -3.2, 0.02), "MAT_metal_rust",
           segments=10, group=G)
@@ -807,12 +822,22 @@ def build_v102_props():
     L.props("INT_sewing_machine", interact="examine", prompt="看缝纫机",
             id="sewing_machine")
     # --- 厨房台面上的暖水瓶
-    L.cyl("INT_thermos_body", 0.055, 0.32, (3.62, -9.05, 1.08),
-          "MAT_wood_pale", segments=10, group="INT_thermos")
-    L.cyl("INT_thermos_band", 0.058, 0.05, (3.62, -9.05, 1.06),
-          "MAT_fabric_red", segments=10, group="INT_thermos")
+    body=L.cyl("INT_thermos_body", 0.055, 0.32, (3.62, -9.05, 1.08),
+          "MAT_enamel_worn", segments=10, group="INT_thermos")
+    # Cylindrical UVs make enamel wear follow the vessel instead of sampling
+    # a tiny world-projected corner of a furniture texture.
+    uv=body.data.uv_layers.active.data
+    for poly in body.data.polygons:
+        values=[]
+        for li in poly.loop_indices:
+            co=body.data.vertices[body.data.loops[li].vertex_index].co
+            values.append(((math.atan2(co.y+9.05,co.x-3.62)/(2*math.pi))+.5,(co.z-.92)/.32))
+        seam=max(v[0] for v in values)-min(v[0] for v in values)>.5
+        for li,(u,v) in zip(poly.loop_indices,values):uv[li].uv=(u+1 if seam and u<.5 else u,v)
+    L.cyl("INT_thermos_band", 0.058, 0.025, (3.62, -9.05, 0.94),
+          "MAT_bakelite", segments=10, group="INT_thermos")
     L.cyl("INT_thermos_cap", 0.045, 0.05, (3.62, -9.05, 1.265),
-          "MAT_metal_locker", segments=8, group="INT_thermos")
+          "MAT_bakelite", segments=8, group="INT_thermos")
     # A readable, attached D-grip replaces the ambiguous single diagonal rod.
     # Keep the same interaction parent and compact low-poly budget.
     handle_points = [(3.665, -9.05, 1.20), (3.72, -9.05, 1.20),
@@ -820,7 +845,7 @@ def build_v102_props():
                      (3.665, -9.05, 1.10)]
     for i, (start, end) in enumerate(zip(handle_points, handle_points[1:])):
         L.cyl_between("INT_thermos_handle" if i == 0 else "INT_thermos_handle_%d" % i,
-                      start, end, 0.009, "MAT_wood_dark", segments=5,
+                      start, end, 0.009, "MAT_bakelite", segments=5,
                       group="INT_thermos")
     L.cyl("INT_thermos_foot", 0.058, 0.016, (3.62, -9.05, 0.927),
           "MAT_metal_locker", segments=10, group="INT_thermos")
@@ -1121,6 +1146,10 @@ def build_light_spawns():
             radius=4, flicker=0.0)
     L.light("LIGHT_moon_bed", (8.0, -7.5, 1.8), power=6, color="#7e9cc8",
             radius=5, flicker=0.0)
+    L.light('LIGHT_moon_living',(5.4,-7.64,1.65),kind='spot',power=8,
+            color='#a7b7c5',radius=4.5,cone=42,flicker=0)
+    # Explicit game-space target: restrained cool spill through the curtain gap.
+    L.props('LIGHT_moon_living',light_target_game=[5.0,.75,5.3])
     # spawns
     L.spawn("SPAWN_corridor", (0.0, -1.0, 0.0))
     L.look("LOOK_corridor", (0.0, -10.0, 1.55))

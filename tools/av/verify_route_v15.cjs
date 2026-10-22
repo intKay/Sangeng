@@ -2,7 +2,7 @@
 const {chromium}=require('playwright'),assert=require('node:assert/strict');
 const fs=require('node:fs'),path=require('node:path');
 const stage=process.argv[2]||'after';
-const out=path.resolve('reports/av-v1.5/route',stage);fs.mkdirSync(out,{recursive:true});
+const out=path.resolve(process.env.SANGENG_AV_REPORT||'reports/av-v1.5','route',stage);fs.mkdirSync(out,{recursive:true});
 (async()=>{
  const b=await chromium.launch({channel:'msedge',headless:true,args:['--use-angle=d3d11','--enable-gpu']});
  const c=await b.newContext({viewport:{width:1280,height:800}});

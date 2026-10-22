@@ -26,6 +26,14 @@ reports/qa/release-1.4.0/**/partial.json
 reports/qa/release-1.4.0/**/*failure*
 reports/av-v1.5/raw/
 reports/av-v1.5/model-before/
+reports/av-v1.6/raw/
+reports/av-v1.6/model-before/
+reports/av-v1.6/reference-models/
+reports/av-v1.6/study-*/
+reports/av-v1.6/shader-diagnostic/
+reports/qa/release-1.6.0/**/*.png
+reports/qa/release-1.6.0/**/partial.json
+reports/qa/release-1.6.0/**/*failure*
 reports/av-v1.5/route/*.jpg
 reports/av-v1.5/route/result.json
 reports/qa/release-1.5.0/**/*.png

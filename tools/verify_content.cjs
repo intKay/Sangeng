@@ -1,13 +1,14 @@
 // Content acceptance through the actual desktop renderer. Placement is assisted;
 // use/close/retry actions are real keys/buttons and are reported separately.
-const { _electron: electron } = require('playwright');
+const { _electron: electron, chromium } = require('playwright');
 const fs=require('node:fs'), path=require('node:path'), assert=require('node:assert/strict');
 const out=path.resolve(process.env.SANGENG_QA_OUT || 'reports/qa/release-1.3.0/content');fs.mkdirSync(out,{recursive:true});
 const exe=path.resolve(process.argv[2] || 'dist/electron-runtime/electron.exe');
 const source=!process.argv[2] || process.argv.includes('--source');
-const result={assistedPlacement:true,chapters:[],errors:[],failedRequests:[]};
+const browserMode=!!process.env.SANGENG_CONTENT_URL;
+const result={assistedPlacement:true,runtime:browserMode?'Edge browser':'Electron desktop',chapters:[],errors:[],failedRequests:[]};
 let app,page;
-async function focus(){await app.evaluate(({BrowserWindow})=>{const w=BrowserWindow.getAllWindows()[0];w.show();w.focus();w.webContents.focus();});}
+async function focus(){if(!browserMode)await app.evaluate(({BrowserWindow})=>{const w=BrowserWindow.getAllWindows()[0];w.show();w.focus();w.webContents.focus();});}
 async function shot(name){await page.screenshot({path:path.join(out,name+'.png')});}
 async function load(id){
  if(!await page.locator('a[href*="games/"]').count()){
@@ -16,9 +17,9 @@ async function load(id){
  await page.locator('a[href*="games/'+id+'/"]').click();
  await page.waitForFunction(()=>window.__SANGENG__?.state==='title',null,{timeout:60000});
  await focus();await page.locator('[data-act="start"]').click();
- await page.waitForFunction(()=>__SANGENG__.state==='playing'&&!!document.pointerLockElement);
- const resources=await page.evaluate(()=>({textures:__SANGENG__.textures.size,missing:__SANGENG__.audio.missing}));
- assert.equal(resources.textures,62);assert.deepEqual(resources.missing,[]);
+ await page.waitForFunction(browserMode=>__SANGENG__.state==='playing'&&(browserMode||!!document.pointerLockElement),browserMode);
+ const resources=await page.evaluate(()=>({textures:__SANGENG__.textures.size,expectedTextures:Object.keys(__SANGENG__.textureDefs).length,missing:__SANGENG__.audio.missing}));
+ assert.equal(resources.textures,resources.expectedTextures);assert.deepEqual(resources.missing,[]);
  return resources;
 }
 async function aim(name){
@@ -96,8 +97,15 @@ async function signal(){return page.evaluate(async()=>{
 (async()=>{
  // Optional test-only flags for headless/CI hosts, e.g. SANGENG_QA_FLAGS="--no-sandbox --disable-gpu".
  const qaFlags=(process.env.SANGENG_QA_FLAGS||'').split(/\s+/).filter(Boolean);
- app=await electron.launch({executablePath:exe,args:[...qaFlags,...(source?[path.resolve('.')]:[])],timeout:60000});
- page=await app.firstWindow();await page.waitForURL('sangeng://game/');
+ if(browserMode){
+  app=await chromium.launch({channel:'msedge',headless:true,args:['--use-angle=d3d11','--enable-gpu']});
+  const context=await app.newContext();
+  await context.addInitScript(()=>localStorage.setItem('sangeng-settings-v1',JSON.stringify({inputMode:'drag',renderScale:.8,volume:.5})));
+  page=await context.newPage();await page.goto(process.env.SANGENG_CONTENT_URL);
+ }else{
+  app=await electron.launch({executablePath:exe,args:[...qaFlags,...(source?[path.resolve('.')]:[])],timeout:60000});
+  page=await app.firstWindow();await page.waitForURL('sangeng://game/');
+ }
  await page.setViewportSize({width:1280,height:800});
  page.on('pageerror',e=>result.errors.push(e.message));
  page.on('requestfailed',r=>{if(r.failure()?.errorText!=='net::ERR_ABORTED')result.failedRequests.push(r.url());});
@@ -175,6 +183,6 @@ async function signal(){return page.evaluate(async()=>{
  await waitUntil(()=>__SANGENG__.state==='ending',40000);
  night.shrineAndEndingByKeys=true;await shot('night-ending');
  result.chapters.push(night);assert.deepEqual(result.errors,[]);assert.deepEqual(result.failedRequests,[]);
- fs.writeFileSync(path.join(out,source?'source-result.json':'packaged-result.json'),JSON.stringify(result,null,2));
+ fs.writeFileSync(path.join(out,browserMode?'browser-result.json':source?'source-result.json':'packaged-result.json'),JSON.stringify(result,null,2));
  console.log(JSON.stringify(result));
 })().catch(async e=>{result.failure=String(e);fs.writeFileSync(path.join(out,'failure.json'),JSON.stringify(result,null,2));if(page)await shot('failure').catch(()=>{});console.error(e);process.exitCode=1;}).finally(async()=>{if(app)await app.close();});

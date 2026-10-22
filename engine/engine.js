@@ -9,6 +9,7 @@ import { TouchControls, prefersTouch } from './touch.js';
 import { PlanarMirror } from './mirror.js';
 import { clamp, damp, loadJSON } from './utils.js';
 import { Atmosphere } from './atmosphere.js';
+import { applySurfaceWear } from './surface-wear.js';
 
 const SETTINGS_KEY = 'sangeng-settings-v1';
 const DEFAULT_SETTINGS = { sensitivity: 1.0, volume: 0.8, subtitles: true, renderScale: 0.8, inputMode: 'auto' };
@@ -314,6 +315,7 @@ export class HorrorGame {
       mat = new THREE.MeshPhongMaterial(params);
     } else mat = new THREE.MeshLambertMaterial(params);
     mat.name = name;
+    applySurfaceWear(mat, def, this.config.id);
     // 未知材质兜底颜色
     if (!tex && !def.tint) mat.color.setHex(0x6f6a60);
     this.materials.set(name, mat);
@@ -350,6 +352,12 @@ export class HorrorGame {
     const seen = new Set();
     root.traverse((o) => {
       if (!o.isMesh) return;
+      // AO is optional for hidden / movable props. WebGL's disabled colour
+      // attribute defaults to black, so provide neutral white for those meshes.
+      if(o.geometry?.attributes.position && !o.geometry.attributes.color) {
+        const white=new Float32Array(o.geometry.attributes.position.count*3);white.fill(1);
+        o.geometry.setAttribute('color',new THREE.BufferAttribute(white,3));
+      }
       const oldMats = Array.isArray(o.material) ? o.material : [o.material];
       const mats = oldMats.map((m) => {
         let name = (m && m.name) || '';
@@ -412,12 +420,13 @@ export class HorrorGame {
 
     for (const [name, empty] of this.lights) {
       const ud = empty.userData || {};
-      const shaped = (this.config.id === 'door' && /^LIGHT_corr_/.test(name)) ||
-        (this.config.id === 'mirror' && /^LIGHT_tube_/.test(name));
+      const shaped = (this.config.id === 'door' && /^(LIGHT_corr_02|LIGHT_living)$/.test(name)) ||
+        (this.config.id === 'mirror' && name==='LIGHT_tube_01');
       const kind = shaped ? 'spot' : (ud.light_kind || 'point');
       const power = typeof ud.light_power === 'number' ? ud.light_power : 20;
       const color = new THREE.Color(ud.light_color || '#ffffff');
-      const radius = shaped ? 5.2 : (typeof ud.light_radius === 'number' ? ud.light_radius : 8);
+      if(this.config.id==='door' && name==='LIGHT_living')color.set('#ffe3c3');
+      const radius = shaped ? 5.6 : (typeof ud.light_radius === 'number' ? ud.light_radius : 8);
       const flicker = typeof ud.light_flicker === 'number' ? ud.light_flicker : 0;
       const pos = empty.getWorldPosition(new THREE.Vector3());
       let light;
@@ -426,6 +435,8 @@ export class HorrorGame {
         light = new THREE.SpotLight(color, 1, radius, cone, 0.5, 1.2);
         const target = new THREE.Object3D();
         target.position.copy(pos).add(new THREE.Vector3(0, -3, 0));
+        if(Array.isArray(ud.light_target_game) && ud.light_target_game.length===3 && ud.light_target_game.every(Number.isFinite))
+          target.position.set(...ud.light_target_game);
         this.scene.add(target);
         light.target = target;
       } else {
@@ -435,7 +446,7 @@ export class HorrorGame {
       this.scene.add(light);
       const intensity = Math.max(0.05, power / (shaped ? 13 : (kind === 'spot' ? 30 : 28)));
       light.intensity = intensity;
-      if (name === 'LIGHT_corr_02' || name === 'LIGHT_tube_01') {
+      if (name === 'LIGHT_corr_02' || name === 'LIGHT_tube_01' || name==='LIGHT_living') {
         light.castShadow = true;
         light.shadow.mapSize.set(prefersTouch()?256:512,prefersTouch()?256:512);
         light.shadow.bias=-0.0006;
@@ -444,6 +455,11 @@ export class HorrorGame {
         light.shadow.camera.far=radius;
       }
       const entry = { light, base: intensity, flicker, seed: Math.random() * 10, name, kind };
+      if(this.config.id==='door' && name==='LIGHT_living') {
+        const fill=new THREE.PointLight(0xc3b496,0,5.5,1.5);
+        fill.position.copy(pos);fill.position.y=1.35;
+        this.scene.add(fill);entry.fill=fill;
+      }
       this._lightEntries.push(entry);
       entry.handle = entry;
     }
@@ -872,6 +888,7 @@ export class HorrorGame {
     if (!this._lightEntries) return;
     const t = this.time;
     for (const e of this._lightEntries) {
+      if(e.fill)e.fill.intensity=e.disabled?0:e.base*(e.scale==null?1:e.scale)*.36;
       if (e.disabled) { e.light.intensity = 0; continue; }
       const scale = e.scale == null ? 1 : e.scale;
       if (!e.flicker) { e.light.intensity = e.base * scale; continue; }

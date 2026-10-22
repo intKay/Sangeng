@@ -18,8 +18,8 @@ export class Atmosphere {
     const id=game.config.id;
     if(id==='door') {
       // Damp patches under the leaking corridor and near the window.
-      this.puddles([[.3,5.0,.55,.9],[-.45,10.5,.45,.8],[.45,14.0,.6,1.1]],0x5c6d60);
-      this.dust(110,[-.9,.5,1],[.9,2.5,17],0xb5c9b2,.045);
+      this.puddles([[.65,14.0,.35,.7]],0x424b3d);
+      this.dust(70,[-.9,.5,1],[.9,2.5,17],0xb5c9b2,.018);
     } else if(id==='mirror') {
       this.puddles([[-1.4,-.4,.8,.55],[1.1,.8,.9,.65],[-.5,-1.6,.6,.45],[2.3,-.4,.4,.65]],0x7a9790);
       this.dust(65,[-2.5,.3,-2],[2.5,2.4,2],0xc7d8cf,.06);
@@ -33,7 +33,7 @@ export class Atmosphere {
 
   puddles(specs,color) {
     const material=new THREE.MeshPhongMaterial({color,specular:0x9eb2af,shininess:110,
-      transparent:true,opacity:.32,alphaMap:this.mask,depthWrite:false,
+      transparent:true,opacity:.16,alphaMap:this.mask,depthWrite:false,
       polygonOffset:true,polygonOffsetFactor:-1,polygonOffsetUnits:-1});
     for(const [x,z,w,h] of specs) {
       const mesh=new THREE.Mesh(new THREE.PlaneGeometry(w*2,h*2),material);

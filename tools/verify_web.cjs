@@ -71,10 +71,10 @@ async function run(profile) {
       await frame.locator(`a[href*="games/${id}/"]`).click();
       await frame.waitForFunction(() => window.__SANGENG__?.state === 'title', null, { timeout: 60000 });
       await frame.waitForTimeout(400);
-      const resources = await frame.evaluate(() => ({ textures: __SANGENG__.textures.size, missing: __SANGENG__.audio.missing.length, touch: __SANGENG__.touchEnabled,
+      const resources = await frame.evaluate(() => ({ textures: __SANGENG__.textures.size, expectedTextures:Object.keys(__SANGENG__.textureDefs).length, missing: __SANGENG__.audio.missing.length, touch: __SANGENG__.touchEnabled,
         scale: __SANGENG__.settings.renderScale, mp3: [...__SANGENG__.audio.buffers.keys()].every(k => k.endsWith('.mp3')) }));
       assert.equal(resources.touch, !!profile.touch);
-      assert.equal(resources.textures, 62); assert.equal(resources.missing, 0);
+      assert.equal(resources.textures, resources.expectedTextures); assert.equal(resources.missing, 0);
       if (profile.touch && id === 'door') assert.equal(resources.scale, 0.45);
       if (profile.mp3) assert(resources.mp3);
       await frame.locator('[data-act="start"]').click();

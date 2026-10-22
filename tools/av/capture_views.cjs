@@ -29,11 +29,11 @@ const base=process.env.SANGENG_AV_URL||'http://127.0.0.1:8138';
    const resources=await page.evaluate(()=>{
     const g=__SANGENG__,gl=g.renderer.getContext(),debug=gl.getExtension('WEBGL_debug_renderer_info');
     let coloredMeshes=0;g.level.traverse(o=>{if(o.geometry?.attributes.color)coloredMeshes++;});
-    return {textures:g.textures.size,bumpTextures:g.bumpTextures?.size||0,coloredMeshes,
+    return {textures:g.textures.size,expectedTextures:Object.keys(g.textureDefs).length,expectedBumps:Object.values(g.textureDefs).filter(d=>d.bump).length,bumpTextures:g.bumpTextures?.size||0,coloredMeshes,
       shadowLights:g._lightEntries.filter(e=>e.light.castShadow).length,roomProfile:g.audio.roomProfile,
       audioMissing:g.audio.missing,placeholder:!!g.placeholder,state:g.state,gpu:debug?gl.getParameter(debug.UNMASKED_RENDERER_WEBGL):'unavailable'};
    });
-   assert.equal(resources.textures,62);assert.deepEqual(resources.audioMissing,[]);assert(!resources.placeholder);
+   assert.equal(resources.textures,resources.expectedTextures);assert.deepEqual(resources.audioMissing,[]);assert(!resources.placeholder);
    await page.screenshot({path:path.join(out,id+'-entry.jpg'),type:'jpeg',quality:88});
    const frames=await page.evaluate(async()=>{
     const g=__SANGENG__,r=g.renderer,times=[],autoReset=r.info.autoReset;r.info.autoReset=false;let last=performance.now(),calls=0,tris=0;
@@ -44,7 +44,7 @@ const base=process.env.SANGENG_AV_URL||'http://127.0.0.1:8138';
     return {medianMs:times[22],p95Ms:times[42],calls,triangles:tris,mainShadowRefreshed:shadowScenes.has(g.scene.uuid),reflectionShadowRefreshed:g.reflectionScene?shadowScenes.has(g.reflectionScene.uuid):null};
    });
    if(hardware&&stage==='after'){
-    assert.equal(resources.bumpTextures,16);assert(resources.coloredMeshes>20);
+    assert.equal(resources.bumpTextures,resources.expectedBumps);assert(resources.coloredMeshes>20);
     assert(frames.mainShadowRefreshed);
     if(id==='mirror')assert(frames.reflectionShadowRefreshed,'reflection must not consume main shadow refresh');
    }

@@ -242,7 +242,7 @@ const config = {
   audio: '../../assets/audio/door/manifest.json',
   footstepSfx: 'stepWood',
   flashlight: { batterySeconds: 120, intensity: 2.2 },
-  ambient: { color: 0x8b9b88, intensity: 0.28 },
+  ambient: { color: 0xabb4aa, intensity: 0.22 },
   fog: { color: 0x070a08, density: 0.05 },
   theme: { accent: '#c9a55a', ink: '#d8d2c0', bg: '#060807' },
   playerStart: { spawn: 'SPAWN_corridor', look: 'LOOK_corridor' },
