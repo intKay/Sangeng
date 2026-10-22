@@ -813,8 +813,19 @@ def build_v102_props():
           "MAT_fabric_red", segments=10, group="INT_thermos")
     L.cyl("INT_thermos_cap", 0.045, 0.05, (3.62, -9.05, 1.265),
           "MAT_metal_locker", segments=8, group="INT_thermos")
-    L.cyl_between("INT_thermos_handle", (3.67, -9.05, 1.2), (3.69, -9.05, 1.1),
-                  0.01, "MAT_wood_pale", segments=5, group="INT_thermos")
+    # A readable, attached D-grip replaces the ambiguous single diagonal rod.
+    # Keep the same interaction parent and compact low-poly budget.
+    handle_points = [(3.665, -9.05, 1.20), (3.72, -9.05, 1.20),
+                     (3.735, -9.05, 1.15), (3.72, -9.05, 1.10),
+                     (3.665, -9.05, 1.10)]
+    for i, (start, end) in enumerate(zip(handle_points, handle_points[1:])):
+        L.cyl_between("INT_thermos_handle" if i == 0 else "INT_thermos_handle_%d" % i,
+                      start, end, 0.009, "MAT_wood_dark", segments=5,
+                      group="INT_thermos")
+    L.cyl("INT_thermos_foot", 0.058, 0.016, (3.62, -9.05, 0.927),
+          "MAT_metal_locker", segments=10, group="INT_thermos")
+    L.cyl("INT_thermos_collar", 0.048, 0.018, (3.62, -9.05, 1.235),
+          "MAT_metal_locker", segments=8, group="INT_thermos")
     L.props("INT_thermos", interact="examine", prompt="看暖水瓶", id="thermos")
     # --- 客厅南窗边：一把旧椅子（她的位置）
     chair("INT_chair_final", "INT_chair_final", 3.72, -7.18, 180,

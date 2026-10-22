@@ -1,0 +1,15 @@
+{
+  "playing": 0.23410434250842396,
+  "pausedContext": "suspended",
+  "blockedUi": true,
+  "pausedAfterSlider": "suspended",
+  "pausedOutput": 0,
+  "mutatedOutput": 0.018411455383933892,
+  "muted": 0,
+  "pausedAfterUnlock": "suspended",
+  "resumed": 0.09618038405017655,
+  "resumedContext": "running",
+  "finalContext": "suspended",
+  "mutationRejected": true,
+  "scope": "production WebAudio graph in an isolated browser; final output sampled, no human listening acceptance"
+}

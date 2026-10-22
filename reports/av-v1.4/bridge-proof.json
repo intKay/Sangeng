@@ -1,0 +1,15 @@
+{
+  "blender_version": "5.2.2 LTS",
+  "comfy_version": "0.42.3",
+  "job": {
+    "prompt_id": "74118be4-8810-473c-b172-e2a7693fdf01",
+    "elapsed_seconds": 6.31
+  },
+  "rendered_input": "reports\\av-v1.4\\raw\\blender-source.png",
+  "generated_image": "reports\\av-v1.4\\raw\\blender-roundtrip.png",
+  "returned_material_image": "blender-roundtrip.png",
+  "packed": true,
+  "saved_blend": "reports/av-v1.4/blender-comfy-proof.blend",
+  "saved_glb": "reports/av-v1.4/blender-comfy-proof.glb",
+  "scope": "isolated background Blender, local HTTP API round trip; not a live UI addon"
+}

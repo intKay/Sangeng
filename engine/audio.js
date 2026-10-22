@@ -19,6 +19,8 @@ export class AudioManager {
     this._hbTimer = 0;
     this._hbOn = false;
     this._lastListener = { pos: null, q: null };
+    this.paused = false;
+    this._contextSync = null;
   }
 
   /* ---------- 加载 ---------- */
@@ -124,7 +126,12 @@ export class AudioManager {
     this.master.connect(this.duckGain);
     this.duckGain.connect(this.muffle);
     this.muffle.connect(comp);
-    comp.connect(ctx.destination);
+    // The final gate also covers reverb tails, scheduled sources and the
+    // heartbeat branch. Bus ducking alone leaves all of those audible.
+    this.outputGate = ctx.createGain();
+    this.outputGate.gain.value = this.paused ? 0 : 1;
+    comp.connect(this.outputGate);
+    this.outputGate.connect(ctx.destination);
 
     this.buses = {};
     for (const name of ['music', 'ambience', 'sfx', 'ui']) {
@@ -188,8 +195,37 @@ export class AudioManager {
   }
 
   unlock() {
-    if (!this.ctx) return;
-    if (this.ctx.state !== 'running' && this.ctx.state !== 'closed') this.ctx.resume().catch(() => {});
+    if (!this.ctx || this.paused) return;
+    return this._syncContext();
+  }
+
+  setPaused(paused) {
+    this.paused = !!paused;
+    return this._syncContext();
+  }
+
+  _syncContext() {
+    const ctx = this.ctx;
+    if (!ctx || ctx.state === 'closed') return Promise.resolve();
+    const gate = this.outputGate.gain;
+    gate.cancelScheduledValues(ctx.currentTime);
+    gate.setValueAtTime(this.paused ? 0 : 1, ctx.currentTime);
+    // Serialize asynchronous suspend/resume and recheck the latest intent.
+    // A fast pause/resume/pause must not let an old resume win at the end.
+    if (this._contextSync) return this._contextSync;
+    this._contextSync = (async () => {
+      let intended;
+      do {
+        intended = this.paused;
+        if (intended && ctx.state === 'running') await ctx.suspend();
+        if (!intended && ctx.state !== 'running' && ctx.state !== 'closed') await ctx.resume();
+      } while (this.paused !== intended && ctx.state !== 'closed');
+    })().catch((err) => {
+      // The final gate remains authoritative even when a browser refuses
+      // an asynchronous context transition before the next user gesture.
+      console.warn('[audio] context transition failed:', err);
+    }).finally(() => { this._contextSync = null; });
+    return this._contextSync;
   }
 
   /* ---------- 基础播放 ---------- */
@@ -225,6 +261,9 @@ export class AudioManager {
    * 返回句柄：{ stop(fade), setVolume(v), source }
    */
   sfx(key, opts = {}) {
+    // Do not queue menu/interaction transients on a frozen context and
+    // replay them as a burst when the player returns from pause.
+    if (this.paused) return null;
     const entry = this._entry(opts.category || 'sfx', key);
     if (!entry || !this.ready) return null;
     return this._play(entry, opts);

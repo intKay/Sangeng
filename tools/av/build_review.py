@@ -1,0 +1,34 @@
+"""Build a local, dependency-free comparison page from retained evidence."""
+from pathlib import Path
+import shutil
+
+ROOT = Path(__file__).resolve().parents[2]
+OUT = ROOT / 'reports/av-v1.4'
+chapters = [('door', '门后', 'rain_window'), ('mirror', '镜中', 'distant_water'), ('nightroad', '夜路', 'wind_field')]
+cards = []
+for chapter, title, sound in chapters:
+    (OUT / 'audio-before').mkdir(exist_ok=True)
+    shutil.copyfile(OUT / 'raw' / f'{chapter}-{sound}-baseline.ogg', OUT / 'audio-before' / f'{chapter}.ogg')
+    cards.append(f'''<section><h2>{title}</h2><div class="pair">
+    <figure><img src="before/{chapter}-entry.jpg" alt="{title}原版入口"><figcaption>基线 · 同机位入口</figcaption></figure>
+    <figure><img src="after/{chapter}-entry.jpg" alt="{title}候选入口"><figcaption>1.4.0 候选 · 同机位入口</figcaption></figure></div>
+    <details><summary>候选版物件近景（辅助定位）</summary><img src="after/{chapter}-detail.jpg" alt="{title}候选近景"></details>
+    <p>环境声 A/B（建议耳机，从低音量开始）</p>
+    <button data-src="audio-before/{chapter}.ogg">播放原版</button>
+    <button data-src="../../assets/audio/{chapter}/ambience/{sound}.ogg">播放候选</button>
+    <button data-stop>停止</button></section>''')
+html = '''<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>三更 · 音画候选审看</title><style>
+body{background:#141914;color:#ded9c9;font:17px/1.7 system-ui;margin:0 auto;padding:32px 20px;max-width:1200px}h1,h2{color:#d3b477;font-weight:500}a{color:#d3b477}.pair{display:grid;grid-template-columns:1fr 1fr;gap:14px}figure{margin:0}img{width:100%;height:auto}figcaption{color:#b4b8a8}section{padding:24px 0;border-top:1px solid #424c3c}button{background:#303c2c;color:#eee3c7;border:1px solid #68715c;padding:10px 18px;margin:4px;cursor:pointer}summary{cursor:pointer;padding:12px 0}details img{max-width:900px}.note{color:#b4b8a8}audio{width:100%}@media(max-width:700px){.pair{grid-template-columns:1fr}}
+</style><h1>三更 · 1.4.0 音画候选</h1>
+<p>保留低多边形、低分辨率与旧物色板。降低屏幕颗粒与暗角；初始厨房增加局部任务光；暖水瓶补完整握把。六种材质只加入受限微细节，三篇各混入一层低音量环境声。</p>
+<p><a href="../../index.html">进入游戏</a> · <a href="../../docs/av_iteration_v1.4.md">制作与验证记录</a> · <a href="blender-roundtrip.png">Blender 往返结果</a></p>
+<p class="note">基线 18df312 / codex/av-baseline-20261021。入口为同机位采样，但时间性颗粒、声音和粒子并非锁帧对照。近景使用辅助定位，不代表自然路线通关；原版《门后》近景机位无效，未纳入对比。截图来自 SwiftShader 软件渲染，不代表实机 GPU 帧率。尚待真人试听、游玩与风格取舍。</p>
+<audio controls id="player" preload="none"></audio><p id="status" aria-live="polite">点击按钮选择一条音轨。</p>
+''' + ''.join(cards) + '''<script>
+const player=document.querySelector('#player'),status=document.querySelector('#status');
+document.querySelectorAll('[data-src]').forEach(b=>b.onclick=async()=>{player.pause();player.src=b.dataset.src;try{await player.play();status.textContent=b.closest('section').querySelector('h2').textContent+' · '+b.textContent}catch(e){status.textContent='无法播放：'+e.message}});
+document.querySelectorAll('[data-stop]').forEach(b=>b.onclick=()=>{player.pause();player.currentTime=0;status.textContent='已停止'});
+</script></html>'''
+(OUT / 'index.html').write_text(html, encoding='utf-8')
+print(OUT / 'index.html')

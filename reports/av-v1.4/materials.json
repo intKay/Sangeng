@@ -1,0 +1,98 @@
+[
+  {
+    "material": "MAT_wallpaper",
+    "source": "wallpaper_old.jpg",
+    "file": "av14_wallpaper.png",
+    "dimensions": [
+      256,
+      256
+    ],
+    "maxChannelDelta": 11.0,
+    "meanAbsoluteDelta": 0.8180694580078125,
+    "borderPreserved": true,
+    "job": {
+      "prompt_id": "2381ce09-b9e9-4c60-83f3-55058d94c9e1",
+      "elapsed_seconds": 10.03
+    }
+  },
+  {
+    "material": "MAT_wallpaper_dark",
+    "source": "wallpaper_old_dark.jpg",
+    "file": "av14_wallpaper_dark.png",
+    "dimensions": [
+      256,
+      256
+    ],
+    "maxChannelDelta": 11.0,
+    "meanAbsoluteDelta": 0.7472381591796875,
+    "borderPreserved": true,
+    "job": {
+      "prompt_id": "d3f482f4-b709-48e9-93e3-33c5578ca452",
+      "elapsed_seconds": 10.05
+    }
+  },
+  {
+    "material": "MAT_plaster",
+    "source": "plaster.jpg",
+    "file": "av14_plaster.png",
+    "dimensions": [
+      256,
+      256
+    ],
+    "maxChannelDelta": 11.0,
+    "meanAbsoluteDelta": 0.8260345458984375,
+    "borderPreserved": true,
+    "job": {
+      "prompt_id": "e3ac8f3e-689c-4321-b267-44c7a6fdff3a",
+      "elapsed_seconds": 10.05
+    }
+  },
+  {
+    "material": "MAT_tile_green",
+    "source": "tile_green.jpg",
+    "file": "av14_tile_green.png",
+    "dimensions": [
+      256,
+      256
+    ],
+    "maxChannelDelta": 11.0,
+    "meanAbsoluteDelta": 1.1898040771484375,
+    "borderPreserved": true,
+    "job": {
+      "prompt_id": "a3038d23-68de-4716-81fb-fac730fd374c",
+      "elapsed_seconds": 10.03
+    }
+  },
+  {
+    "material": "MAT_wood_pale",
+    "source": "wood_pale.jpg",
+    "file": "av14_wood_pale.png",
+    "dimensions": [
+      256,
+      256
+    ],
+    "maxChannelDelta": 10.0,
+    "meanAbsoluteDelta": 0.71685791015625,
+    "borderPreserved": true,
+    "job": {
+      "prompt_id": "01d63b02-0e7d-4291-ab4e-89ab73a29025",
+      "elapsed_seconds": 10.03
+    }
+  },
+  {
+    "material": "MAT_lantern_paper",
+    "source": "lantern_paper.jpg",
+    "file": "av14_lantern_paper.png",
+    "dimensions": [
+      256,
+      256
+    ],
+    "maxChannelDelta": 11.0,
+    "meanAbsoluteDelta": 0.8032481074333191,
+    "borderPreserved": true,
+    "job": {
+      "prompt_id": "4b1730d4-17bb-4577-95e8-1d17671a51b8",
+      "elapsed_seconds": 10.03
+    }
+  }
+]

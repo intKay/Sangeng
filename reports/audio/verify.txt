@@ -1,0 +1,156 @@
+《三更》音频资产自检报告
+==============================================================================
+生成时间(本地): 见文件修改时间；环境 python 3.11.9 / numpy 2.4.4 / ffmpeg(libvorbis)
+资产根目录: assets\audio
+
+[manifest] door/manifest.json
+           categories=['id', 'music', 'ambience', 'sfx', 'ui'] 条目=45
+[manifest] mirror/manifest.json
+           categories=['id', 'music', 'ambience', 'sfx', 'ui'] 条目=43
+[manifest] nightroad/manifest.json
+           categories=['id', 'music', 'ambience', 'sfx', 'ui'] 条目=41
+[manifest] shared/manifest.json
+           ui 条目=4
+
+1) manifest 引用检查
+------------------------------------------------------------------------------
+  引用文件 121 个，缺失 0 个
+
+2) 逐文件检查（ffprobe + 解码实测）
+------------------------------------------------------------------------------
+文件                                               时长     sr ch      峰值     RMS     接缝 判定
+door/music/main.ogg                           60.00  44100  2   -6.55  -20.49   0.45 OK
+door/music/tension.ogg                        45.00  44100  2   -7.38  -20.47   1.65 OK
+door/music/ending.ogg                         40.00  44100  2   -6.72  -19.96   0.00 OK
+door/ambience/corridor_hum.ogg                30.00  44100  2   -8.58  -20.53   0.03 OK
+door/ambience/room_tone.ogg                   30.00  44100  2   -3.97  -20.58   1.50 OK
+door/ambience/rain_window.ogg                 30.00  44100  2   -5.45  -21.45   0.42 OK
+door/ambience/tv_static.ogg                   15.00  44100  2   -4.44  -21.22   0.49 OK
+door/sfx/step_wood_1.ogg                       0.34  44100  1   -2.10  -12.63   0.00 OK
+door/sfx/step_wood_2.ogg                       0.34  44100  1   -1.90  -10.82   0.00 OK
+door/sfx/step_wood_3.ogg                       0.34  44100  1   -1.84  -13.44   0.00 OK
+door/sfx/step_wood_4.ogg                       0.34  44100  1   -2.00  -11.51   0.00 OK
+door/sfx/step_carpet_1.ogg                     0.22  44100  1   -2.08  -14.92   0.00 OK
+door/sfx/step_carpet_2.ogg                     0.22  44100  1   -1.97  -15.07   0.00 OK
+door/sfx/step_carpet_3.ogg                     0.22  44100  1   -2.17  -15.28   0.00 OK
+door/sfx/door_open.ogg                         2.60  44100  1   -1.96  -17.48   0.00 OK
+door/sfx/door_close.ogg                        1.60  44100  1   -1.95  -19.02   0.00 OK
+door/sfx/door_locked.ogg                       1.50  44100  1   -2.18  -20.72   0.00 OK
+door/sfx/door_unlock.ogg                       1.80  44100  1   -2.53  -22.21   0.00 OK
+door/sfx/pickup_letter_1.ogg                   0.42  44100  1   -1.57  -16.27   0.00 OK
+door/sfx/pickup_letter_2.ogg                   0.42  44100  1   -1.98  -17.16   0.00 OK
+door/sfx/pickup_battery.ogg                    0.40  44100  1   -2.11  -19.19   0.00 OK
+door/sfx/flashlight_click.ogg                  0.22  44100  1   -2.13  -23.16   0.00 OK
+door/sfx/battery_low.ogg                       1.10  44100  1   -1.90  -10.96   0.00 OK
+door/sfx/light_switch.ogg                      0.30  44100  1   -2.78  -25.03   0.00 OK
+door/sfx/light_flicker_1.ogg                   0.90  44100  1   -2.01  -10.96   0.00 OK
+door/sfx/light_flicker_2.ogg                   0.90  44100  1   -1.86  -11.21   0.00 OK
+door/sfx/paper_rustle_1.ogg                    0.90  44100  1   -1.90  -16.78   0.00 OK
+door/sfx/paper_rustle_2.ogg                    0.90  44100  1   -1.85  -16.79   0.00 OK
+door/sfx/clock_tick.ogg                        2.00  44100  1   -2.24  -30.45   0.24 OK
+door/sfx/heartbeat.ogg                        10.00  44100  1   -1.86  -19.68   3.71 OK
+door/sfx/breath.ogg                            8.00  44100  1   -1.79  -19.02   0.07 OK
+door/sfx/whisper_1.ogg                         2.48  44100  1   -2.28  -19.66   0.00 OK
+door/sfx/whisper_2.ogg                         2.33  44100  1   -2.04  -16.29   0.00 OK
+door/sfx/whisper_3.ogg                         2.34  44100  1   -1.96  -18.20   0.00 OK
+door/sfx/stinger_1.ogg                         3.20  44100  1   -1.96  -19.05   0.00 OK
+door/sfx/stinger_2.ogg                         3.20  44100  1   -2.04  -17.32   0.00 OK
+door/sfx/blackout.ogg                          2.40  44100  1   -2.17  -19.16   0.00 OK
+door/sfx/entity_breath.ogg                    10.00  44100  1   -1.83  -12.57   0.29 OK
+door/sfx/entity_step_1.ogg                     1.40  44100  1   -1.96  -19.28   0.00 OK
+door/sfx/entity_step_2.ogg                     1.40  44100  1   -2.09  -19.38   0.00 OK
+door/sfx/entity_catch.ogg                      2.20  44100  1   -2.20  -19.57   0.00 OK
+shared/ui_hover.ogg                            0.09  44100  1   -3.98  -21.16   0.00 OK
+shared/ui_click.ogg                            0.11  44100  1   -4.45  -21.20   0.00 OK
+shared/ui_back.ogg                             0.18  44100  1   -3.70  -19.40   0.00 OK
+shared/ui_confirm.ogg                          0.26  44100  1   -4.65  -14.50   0.00 OK
+mirror/music/main.ogg                         60.00  44100  2   -5.80  -20.50   1.41 OK
+mirror/music/tension.ogg                      45.00  44100  2   -3.52  -20.50   0.77 OK
+mirror/music/ending.ogg                       35.00  44100  2   -1.24  -20.46   0.00 OK
+mirror/ambience/fluorescent_buzz.ogg          20.00  44100  2  -10.45  -20.51   0.59 OK
+mirror/ambience/water_drip.ogg                30.00  44100  2   -2.75  -20.70   1.67 OK
+mirror/ambience/distant_water.ogg             30.00  44100  2   -5.82  -21.48   2.06 OK
+mirror/ambience/steam_hiss.ogg                15.00  44100  2   -5.33  -20.53   0.93 OK
+mirror/sfx/step_tile_1.ogg                     0.34  44100  1   -2.41  -19.72   0.00 OK
+mirror/sfx/step_tile_2.ogg                     0.34  44100  1   -1.89  -20.35   0.00 OK
+mirror/sfx/step_tile_3.ogg                     0.34  44100  1   -2.51  -20.70   0.00 OK
+mirror/sfx/step_tile_4.ogg                     0.34  44100  1   -1.83  -21.68   0.00 OK
+mirror/sfx/towel_pick.ogg                      0.60  44100  1   -1.82  -20.45   0.00 OK
+mirror/sfx/valve_turn_1.ogg                    1.80  44100  1   -1.87  -19.89   0.00 OK
+mirror/sfx/valve_turn_2.ogg                    1.80  44100  1   -2.03  -21.75   0.00 OK
+mirror/sfx/water_stream.ogg                   10.00  44100  1   -2.07  -16.05   3.00 OK
+mirror/sfx/water_splash.ogg                    0.90  44100  1   -1.98  -18.27   0.00 OK
+mirror/sfx/switch_click.ogg                    0.26  44100  1   -2.02  -25.50   0.00 OK
+mirror/sfx/light_flicker_1.ogg                 1.00  44100  1   -1.87   -9.99   0.00 OK
+mirror/sfx/light_flicker_2.ogg                 1.00  44100  1   -1.98  -10.18   0.00 OK
+mirror/sfx/locker_creak_1.ogg                  1.50  44100  1   -1.76  -15.97   0.00 OK
+mirror/sfx/locker_creak_2.ogg                  1.50  44100  1   -1.76  -18.00   0.00 OK
+mirror/sfx/stool_drag.ogg                      1.30  44100  1   -2.11  -17.13   0.00 OK
+mirror/sfx/radio_on.ogg                        2.00  44100  1   -2.20  -17.67   0.00 OK
+mirror/sfx/radio_static.ogg                    8.00  44100  1   -1.92  -15.17   0.32 OK
+mirror/sfx/clock_tick.ogg                      2.00  44100  1   -2.24  -30.45   0.24 OK
+mirror/sfx/mirror_touch.ogg                    1.60  44100  1   -2.95  -21.78   0.00 OK
+mirror/sfx/glass_crack.ogg                     2.20  44100  1   -2.88  -22.16   0.00 OK
+mirror/sfx/doppel_step_1.ogg                   0.69  44100  1   -2.05  -19.84   0.00 OK
+mirror/sfx/doppel_step_2.ogg                   0.63  44100  1   -2.16  -18.31   0.00 OK
+mirror/sfx/doppel_step_3.ogg                   0.65  44100  1   -2.21  -18.75   0.00 OK
+mirror/sfx/doppel_breath.ogg                   8.00  44100  1   -2.17  -25.34   0.04 OK
+mirror/sfx/heartbeat.ogg                      10.00  44100  1   -2.06  -18.53   0.68 OK
+mirror/sfx/breath.ogg                          8.00  44100  1   -2.15  -19.16   0.21 OK
+mirror/sfx/whisper_1.ogg                       2.00  44100  1   -2.07  -18.68   0.00 OK
+mirror/sfx/whisper_2.ogg                       1.93  44100  1   -1.85  -17.14   0.00 OK
+mirror/sfx/whisper_3.ogg                       2.44  44100  1   -2.11  -20.54   0.00 OK
+mirror/sfx/stinger_1.ogg                       3.00  44100  1   -2.33  -19.67   0.00 OK
+mirror/sfx/stinger_2.ogg                       3.00  44100  1   -1.82  -18.30   0.00 OK
+mirror/sfx/blackout.ogg                        2.60  44100  1   -2.16  -18.73   0.00 OK
+nightroad/music/main.ogg                      60.00  44100  2   -7.43  -20.50   0.91 OK
+nightroad/music/tension.ogg                   45.00  44100  2  -10.39  -20.47   0.61 OK
+nightroad/music/ending.ogg                    40.00  44100  2   -3.90  -20.01   0.00 OK
+nightroad/ambience/wind_field.ogg             30.00  44100  2   -6.04  -21.39   0.29 OK
+nightroad/ambience/insects.ogg                30.00  44100  2   -5.65  -20.64   0.23 OK
+nightroad/ambience/night_room_tone.ogg        30.00  44100  2   -9.45  -22.01   1.25 OK
+nightroad/ambience/distant_dog.ogg            12.00  44100  2   -7.63  -21.64   0.81 OK
+nightroad/sfx/step_dirt_1.ogg                  0.30  44100  1   -2.34  -19.85   0.00 OK
+nightroad/sfx/step_dirt_2.ogg                  0.30  44100  1   -2.91  -19.13   0.00 OK
+nightroad/sfx/step_dirt_3.ogg                  0.30  44100  1   -2.73  -19.75   0.00 OK
+nightroad/sfx/step_dirt_4.ogg                  0.30  44100  1   -1.81  -21.10   0.00 OK
+nightroad/sfx/step_grass_1.ogg                 0.32  44100  1   -1.89  -22.67   0.00 OK
+nightroad/sfx/step_grass_2.ogg                 0.32  44100  1   -2.00  -24.06   0.00 OK
+nightroad/sfx/step_grass_3.ogg                 0.32  44100  1   -2.71  -21.99   0.00 OK
+nightroad/sfx/match_strike_1.ogg               1.00  44100  1   -2.16  -26.34   0.00 OK
+nightroad/sfx/match_strike_2.ogg               1.00  44100  1   -2.02  -26.08   0.00 OK
+nightroad/sfx/lantern_light_1.ogg              2.40  44100  1   -1.61  -27.41   0.00 OK
+nightroad/sfx/lantern_light_2.ogg              2.40  44100  1   -1.10  -28.51   0.00 OK
+nightroad/sfx/paper_flutter_1.ogg              1.30  44100  1   -2.05  -19.57   0.00 OK
+nightroad/sfx/paper_flutter_2.ogg              1.30  44100  1   -1.69  -19.48   0.00 OK
+nightroad/sfx/entity_rustle_1.ogg              2.20  44100  1   -2.00  -20.03   0.00 OK
+nightroad/sfx/entity_rustle_2.ogg              2.20  44100  1   -1.90  -19.60   0.00 OK
+nightroad/sfx/entity_rustle_3.ogg              2.20  44100  1   -1.96  -19.96   0.00 OK
+nightroad/sfx/entity_catch.ogg                 2.20  44100  1   -1.98  -20.37   0.00 OK
+nightroad/sfx/shrine_bell.ogg                  6.50  44100  1   -2.09  -15.71   0.00 OK
+nightroad/sfx/metal_bell.ogg                   3.40  44100  1   -2.21  -16.31   0.00 OK
+nightroad/sfx/wind_gust_1.ogg                  2.73  44100  1   -1.90  -17.13   0.00 OK
+nightroad/sfx/wind_gust_2.ogg                  2.99  44100  1   -1.94  -18.73   0.00 OK
+nightroad/sfx/crow.ogg                         1.80  44100  1   -1.96  -18.18   0.00 OK
+nightroad/sfx/heartbeat.ogg                   10.00  44100  1   -2.00  -18.83   1.03 OK
+nightroad/sfx/breath.ogg                       8.00  44100  1   -2.13  -18.45   0.15 OK
+nightroad/sfx/whisper_1.ogg                    2.78  44100  1   -2.13  -18.94   0.00 OK
+nightroad/sfx/whisper_2.ogg                    2.72  44100  1   -1.92  -17.32   0.00 OK
+nightroad/sfx/whisper_3.ogg                    2.64  44100  1   -2.01  -16.95   0.00 OK
+nightroad/sfx/stinger_1.ogg                    3.00  44100  1   -2.15  -19.32   0.00 OK
+nightroad/sfx/stinger_2.ogg                    3.00  44100  1   -1.94  -19.54   0.00 OK
+nightroad/sfx/blackout.ogg                     2.40  44100  1   -1.91  -18.83   0.00 OK
+
+3) 汇总
+------------------------------------------------------------------------------
+  文件数: 121，总时长: 953.7s (15.9 min)
+  峰值范围: -10.45 ~ -1.10 dBFS（上限 -1）
+  音乐 RMS: -20.50 ~ -19.96 dBFS
+  环境 RMS: -22.01 ~ -20.51 dBFS
+  音效峰值: -2.95 ~ -1.10 dBFS
+  循环接缝 jump_rel: 平均 0.87，最差 door/sfx/heartbeat.ogg = 3.71（<6 视为听不出）
+  分组文件数: door=41，mirror=39，nightroad=37，shared=4
+
+4) 结论
+------------------------------------------------------------------------------
+  PASS — 全部 121 个文件通过格式/响度/循环接缝检查；manifest 引用完整，无缺失。

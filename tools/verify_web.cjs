@@ -4,7 +4,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const assert = require('node:assert/strict');
 const http = require('node:http');
-const extracted = path.resolve('dist/web/qa-build');
+const extracted = path.resolve(process.env.SANGENG_WEB_QA_ROOT || 'dist/web/qa-build');
 const files = new Map();
 function collect(dir) {
   for (const item of fs.readdirSync(dir, { withFileTypes: true })) {

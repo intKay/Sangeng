@@ -1,0 +1,50 @@
+[
+  {
+    "chapter": "door",
+    "file": "assets/audio/door/ambience/rain_window.ogg",
+    "job": {
+      "prompt_id": "75f8d7f8-9d8b-4b20-91f0-39f67fe8069d",
+      "elapsed_seconds": 18.05
+    },
+    "seconds": 30.0,
+    "rmsDbFS": -21.450406812953617,
+    "peakDbFS": -5.454630410442618,
+    "loopJumpRelative": 0.5866548260638609,
+    "neuralMix": 0.24,
+    "authoredMix": 0.92,
+    "source": "tools\\av\\sources\\door-rain_window.flac",
+    "listeningAccepted": false
+  },
+  {
+    "chapter": "mirror",
+    "file": "assets/audio/mirror/ambience/distant_water.ogg",
+    "job": {
+      "prompt_id": "8b88c600-4635-4c24-b1a2-19e0d50a1836",
+      "elapsed_seconds": 12.42
+    },
+    "seconds": 30.0,
+    "rmsDbFS": -21.476695198561877,
+    "peakDbFS": -5.816652275398616,
+    "loopJumpRelative": 1.2107122854108041,
+    "neuralMix": 0.24,
+    "authoredMix": 0.92,
+    "source": "tools\\av\\sources\\mirror-distant_water.flac",
+    "listeningAccepted": false
+  },
+  {
+    "chapter": "nightroad",
+    "file": "assets/audio/nightroad/ambience/wind_field.ogg",
+    "job": {
+      "prompt_id": "1bea069b-5959-4f98-9f7d-7c8e99eafe61",
+      "elapsed_seconds": 14.05
+    },
+    "seconds": 30.0,
+    "rmsDbFS": -21.390239834851442,
+    "peakDbFS": -6.03918934977548,
+    "loopJumpRelative": 1.0290650431031514,
+    "neuralMix": 0.24,
+    "authoredMix": 0.92,
+    "source": "tools\\av\\sources\\nightroad-wind_field.flac",
+    "listeningAccepted": false
+  }
+]

@@ -1,22 +1,25 @@
 {
   "materials": {
     "MAT_wallpaper": {
-      "file": "wallpaper_old.jpg",
+      "file": "av14_wallpaper.png",
       "colorSpace": "srgb",
       "tint": "#efe8d4",
-      "emissive": null
+      "emissive": null,
+      "av14Source": "wallpaper_old.jpg"
     },
     "MAT_wallpaper_dark": {
-      "file": "wallpaper_old_dark.jpg",
+      "file": "av14_wallpaper_dark.png",
       "colorSpace": "srgb",
       "tint": "#d8d2b8",
-      "emissive": null
+      "emissive": null,
+      "av14Source": "wallpaper_old_dark.jpg"
     },
     "MAT_plaster": {
-      "file": "plaster.jpg",
+      "file": "av14_plaster.png",
       "colorSpace": "srgb",
       "tint": "#ffffff",
-      "emissive": null
+      "emissive": null,
+      "av14Source": "plaster.jpg"
     },
     "MAT_wood_floor": {
       "file": "wood_floor.jpg",
@@ -37,10 +40,11 @@
       "emissive": null
     },
     "MAT_wood_pale": {
-      "file": "wood_pale.jpg",
+      "file": "av14_wood_pale.png",
       "colorSpace": "srgb",
       "tint": "#f6ecd8",
-      "emissive": null
+      "emissive": null,
+      "av14Source": "wood_pale.jpg"
     },
     "MAT_paint_ceiling": {
       "file": "paint_ceiling.jpg",
@@ -55,10 +59,11 @@
       "emissive": null
     },
     "MAT_tile_green": {
-      "file": "tile_green.jpg",
+      "file": "av14_tile_green.png",
       "colorSpace": "srgb",
       "tint": "#ffffff",
-      "emissive": null
+      "emissive": null,
+      "av14Source": "tile_green.jpg"
     },
     "MAT_tile_white": {
       "file": "tile_white.jpg",
@@ -190,11 +195,12 @@
       "emissiveIntensity": 1.5
     },
     "MAT_lantern_paper": {
-      "file": "lantern_paper.jpg",
+      "file": "av14_lantern_paper.png",
       "colorSpace": "srgb",
       "tint": "#ffffff",
       "emissive": "#ff6a3a",
-      "emissiveIntensity": 1.35
+      "emissiveIntensity": 1.35,
+      "av14Source": "lantern_paper.jpg"
     },
     "MAT_sign_night_1": {
       "file": "sign_night_1.jpg",

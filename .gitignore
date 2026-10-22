@@ -20,3 +20,7 @@ output/
 .env
 .env.*
 *.blend1
+reports/av-v1.4/raw/
+reports/qa/release-1.4.0/**/*.png
+reports/qa/release-1.4.0/**/partial.json
+reports/qa/release-1.4.0/**/*failure*

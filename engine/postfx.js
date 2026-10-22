@@ -98,8 +98,8 @@ export class PostFX {
       tDiffuse: { value: this.rt.texture },
       uResolution: { value: new THREE.Vector2(2, 2) },
       uTime: { value: 0 },
-      uGrain: { value: 0.075 },
-      uVignette: { value: 0.55 },
+      uGrain: { value: 0.035 },
+      uVignette: { value: 0.44 },
       uScanline: { value: 0.12 },
       uChroma: { value: 1.1 },
       uSanity: { value: 0 },
@@ -107,7 +107,7 @@ export class PostFX {
       uFade: { value: 0 },
       uContrast: { value: 1.06 },
       uTint: { value: new THREE.Color(0xffffff) },
-      uDither: { value: 0.012 },
+      uDither: { value: 0.008 },
     };
     this.material = new THREE.ShaderMaterial({
       uniforms: this.uniforms,

@@ -457,7 +457,9 @@ const config = {
       game.setLight('LIGHT_entry', true, 1.0);
       game.setLight('LIGHT_living', true, 0.95);
       game.setLight('LIGHT_floor_lamp', true, 1.0);
-      game.setLight('LIGHT_kitchen', true, 0.55);
+      // Only the first-entry domestic scene gets a little more task light;
+      // later blackout stages still switch this light off through their logic.
+      game.setLight('LIGHT_kitchen', true, 0.75);
       game.ui.setObjective('找到三张字条');
       game.ui.subtitle('三年没回来了。屋里还是那个味道。', 3.8);
       game.ui.subtitle('客厅的灯还亮着。像有人刚离开。', 4.4);

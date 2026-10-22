@@ -1,0 +1,81 @@
+{
+  "materials": [
+    {
+      "material": "MAT_wallpaper",
+      "maxDelta": 11,
+      "edgesIdentical": true
+    },
+    {
+      "material": "MAT_wallpaper_dark",
+      "maxDelta": 11,
+      "edgesIdentical": true
+    },
+    {
+      "material": "MAT_plaster",
+      "maxDelta": 11,
+      "edgesIdentical": true
+    },
+    {
+      "material": "MAT_tile_green",
+      "maxDelta": 11,
+      "edgesIdentical": true
+    },
+    {
+      "material": "MAT_wood_pale",
+      "maxDelta": 10,
+      "edgesIdentical": true
+    },
+    {
+      "material": "MAT_lantern_paper",
+      "maxDelta": 11,
+      "edgesIdentical": true
+    }
+  ],
+  "sources": [
+    {
+      "file": "tools/av/sources/door-rain_window.flac",
+      "sha256": "03a31fc2a378126db65d455ac945e870507fe6a3cd03375e1d7e63e6b3f9cbfe"
+    },
+    {
+      "file": "tools/av/sources/MAT_lantern_paper.png",
+      "sha256": "a9f72c1f7dba10aa9ee7d2197ee5c45ca6bd14f9832f3276a80999cd151ca53e"
+    },
+    {
+      "file": "tools/av/sources/MAT_plaster.png",
+      "sha256": "b635c5a24ebcf2eaff6fd88348daf6e4a82017b5e5cba1a7bbaa9715c9232a7e"
+    },
+    {
+      "file": "tools/av/sources/MAT_tile_green.png",
+      "sha256": "a98402d7055e8a06bece002cdd436e3f119b0768672f754025c6a3a0186e85ff"
+    },
+    {
+      "file": "tools/av/sources/MAT_wallpaper.png",
+      "sha256": "62530e8a8794afe0e6805ffa53799c6c676b73406a0654352b61e887477354d1"
+    },
+    {
+      "file": "tools/av/sources/MAT_wallpaper_dark.png",
+      "sha256": "f78e0ac3479838cb9d9527268db9c43617b42b7cd88112279528af543e84b9a0"
+    },
+    {
+      "file": "tools/av/sources/MAT_wood_pale.png",
+      "sha256": "d7e0a9216cc15ca25607fc08a956a37703e5baf53ba21ce6f987e95151af0960"
+    },
+    {
+      "file": "tools/av/sources/mirror-distant_water.flac",
+      "sha256": "e06d31e8b3a4babca077ec1751e56a5b2cd9da4d4959027133e3a6529ff9bd85"
+    },
+    {
+      "file": "tools/av/sources/nightroad-wind_field.flac",
+      "sha256": "0609c55f02895808de725674e39f151429938fad1c43dd857217bc4fc2458538"
+    }
+  ],
+  "webBundle": {
+    "version": "1.4.0",
+    "name": "Sangeng-1.4.0-web.zip",
+    "sha256": "8b9c091dbb3156fc067f909ae8213379c0d00ced6447602cdaaf4b542eacb67c",
+    "bytes": 33824317,
+    "itch_limits_checked": true,
+    "runtime_files": 345
+  },
+  "runtimeMatchesBundle": true
+}

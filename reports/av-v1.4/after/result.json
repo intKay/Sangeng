@@ -1,0 +1,118 @@
+{
+  "stage": "after",
+  "errors": [],
+  "results": [
+    {
+      "id": "door",
+      "resources": {
+        "textures": 62,
+        "audioMissing": [],
+        "placeholder": false,
+        "state": "playing",
+        "gpu": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+      },
+      "frames": {
+        "medianMs": 84.19999999925494,
+        "p95Ms": 87.70000000298023,
+        "calls": 96,
+        "triangles": 5926
+      },
+      "audio": {
+        "playing": 0.11642198972284412,
+        "paused": 0,
+        "pausedContext": "suspended",
+        "contextState": "suspended",
+        "scope": "final gate measured even with context forcibly resumed while paused"
+      },
+      "resumed": "running",
+      "assistedFraming": {
+        "name": "INT_thermos",
+        "center": [
+          3.654229521751404,
+          1.1044999659061432,
+          9.050000190734863
+        ],
+        "position": [
+          4.0042295217514035,
+          0,
+          8.400000190734863
+        ]
+      }
+    },
+    {
+      "id": "mirror",
+      "resources": {
+        "textures": 62,
+        "audioMissing": [],
+        "placeholder": false,
+        "state": "playing",
+        "gpu": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+      },
+      "frames": {
+        "medianMs": 69.30000000074506,
+        "p95Ms": 76.80000000074506,
+        "calls": 219,
+        "triangles": 6626
+      },
+      "audio": {
+        "playing": 0.11370024342076965,
+        "paused": 0,
+        "pausedContext": "suspended",
+        "contextState": "suspended",
+        "scope": "final gate measured even with context forcibly resumed while paused"
+      },
+      "resumed": "running",
+      "assistedFraming": {
+        "name": "S_basin",
+        "center": [
+          -0.5799999833106995,
+          0.5324999690055847,
+          0.42000000178813934
+        ],
+        "position": [
+          0.07000001668930056,
+          0,
+          1.4200000017881393
+        ]
+      }
+    },
+    {
+      "id": "nightroad",
+      "resources": {
+        "textures": 62,
+        "audioMissing": [],
+        "placeholder": false,
+        "state": "playing",
+        "gpu": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+      },
+      "frames": {
+        "medianMs": 38.099999997764826,
+        "p95Ms": 42.70000000298023,
+        "calls": 84,
+        "triangles": 4748
+      },
+      "audio": {
+        "playing": 0.1336728341700073,
+        "paused": 0,
+        "pausedContext": "suspended",
+        "contextState": "suspended",
+        "scope": "final gate measured even with context forcibly resumed while paused"
+      },
+      "resumed": "running",
+      "assistedFraming": {
+        "name": "INT_lantern_01",
+        "center": [
+          3.172923043370247,
+          0.949999988079071,
+          12
+        ],
+        "position": [
+          3.822923043370247,
+          0,
+          13
+        ]
+      }
+    }
+  ],
+  "scope": "real production browser; detail framing is assisted; no human listening acceptance"
+}

@@ -498,6 +498,7 @@ export class HorrorGame {
     this.player.enabled = false;
     this.ui.showPause();
     this.audio.duck(true);
+    this.audio.setPaused(true);
     this.ui.setPrompt(null);
     if (document.pointerLockElement) document.exitPointerLock();
     document.body.classList.remove('sg-playing');
@@ -505,6 +506,7 @@ export class HorrorGame {
 
   resume() {
     if (this.state !== 'paused') return;
+    this.audio.setPaused(false);
     this.audio.unlock();
     this.state = 'playing';
     this.player.enabled = true;
@@ -789,9 +791,11 @@ export class HorrorGame {
     u.uTime.value = this.time;
     u.uSanity.value = this._sanitySmooth;
     u.uThreat.value = this._threatSmooth;
-    u.uGrain.value = 0.06 + this._sanitySmooth * 0.09 + this._threatSmooth * 0.04;
+    // Keep the low-resolution texture language, but let near-view material
+    // and silhouettes survive the screen-space grain at rest.
+    u.uGrain.value = 0.035 + this._sanitySmooth * 0.065 + this._threatSmooth * 0.025;
     u.uChroma.value = 0.8 + this._sanitySmooth * 2.6;
-    u.uVignette.value = 0.5 + this._sanitySmooth * 0.25 + this._threatSmooth * 0.1;
+    u.uVignette.value = 0.44 + this._sanitySmooth * 0.25 + this._threatSmooth * 0.1;
 
     if (this.mirror && this.state !== 'title') {
       try { this.mirror.update(this.time, dt); } catch (err) { console.warn('mirror 渲染失败', err); this.mirror = null; }
