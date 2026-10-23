@@ -3,7 +3,7 @@
   "music": {
     "main": {
       "file": "music/main.ogg",
-      "volume": 0.34,
+      "volume": 0.3,
       "loop": true,
       "fade": 4.0
     },
@@ -23,7 +23,7 @@
   "ambience": {
     "fluorescent": {
       "file": "ambience/fluorescent_buzz.ogg",
-      "volume": 0.55,
+      "volume": 0.42,
       "loop": true
     },
     "waterDrip": {

@@ -111,8 +111,8 @@ def locker_bank(name, x0, x1, with_open_door=False):
     2nd door slot for the separate INT_locker_02 object."""
     G = name
     y0, y1 = -2.79, -2.38
-    L.slab(name + "_body", x0, x1, y0, y1, 0.08, 2.0, "MAT_metal_locker",
-           group=G)
+    L.slab(name+'_back',x0,x1,y0,y0+.025,.08,2,'MAT_metal_locker',group=G)
+    L.slab(name+'_base',x0,x1,y0,y1,.08,.12,'MAT_metal_locker',group=G)
     L.slab(name + "_plinth", x0, x1, -2.8, -2.36, 0.0, 0.08, "MAT_concrete",
            group=G)
     L.slab(name + "_top", x0 - 0.03, x1 + 0.03, -2.82, -2.34, 2.0, 2.06,
@@ -121,7 +121,9 @@ def locker_bank(name, x0, x1, with_open_door=False):
     dw = (x1 - x0 - 0.06) / n
     for k in range(n):
         dx0 = x0 + 0.03 + k * dw
-        if with_open_door and k == 1:
+        L.slab(name+'_divider_%d'%k,dx0,dx0+.022,y0,y1,.1,2,'MAT_metal_locker',group=G)
+        L.slab(name+'_shelf_%d'%k,dx0,dx0+dw,y0,y1,1.47,1.49,'MAT_metal_locker',group=G)
+        if with_open_door and k in (0,1):
             continue
         L.slab(name + "_door_%d" % k, dx0 + 0.012, dx0 + dw - 0.012,
                -2.365, -2.345, 0.12, 1.95, "MAT_metal_locker", group=G)
@@ -209,22 +211,18 @@ def build_mirror_wall():
     # dark front kick + panel lines
     L.slab("S_basin_kick", -2.1, 2.1, 2.24, 2.27, 0.0, 0.12, "MAT_concrete")
     for i, xx in enumerate([-1.4, 0.0, 1.4]):
-        L.cyl("S_basin_%d" % i, 0.21, 0.05, (xx, 2.5, 0.9), "MAT_tile_white",
-              segments=12)
-        L.cyl("S_basin_inner_%d" % i, 0.16, 0.03, (xx, 2.5, 0.915),
-              "MAT_metal_locker", segments=12)
-        L.cyl_between("S_basin_drain_%d" % i, (xx, 2.5, 0.914), (xx, 2.5, 0.918),
-                      0.02, "MAT_metal_rust", segments=6)
+        L.bowl('S_basin_%d'%i,.23,.20,(xx,2.5,.98),'MAT_ceramic_worn',segments=16)
+        L.cyl_between('S_basin_drain_%d'%i,(xx,2.5,.921),(xx,2.5,.925),.025,'MAT_steel_worn',segments=8)
     L.col("COL_basin_counter", (0, 2.5, 0.5), (4.24, 0.6, 1.0))
     # three faucets (separate named objects, origin at wall side)
     for i, xx in enumerate([-1.4, 0.0, 1.4]):
         g = "S_faucet_%02d" % (i + 1)
-        L.cyl(g + "_body", 0.024, 0.16, (xx, 2.72, 0.96), "MAT_metal_rust",
+        L.cyl(g + "_body", 0.024, 0.29, (xx, 2.72, 1.025), "MAT_steel_worn",
               segments=8, group=g)
-        L.cyl(g + "_spout", 0.018, 0.16, (xx, 2.63, 1.03), "MAT_metal_rust",
+        L.cyl(g + "_spout", 0.018, 0.16, (xx, 2.63, 1.17), "MAT_steel_worn",
               axis="Y", segments=8, group=g)
         L.cyl(g + "_handle", 0.04, 0.03, (xx + 0.07, 2.72, 0.94),
-              "MAT_metal_rust", axis="Z", segments=8, group=g)
+              "MAT_steel_worn", axis="Z", segments=8, group=g)
     # soap dish / cup / towel bar
     L.box("S_soap_dish", (0.16, 0.1, 0.04), (-0.65, 2.5, 0.9),
           "MAT_tile_white")
@@ -283,7 +281,7 @@ def build_lockers_props():
             open_angle=100.0, open_dir=1)
     # bench
     L.box("S_bench_top", (1.8, 0.45, 0.08), (0.0, -0.4, 0.44),
-          "MAT_wood_pale", group="S_bench")
+          "MAT_wood_pale", bevel=.012, group="S_bench")
     for i, (xx, yy) in enumerate([(-0.78, -0.55), (0.78, -0.55),
                                   (-0.78, -0.25), (0.78, -0.25)]):
         L.box("S_bench_leg_%d" % i, (0.06, 0.06, 0.4), (xx, yy, 0.2),
@@ -461,12 +459,7 @@ def build_v102_mirror():
             (0.6, -0.38, 0.6, "MAT_fabric_white")]):
         L.box("S_towel_pile_%d" % i, (0.32, 0.26, 0.06), (xx, yy, zz),
               mat, rot=(0, 0, 0.1 * i), group="S_towel_pile")
-    L.cyl("S_basin", 0.19, 0.1, (-0.58, -0.42, 0.53), "MAT_tile_white",
-          segments=12, group="S_basin")
-    L.cyl("S_basin_inner", 0.15, 0.06, (-0.58, -0.42, 0.555),
-          "MAT_metal_locker", segments=12, group="S_basin")
-    L.box("S_basin_water", (0.24, 0.24, 0.004), (-0.58, -0.42, 0.582),
-          "MAT_stain_water", group="S_basin")
+    L.bowl('S_basin',.19,.13,(-.58,-.42,.545),'MAT_enamel_worn',segments=16,group='S_basin')
     for i, (xx, zz, h, mat) in enumerate([
             (-1.88, 0.99, 0.18, "MAT_fabric_blue"),
             (-1.78, 1.02, 0.13, "MAT_fabric_white"),

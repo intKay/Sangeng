@@ -1138,9 +1138,9 @@ function syncAudio() {
   updateMusic();
   if (!a.ready) return;
   a.playAmbience('fluorescent', { channel: 'main', fade: 2.2 });
-  a.playAmbience('waterDrip', { channel: 'extra', fade: 2.2, volume: 0.8,
+  a.playAmbience('waterDrip', { channel: 'extra', fade: 2.2, volume: .65,
     pos: new THREE.Vector3(-.6, .5, .4), refDistance: 2.5, wet: .55 });
-  a.playAmbience('distantWater', { channel: 'far', fade: 2.2, volume: 0.85,
+  a.playAmbience('distantWater', { channel: 'far', fade: 2.2, volume: .72,
     pos: new THREE.Vector3(3.1, 1.0, -.4), refDistance: 3, wet: .35 });
   syncLoops();
 }
@@ -1344,7 +1344,7 @@ const config = {
   audio: '../../assets/audio/mirror/manifest.json',
   footstepSfx: 'stepTile',
   flashlight: null,
-  ambient: { color: 0x2a3330, intensity: 0.3 },
+  ambient: { color: 0x81938d, intensity: 0.24 },
   fog: { color: 0x070a09, density: 0.05 },
   theme: { accent: '#9fb0a8', ink: '#d8d2c0', bg: '#060807' },
   playerStart: { spawn: 'SPAWN_mirror', look: 'LOOK_mirror' },

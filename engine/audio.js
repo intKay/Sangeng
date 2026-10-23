@@ -143,8 +143,8 @@ export class AudioManager {
 
     // Different acoustic spaces; outdoor wind must not inherit bathhouse tails.
     const profiles = {
-      door: { seconds: 1.65, decay: 3.1, wet: .27 },
-      mirror: { seconds: 3.3, decay: 2.6, wet: .46 },
+      door: { seconds: 1.4, decay: 3.1, wet: .22 },
+      mirror: { seconds: 2.6, decay: 3.0, wet: .36 },
       nightroad: { seconds: .48, decay: 4.2, wet: .07 },
     };
     this.roomProfile = profiles[this.manifest?.id] || profiles.door;

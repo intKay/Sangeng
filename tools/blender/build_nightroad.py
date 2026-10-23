@@ -59,9 +59,15 @@ CENTER = catmull_samples(2.0)
 
 def build_ground_road():
     # ground
-    L.mesh_custom("S_ground",
-                  [(-70, 8, 0), (70, 8, 0), (70, -150, 0), (-70, -150, 0)],
-                  [(0, 3, 2, 1)], "MAT_grass", up_faces=True, uv_scale=2.0)
+    # Subdivide the broad field so vertex-interpolated fog can represent
+    # local depth. This alone did not fix the earlier blue-field lighting.
+    ground=[];faces=[];cols,rows=14,16
+    for j in range(rows+1):
+        for i in range(cols+1):ground.append((-70+i*10,8-j*9.875,0))
+    for j in range(rows):
+        for i in range(cols):
+            a=j*(cols+1)+i;faces.append((a,a+cols+1,a+cols+2,a+1))
+    L.mesh_custom('S_ground',ground,faces,'MAT_grass',up_faces=True,uv_scale=2)
     # road ribbon: custom UVs, 1 UV unit = 2 m, v along the road
     half = 1.6
     verts, faces, uvs = [], [], []
@@ -73,8 +79,9 @@ def build_ground_road():
             dx, dy = x - CENTER[i - 1][0], y - CENTER[i - 1][1]
         ln = math.hypot(dx, dy) or 1.0
         nx, ny = -dy / ln, dx / ln
-        verts.append((x + nx * half, y + ny * half, 0.012))
-        verts.append((x - nx * half, y - ny * half, 0.012))
+        edge=half+.07*math.sin(i*2.13)+.035*math.sin(i*5.1)
+        verts.append((x + nx * edge, y + ny * edge, 0.012))
+        verts.append((x - nx * edge, y - ny * edge, 0.012))
         if i > 0:
             dist += math.hypot(x - CENTER[i - 1][0], y - CENTER[i - 1][1])
         uvs.append((1.6, dist / 2.0))
@@ -85,27 +92,34 @@ def build_ground_road():
         a = i * 2
         faces.append((a, a + 1, a + 3, a + 2))
         loop_uvs.extend([uvs[a], uvs[a + 1], uvs[a + 3], uvs[a + 2]])
-    L.mesh_custom("S_road", verts, faces, "MAT_soil", loop_uvs=loop_uvs,
+    L.mesh_custom("S_road", verts, faces, "MAT_soil_road", loop_uvs=loop_uvs,
                   up_faces=True)
     # field ridges beside the road + scattered stones and grass tufts
     for i in range(9):
         yy = -8 - i * 10
         xx = road_center(yy)
         for side in (-1, 1):
-            L.slab("S_ridge_%02d_%s" % (i, "L" if side < 0 else "R"),
-                   xx + side * 3.2, xx + side * 9.5, yy - 0.16, yy + 0.16,
-                   0.0, 0.18, "MAT_soil", group="S_field_ridges")
+            x0,x1=sorted([xx+side*3.2,xx+side*9.5])
+            L.mesh_custom('S_ridge_%02d_%s'%(i,'L' if side<0 else 'R'),
+                [(x0,yy-.18,.005),(x1,yy-.18,.005),(x0,yy,.12),(x1,yy,.12),(x0,yy+.18,.005),(x1,yy+.18,.005)],
+                [(0,1,3,2),(2,3,5,4),(0,2,4),(1,5,3)],'MAT_soil',group='S_field_ridges')
     for i in range(18):
         yy = -4 - i * 5.2
         xx = road_center(yy) + random.choice([-1, 1]) * random.uniform(1.8, 2.4)
         L.sphere("S_stone_%02d" % i, random.uniform(0.08, 0.18),
                  (xx, yy + random.uniform(-1, 1), 0.04), "MAT_stone",
                  subdiv=1, scale=(1.0, 1.0, 0.55), group="S_stones")
-    for i in range(26):
-        yy = -3 - i * 3.7
-        xx = road_center(yy) + random.choice([-1, 1]) * random.uniform(1.9, 4.5)
-        L.cyl("S_grass_%02d" % i, 0.11, 0.3, (xx, yy, 0.15), "MAT_grass",
-              segments=5, radius2=0.0, group="S_grass_tufts")
+    for i in range(100):
+        yy=-2-i*.96;side=-1 if i%2 else 1
+        xx=road_center(yy)+side*random.uniform(1.65,3.1)
+        verts=[];faces=[]
+        for k in range(5):
+            a=random.uniform(0,math.tau);h=random.uniform(.16,.48);w=random.uniform(.025,.055)
+            bx=xx+random.uniform(-.13,.13);by=yy+random.uniform(-.15,.15)
+            dx=math.cos(a)*w;dy=math.sin(a)*w;j=len(verts)
+            verts.extend([(bx-dx,by-dy,.01),(bx+dx,by+dy,.01),(bx+side*.08,by+.05,h)])
+            faces.extend([(j,j+1,j+2),(j+2,j+1,j)])
+        L.mesh_custom('S_grass_%03d'%i,verts,faces,'MAT_grass',group='S_grass_tufts')
 
 
 def tree(name, x, y, s=1.0):
@@ -178,9 +192,9 @@ def build_lanterns():
 def build_shrine():
     G = "S_shrine"
     L.box("S_shrine_base", (2.3, 1.9, 0.18), (0, -98.0, 0.09), "MAT_stone",
-          group=G)
+          bevel=.025, group=G)
     L.box("S_shrine_plinth", (1.5, 1.25, 0.42), (0, -98.1, 0.39), "MAT_stone",
-          group=G)
+          bevel=.025, group=G)
     # shrine body: back + side walls + pillars (front open)
     L.box("S_shrine_back", (1.2, 0.1, 0.95), (0, -98.6, 1.02),
           "MAT_shrine_wood", group=G)
@@ -191,11 +205,11 @@ def build_shrine():
               (sx * 0.46, -97.6, 1.02), "MAT_shrine_wood", segments=6, group=G)
     # roof: two slopes + ridge (ridge along X)
     L.box("S_shrine_roof_front", (1.85, 0.8, 0.07), (0, -97.9, 1.58),
-          "MAT_shrine_wood", rot=(math.radians(-28), 0, 0), group=G)
+          "MAT_roof_tile", rot=(math.radians(-28), 0, 0), group=G)
     L.box("S_shrine_roof_back", (1.85, 0.8, 0.07), (0, -98.2, 1.58),
-          "MAT_shrine_wood", rot=(math.radians(28), 0, 0), group=G)
+          "MAT_roof_tile", rot=(math.radians(28), 0, 0), group=G)
     L.box("S_shrine_ridge", (2.0, 0.16, 0.12), (0, -98.05, 1.72),
-          "MAT_shrine_wood", group=G)
+          "MAT_roof_tile", group=G)
     # altar shelf inside
     L.box("S_shrine_altar", (1.0, 0.5, 0.12), (0, -98.32, 0.92),
           "MAT_shrine_wood", group=G)

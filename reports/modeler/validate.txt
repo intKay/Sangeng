@@ -1,13 +1,13 @@
-三更 GLB validation  2026-10-22 16:55:56
-ASSET_SPEC: horror-demos/docs/ASSET_SPEC.md
+三更 GLB validation  2026-10-23 15:04:13
+ASSET_SPEC: docs/ASSET_SPEC.md
 ==============================================================================
 SCENE: door   (door.glb)
 ==============================================================================
 file      : C:\AIProjects\文艺漫游\.scratch\sangeng-publish\assets\models\door.glb
-size      : 998.4 KB
-meshes    : 97   tris: 9776   (target <= 6000, cap <= 10000)
-materials : 46  -> MAT_bakelite, MAT_calendar, MAT_child_drawing, MAT_clock_face, MAT_concrete, MAT_couplet, MAT_curtain, MAT_door_number_501, MAT_door_number_502, MAT_door_number_503, MAT_door_number_504, MAT_enamel_worn, MAT_entity_hair, MAT_entity_white, MAT_fabric_blue, MAT_fabric_red, MAT_fabric_white, MAT_glass_dirty, MAT_handprint, MAT_lamp_tube, MAT_lamp_warm, MAT_metal_locker, MAT_metal_rust, MAT_mirror_grime, MAT_notice_board, MAT_paint_ceiling, MAT_paper, MAT_photo, MAT_photo_family_1, MAT_photo_family_2, MAT_photo_family_3, MAT_plaster, MAT_red_cloth, MAT_rug_faded, MAT_stain_mold, MAT_stain_water, MAT_tile_floor, MAT_tile_white, MAT_tv_static, MAT_wallpaper, MAT_wallpaper_dark, MAT_window_night, MAT_wood_dark, MAT_wood_door, MAT_wood_floor, MAT_wood_pale
-nodes     : 116   empties: 19
+size      : 1067.5 KB
+meshes    : 98   tris: 10462   (target <= 6000, cap <= 11000)
+materials : 48  -> MAT_bakelite, MAT_calendar, MAT_child_drawing, MAT_clock_face, MAT_concrete, MAT_couplet, MAT_curtain, MAT_door_number_501, MAT_door_number_502, MAT_door_number_503, MAT_door_number_504, MAT_enamel_worn, MAT_entity_hair, MAT_entity_white, MAT_fabric_blue, MAT_fabric_red, MAT_fabric_white, MAT_glass_dirty, MAT_handprint, MAT_iron_painted, MAT_lamp_tube, MAT_lamp_warm, MAT_metal_locker, MAT_metal_rust, MAT_mirror_grime, MAT_notice_board, MAT_paint_ceiling, MAT_paper, MAT_photo, MAT_photo_family_1, MAT_photo_family_2, MAT_photo_family_3, MAT_plaster, MAT_red_cloth, MAT_rug_faded, MAT_stain_mold, MAT_stain_water, MAT_steel_worn, MAT_tile_floor, MAT_tile_white, MAT_tv_static, MAT_wallpaper, MAT_wallpaper_dark, MAT_window_night, MAT_wood_dark, MAT_wood_door, MAT_wood_floor, MAT_wood_pale
+nodes     : 119   empties: 21
 required names: all 74 present
 material names: all in ASSET_SPEC list
 every non-COL mesh has a material
@@ -24,10 +24,10 @@ spawn/look pairs: 3/3
 SCENE: mirror   (mirror.glb)
 ==============================================================================
 file      : C:\AIProjects\文艺漫游\.scratch\sangeng-publish\assets\models\mirror.glb
-size      : 548.0 KB
-meshes    : 127   tris: 4716   (target <= 5000, cap <= 7000)
-materials : 31  -> MAT_bath_notice, MAT_bath_poster, MAT_bath_ticket, MAT_clock_face, MAT_concrete, MAT_entity_hair, MAT_entity_white, MAT_fabric_blue, MAT_fabric_red, MAT_fabric_white, MAT_handprint, MAT_lamp_tube, MAT_lamp_warm, MAT_metal_locker, MAT_metal_rust, MAT_mirror_crack, MAT_mirror_grime, MAT_notice_board, MAT_paint_ceiling, MAT_paper, MAT_plaster, MAT_sign_bath, MAT_stain_mold, MAT_stain_water, MAT_steam, MAT_tile_floor, MAT_tile_green, MAT_tile_white, MAT_window_night, MAT_wood_dark, MAT_wood_pale
-nodes     : 138   empties: 11
+size      : 636.1 KB
+meshes    : 124   tris: 5532   (target <= 5000, cap <= 7000)
+materials : 34  -> MAT_bath_notice, MAT_bath_poster, MAT_bath_ticket, MAT_ceramic_worn, MAT_clock_face, MAT_concrete, MAT_enamel_worn, MAT_entity_hair, MAT_entity_white, MAT_fabric_blue, MAT_fabric_red, MAT_fabric_white, MAT_handprint, MAT_lamp_tube, MAT_lamp_warm, MAT_metal_locker, MAT_metal_rust, MAT_mirror_crack, MAT_mirror_grime, MAT_notice_board, MAT_paint_ceiling, MAT_paper, MAT_plaster, MAT_sign_bath, MAT_stain_mold, MAT_stain_water, MAT_steam, MAT_steel_worn, MAT_tile_floor, MAT_tile_green, MAT_tile_white, MAT_window_night, MAT_wood_dark, MAT_wood_pale
+nodes     : 135   empties: 11
 required names: all 58 present
 material names: all in ASSET_SPEC list
 every non-COL mesh has a material
@@ -43,9 +43,9 @@ spawn/look pairs: 1/1
 SCENE: nightroad   (nightroad.glb)
 ==============================================================================
 file      : C:\AIProjects\文艺漫游\.scratch\sangeng-publish\assets\models\nightroad.glb
-size      : 643.5 KB
-meshes    : 60   tris: 5710   (target <= 9000, cap <= 12000)
-materials : 22  -> MAT_bark, MAT_concrete, MAT_entity_face, MAT_entity_hair, MAT_fabric_white, MAT_glass_dirty, MAT_grass, MAT_lamp_warm, MAT_lantern_paper, MAT_leaves, MAT_metal_rust, MAT_paper, MAT_paper_money, MAT_plaster, MAT_red_cloth, MAT_shrine_tablet, MAT_shrine_wood, MAT_sign_night_1, MAT_sign_night_2, MAT_soil, MAT_stone, MAT_wood_dark
+size      : 701.6 KB
+meshes    : 60   tris: 6404   (target <= 9000, cap <= 12000)
+materials : 24  -> MAT_bark, MAT_concrete, MAT_entity_face, MAT_entity_hair, MAT_fabric_white, MAT_glass_dirty, MAT_grass, MAT_lamp_warm, MAT_lantern_paper, MAT_leaves, MAT_metal_rust, MAT_paper, MAT_paper_money, MAT_plaster, MAT_red_cloth, MAT_roof_tile, MAT_shrine_tablet, MAT_shrine_wood, MAT_sign_night_1, MAT_sign_night_2, MAT_soil, MAT_soil_road, MAT_stone, MAT_wood_dark
 nodes     : 64   empties: 4
 required names: all 57 present
 material names: all in ASSET_SPEC list
@@ -59,6 +59,7 @@ light empties checked: 2
 spawn/look pairs: 1/1
 
 ==============================================================================
-WARNINGS (1):
-  - door: tris 9776 above target 6000 (under cap)
+WARNINGS (2):
+  - door: tris 10462 above target 6000 (under cap)
+  - mirror: tris 5532 above target 5000 (under cap)
 VALIDATE OK

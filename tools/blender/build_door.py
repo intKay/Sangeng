@@ -620,20 +620,28 @@ def build_furniture():
     L.props("INT_switch_corridor", interact="switch", prompt="开灯",
             id="switch_corridor")
     # ---------------- kitchen
-    L.box("S_counter_body", (1.5, 0.55, 0.86), (3.35, -9.25, 0.43),
-          "MAT_wood_pale", group=G)
-    L.box("S_counter_top", (1.58, 0.62, 0.06), (3.35, -9.25, 0.89),
-          "MAT_tile_white", group=G)
+    for nm,x in [('left',2.62),('right',4.08)]:
+        L.box('S_counter_side_'+nm,(.04,.55,.86),(x,-9.25,.43),'MAT_wood_pale',group=G)
+    L.box('S_counter_back',(1.5,.03,.86),(3.35,-9.51,.43),'MAT_wood_pale',group=G)
+    L.box('S_counter_base',(1.5,.55,.04),(3.35,-9.25,.02),'MAT_wood_pale',group=G)
+    for nm,x0,x1,y0,y1 in [('left',2.56,3.05,-9.56,-8.94),('right',3.55,4.14,-9.56,-8.94),('rear',3.05,3.55,-9.56,-9.42),('front',3.05,3.55,-9.05,-8.94)]:
+        L.slab('S_counter_top_'+nm,x0,x1,y0,y1,.86,.92,'MAT_tile_white',group=G)
     for i, xx in enumerate([2.9, 3.6]):
         L.box("S_counter_door_%d" % i, (0.55, 0.02, 0.62), (xx, -8.97, 0.42),
               "MAT_wood_pale", group=G)
         L.cyl("S_counter_knob_%d" % i, 0.016, 0.03, (xx + 0.2, -8.955, 0.48),
               "MAT_metal_rust", axis="Y", segments=6, group=G)
     # sink
-    L.slab("S_sink_basin", 3.05, 3.55, -9.42, -9.05, 0.9, 0.94,
-           "MAT_metal_locker", group=G)
-    L.slab("S_sink_hole", 3.15, 3.45, -9.35, -9.12, 0.86, 0.9,
-           "MAT_concrete", group=G)
+    outer=[(3.05,-9.42,.93),(3.55,-9.42,.93),(3.55,-9.05,.93),(3.05,-9.05,.93)]
+    inner=[(3.10,-9.37,.90),(3.50,-9.37,.90),(3.50,-9.10,.90),(3.10,-9.10,.90)]
+    bottom=[(3.14,-9.33,.78),(3.46,-9.33,.78),(3.46,-9.14,.78),(3.14,-9.14,.78)]
+    faces=[]
+    for j in range(2):
+        for i in range(4):
+            k=(i+1)%4;faces.append((j*4+i,j*4+k,(j+1)*4+k,(j+1)*4+i))
+    faces.append((8,9,10,11))
+    L.mesh_custom('S_sink_basin',outer+inner+bottom,faces,'MAT_steel_worn',group=G)
+    L.cyl('S_sink_drain',.026,.005,(3.3,-9.235,.784),'MAT_metal_rust',segments=8,group=G)
     L.cyl_between("S_kit_faucet", (3.3, -9.45, 0.94), (3.3, -9.3, 1.14),
                   0.018, "MAT_metal_locker", segments=8, group=G)
     L.cyl_between("S_kit_faucet2", (3.3, -9.3, 1.14), (3.3, -9.18, 1.14),
@@ -665,11 +673,21 @@ def build_furniture():
     L.box("S_bed_headboard", (1.84, 0.08, 0.75), (7.9, -3.45, 0.6),
           "MAT_wood_dark", group=G)
     L.box("S_bed_mattress", (1.72, 1.26, 0.24), (7.9, -4.18, 0.34),
-          "MAT_fabric_white", group=G)
+          "MAT_fabric_white", bevel=.025, group=G)
     L.box("S_bed_pillow", (0.5, 0.3, 0.12), (7.35, -3.75, 0.51),
-          "MAT_fabric_white", group=G)
-    L.box("S_bed_blanket", (1.5, 1.1, 0.08), (7.95, -4.4, 0.47),
-          "MAT_fabric_blue", group=G)
+          "MAT_fabric_white", bevel=.035, group=G)
+    verts=[];faces=[];nx,ny=12,10
+    for j in range(ny+1):
+        v=j/ny;y=-3.85-v*1.13
+        for i in range(nx+1):
+            u=i/nx;x=7.2+u*1.5
+            fold=.014*math.sin(u*math.pi*8+v*.8)+.006*math.sin(v*13+u*4)
+            z=.515+fold-max(0,v-.83)*1.2
+            verts.append((x,y,z))
+    for j in range(ny):
+        for i in range(nx):
+            a=j*(nx+1)+i;faces.append((a,a+nx+1,a+nx+2,a+1))
+    L.mesh_custom('S_bed_blanket',verts,faces,'MAT_fabric_blue',group=G)
     L.col("COL_bed", (7.9, -4.2, 0.4), (1.85, 1.4, 0.8))
     # nightstand + lamp
     L.box("S_nightstand", (0.45, 0.4, 0.52), (9.12, -4.75, 0.26),
@@ -803,15 +821,25 @@ def build_v102_props():
     for i, (xx, yy) in enumerate([(8.6, -6.98), (9.3, -6.98),
                                   (8.6, -6.58), (9.3, -6.58)]):
         L.box("INT_sewing_machine_leg_%d" % i, (0.05, 0.05, 0.7),
-              (xx, yy, 0.36), "MAT_wood_dark", group="INT_sewing_machine")
+              (xx, yy, 0.36), "MAT_iron_painted", group="INT_sewing_machine")
     L.box("INT_sewing_machine_bed", (0.5, 0.26, 0.07), (8.95, -6.78, 0.78),
-          "MAT_entity_hair", group="INT_sewing_machine")
+          "MAT_iron_painted", bevel=.012, group="INT_sewing_machine")
     L.box("INT_sewing_machine_arm", (0.14, 0.24, 0.24), (9.12, -6.78, 0.93),
-          "MAT_entity_hair", group="INT_sewing_machine")
+          "MAT_iron_painted", bevel=.02, group="INT_sewing_machine")
     L.box("INT_sewing_machine_head", (0.2, 0.2, 0.12), (8.98, -6.78, 0.97),
-          "MAT_entity_hair", group="INT_sewing_machine")
-    L.cyl("INT_sewing_wheel", 0.11, 0.03, (9.2, -6.6, 0.92),
-          "MAT_metal_rust", axis="Y", segments=12, group="INT_sewing_machine")
+          "MAT_iron_painted", bevel=.02, group="INT_sewing_machine")
+    verts=[];faces=[];n=12
+    for yy in [-6.615,-6.585]:
+        for r in [.11,.083]:
+            for i in range(n):
+                a=math.tau*i/n;verts.append((9.2+r*math.cos(a),yy,.92+r*math.sin(a)))
+    for i in range(n):
+        k=(i+1)%n
+        faces.extend([(i,k,n+k,n+i),(2*n+i,3*n+i,3*n+k,2*n+k),(i,2*n+i,2*n+k,k),(n+i,n+k,3*n+k,3*n+i)])
+    L.mesh_custom('INT_sewing_wheel',verts,faces,'MAT_iron_painted',group='INT_sewing_machine')
+    for i in range(4):
+        a=math.tau*i/4
+        L.cyl_between('INT_sewing_spoke_%d'%i,(9.2,-6.6,.92),(9.2+.09*math.cos(a),-6.6,.92+.09*math.sin(a)),.008,'MAT_iron_painted',segments=4,group='INT_sewing_machine')
     L.cyl("INT_sewing_wheel_hub", 0.025, 0.05, (9.2, -6.6, 0.92),
           "MAT_metal_locker", axis="Y", segments=8, group="INT_sewing_machine")
     L.cyl_between("INT_sewing_needle", (8.9, -6.78, 0.95), (8.9, -6.78, 0.83),
@@ -821,6 +849,12 @@ def build_v102_props():
     L.col("COL_sewing_machine", (8.95, -6.78, 0.5), (0.9, 0.5, 1.1))
     L.props("INT_sewing_machine", interact="examine", prompt="看缝纫机",
             id="sewing_machine")
+    # A small practical lamp makes the black enamel machine readable in the
+    # final bedroom cue; the light is switched with that cue in game.js.
+    L.cyl('S_sewing_lamp_base',.055,.025,(8.6,-6.92,.76),'MAT_iron_painted',segments=8,group='S_sewing_tasklamp')
+    L.cyl_between('S_sewing_lamp_neck',(8.6,-6.92,.77),(8.6,-6.82,1.17),.009,'MAT_steel_worn',segments=6,group='S_sewing_tasklamp')
+    L.cyl('S_sewing_lamp_shade',.075,.09,(8.6,-6.82,1.17),'MAT_enamel_worn',segments=10,radius2=.035,group='S_sewing_tasklamp')
+    L.sphere('S_sewing_lamp_bulb',.022,(8.6,-6.82,1.115),'MAT_lamp_warm',subdiv=1,group='S_sewing_tasklamp')
     # --- 厨房台面上的暖水瓶
     body=L.cyl("INT_thermos_body", 0.055, 0.32, (3.62, -9.05, 1.08),
           "MAT_enamel_worn", segments=10, group="INT_thermos")
@@ -1150,6 +1184,9 @@ def build_light_spawns():
             color='#a7b7c5',radius=4.5,cone=42,flicker=0)
     # Explicit game-space target: restrained cool spill through the curtain gap.
     L.props('LIGHT_moon_living',light_target_game=[5.0,.75,5.3])
+    L.light('LIGHT_bedside',(9.12,-4.75,.8),power=7,color='#e7cf9c',radius=3.0,flicker=0)
+    L.light('LIGHT_sewing',(8.6,-6.82,1.08),kind='spot',power=56,color='#e5d6bb',radius=2.8,cone=70,flicker=0)
+    L.props('LIGHT_sewing',light_target_game=[8.95,.8,6.78])
     # spawns
     L.spawn("SPAWN_corridor", (0.0, -1.0, 0.0))
     L.look("LOOK_corridor", (0.0, -10.0, 1.55))

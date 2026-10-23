@@ -1,0 +1,53 @@
+{
+  "samples": [
+    {
+      "stage": "before",
+      "chapter": "door",
+      "seconds": 9.96,
+      "peak": 0.22624699771404266,
+      "rms": 0.0613139271736145,
+      "sha256": "23c0d911f8305eb4050168f80c92ce73460cb11cf431a40e7b25c8c8491939c4"
+    },
+    {
+      "stage": "before",
+      "chapter": "mirror",
+      "seconds": 9.96,
+      "peak": 0.34082430601119995,
+      "rms": 0.07232511788606644,
+      "sha256": "0a0d59e8073ef85aba065af337cb6e5387b8dcfa3065deac49e451c6ef09b818"
+    },
+    {
+      "stage": "before",
+      "chapter": "nightroad",
+      "seconds": 9.96,
+      "peak": 0.3519092798233032,
+      "rms": 0.07325967401266098,
+      "sha256": "0dddd77d0e4eec18f1dbf41fd0c9f722db0cb3ac122af4ea48b03e41b71a108e"
+    },
+    {
+      "stage": "after",
+      "chapter": "door",
+      "seconds": 9.96,
+      "peak": 0.20731012523174286,
+      "rms": 0.05694849416613579,
+      "sha256": "f9028445f5e6e5b0a4f6e1e84999cb82a1e7d678edb75106c2381ecbe86b052b"
+    },
+    {
+      "stage": "after",
+      "chapter": "mirror",
+      "seconds": 9.96,
+      "peak": 0.30214157700538635,
+      "rms": 0.05858081206679344,
+      "sha256": "10c16feb8671adbfe556a0416ce754a8312efaf3db56322d239fcd44b0178eef"
+    },
+    {
+      "stage": "after",
+      "chapter": "nightroad",
+      "seconds": 9.96,
+      "peak": 0.2926080524921417,
+      "rms": 0.056097328662872314,
+      "sha256": "97a3db17c714289a2758b11847b3eeac9aa6a2f2a88ca6d362b0b04fbf42d9c3"
+    }
+  ],
+  "scope": "decoded sample duration, non-silence and hash only; no human listening judgement"
+}

@@ -109,9 +109,11 @@ bpy.ops.export_scene.gltf(
 
 1.6 将 door 硬上限由 9000 调至 10000，为近景倒角、开放书柜与书组分配面数；6000 目标保留，超目标警告必须报告。
 
+1.7 为水槽内腔、床褥折面与缝纫机轮架追加最多 1000 tris，door 硬上限为 11000；镜中和夜路保持原上限。新增材质名：`MAT_ceramic_worn`、`MAT_steel_worn`、`MAT_iron_painted`、`MAT_roof_tile`、`MAT_soil_road`，分别用于旧瓷釉、磨旧钢、黑漆铁、灰瓦与行走土路，避免混用织物或木纹。
+
 | 场景 | 目标 | 上限 |
 |---|---|---|
-| door | ≤ 6000 tris | 10000 |
+| door | ≤ 6000 tris | 11000 |
 | mirror | ≤ 5000 tris | 7000 |
 | nightroad | ≤ 9000 tris | 12000 |
 

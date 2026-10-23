@@ -1,0 +1,32 @@
+{
+  "start": [
+    0,
+    0,
+    1
+  ],
+  "atDoor": {
+    "pos": [
+      5.384997336217595e-16,
+      0,
+      5.397184020704453
+    ],
+    "yaw": -3.141592653589793
+  },
+  "end": {
+    "pos": [
+      2.0661668599388654,
+      0,
+      5.398218089440704
+    ],
+    "entered": true,
+    "open": true,
+    "objective": "找到三张字条",
+    "channels": [
+      "window",
+      "main",
+      "extra"
+    ]
+  },
+  "errors": [],
+  "scope": "real keys, drag look, collision and E interaction; first apartment only, no full playthrough"
+}

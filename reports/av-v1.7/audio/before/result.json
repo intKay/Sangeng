@@ -1,0 +1,50 @@
+{
+  "stage": "before",
+  "report": [
+    {
+      "chapter": "door",
+      "roomProfile": {
+        "seconds": 1.65,
+        "decay": 3.1,
+        "wet": 0.27
+      },
+      "channels": [
+        "main",
+        "window"
+      ],
+      "file": "door.mp3",
+      "seconds": 10
+    },
+    {
+      "chapter": "mirror",
+      "roomProfile": {
+        "seconds": 3.3,
+        "decay": 2.6,
+        "wet": 0.46
+      },
+      "channels": [
+        "main",
+        "extra",
+        "far"
+      ],
+      "file": "mirror.mp3",
+      "seconds": 10
+    },
+    {
+      "chapter": "nightroad",
+      "roomProfile": {
+        "seconds": 0.48,
+        "decay": 4.2,
+        "wet": 0.07
+      },
+      "channels": [
+        "main",
+        "extra",
+        "dog"
+      ],
+      "file": "nightroad.mp3",
+      "seconds": 10
+    }
+  ],
+  "scope": "actual production final WebAudio bus, seeded random source, 10 seconds at chapter start; no human listening acceptance"
+}

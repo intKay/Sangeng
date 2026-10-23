@@ -1,0 +1,9 @@
+{
+  "pairs": 15,
+  "audioABChapters": 3,
+  "exclusivePlayback": true,
+  "mobileWidth": 390,
+  "noHorizontalOverflow": true,
+  "errors": [],
+  "scope": "actual browser UI behavior and media playback; no human listening acceptance"
+}

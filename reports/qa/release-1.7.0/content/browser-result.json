@@ -1,0 +1,76 @@
+{
+  "assistedPlacement": true,
+  "runtime": "Edge browser",
+  "chapters": [
+    {
+      "id": "door",
+      "resources": {
+        "textures": 70,
+        "expectedTextures": 70,
+        "missing": []
+      },
+      "subtitles": {
+        "later": "QA later",
+        "ordered": "QA queued B",
+        "laterOk": true,
+        "orderedOk": true
+      },
+      "signal": {
+        "peak": 0.04588804394006729,
+        "state": "running"
+      },
+      "deathRetry": true,
+      "ending": true,
+      "pickups": 3,
+      "newExaminations": 4
+    },
+    {
+      "id": "mirror",
+      "resources": {
+        "textures": 70,
+        "expectedTextures": 70,
+        "missing": []
+      },
+      "subtitles": {
+        "later": "QA later",
+        "ordered": "QA queued B",
+        "laterOk": true,
+        "orderedOk": true
+      },
+      "signal": {
+        "peak": 0.08920857310295105,
+        "state": "running"
+      },
+      "wrongUseDeathRetry": true,
+      "roundsSolvedByE": 3,
+      "ending": true
+    },
+    {
+      "id": "nightroad",
+      "resources": {
+        "textures": 70,
+        "expectedTextures": 70,
+        "missing": []
+      },
+      "subtitles": {
+        "later": "QA later",
+        "ordered": "QA queued B",
+        "laterOk": true,
+        "orderedOk": true
+      },
+      "signal": {
+        "peak": 0.04076050594449043,
+        "state": "running"
+      },
+      "contactDeathRetry": true,
+      "retryMix": {
+        "wind": 0.45100000500679016,
+        "insects": 0.27900001406669617
+      },
+      "lanternsByE": 5,
+      "shrineAndEndingByKeys": true
+    }
+  ],
+  "errors": [],
+  "failedRequests": []
+}

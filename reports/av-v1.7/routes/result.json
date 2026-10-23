@@ -1,0 +1,42 @@
+{
+  "results": [
+    {
+      "chapter": "mirror",
+      "start": [
+        0,
+        0,
+        1.600000023841858
+      ],
+      "end": {
+        "pos": [
+          2.2511418057969634,
+          0,
+          0.5269794547321682
+        ],
+        "state": "playing",
+        "objective": "让镜中的房间与现实一致（还差 2 处）"
+      },
+      "action": "walk around bench and switch lights off by E"
+    },
+    {
+      "chapter": "nightroad",
+      "start": [
+        0,
+        0,
+        -1.2000000476837158
+      ],
+      "end": {
+        "pos": [
+          1.7313223808959866,
+          0,
+          10.836689333235352
+        ],
+        "state": "playing",
+        "objective": "点亮沿途的五盏灯笼"
+      },
+      "action": "follow curved approach and light first lantern by E"
+    }
+  ],
+  "errors": [],
+  "scope": "real WASD/Shift, drag look and E; short first routes only; no teleport or game-state setters"
+}

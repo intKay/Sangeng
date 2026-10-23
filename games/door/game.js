@@ -398,6 +398,7 @@ const config = {
     game.setLight('LIGHT_tv', true, 0.8);
     game.setLight('LIGHT_floor_lamp', false);
     game.setLight('LIGHT_bedroom', false);
+    game.setLight('LIGHT_sewing', false);
     game.setLight('LIGHT_moon_bed', true, 0.4);
 
     game.player.onFootstep = (speed, sprinting) => {
@@ -427,7 +428,7 @@ const config = {
     game.player.teleportTo('SPAWN_corridor', 'LOOK_corridor');
     game.audio.playMusic('main', { fade: 3 });
     game.audio.playAmbience('corridor', { channel: 'main', fade: 2 });
-    game.audio.playAmbience('rainWindow', { channel: 'window', fade: 2, volume: 0.95,
+    game.audio.playAmbience('rainWindow', { channel: 'window', fade: 2, volume: .72,
       pos: new THREE.Vector3(1.05, 1.9, 14), refDistance: 4, wet: .12 });
     game.ui.setObjective('回到 503');
     game.ui.setBattery(null);
@@ -454,7 +455,7 @@ const config = {
     if (!state.enteredApartment && game.player.pos.x > 1.35) {
       state.enteredApartment = true;
       game.audio.playAmbience('roomTone', { channel: 'main', fade: 2.5 });
-      game.audio.playAmbience('tvStatic', { channel: 'extra', fade: 2, volume: 0.35 });
+      game.audio.playAmbience('tvStatic', { channel: 'extra', fade: 2, volume: .25 });
       game.setLight('LIGHT_entry', true, 1.0);
       game.setLight('LIGHT_living', true, 0.95);
       game.setLight('LIGHT_floor_lamp', true, 1.0);
@@ -588,7 +589,7 @@ function afterLetter(game, index) {
     game.player.teleportTo('SPAWN_corridor', 'LOOK_corridor');
     if (state.doors['503'] && !state.doors['503'].isOpen) state.doors['503'].open(true);
     game.audio.playAmbience('corridor', { channel: 'main', fade: 1.5 });
-    game.audio.playAmbience('rainWindow', { channel: 'window', fade: 1.5, volume: 0.95,
+    game.audio.playAmbience('rainWindow', { channel: 'window', fade: 1.5, volume: .72,
       pos: new THREE.Vector3(1.05, 1.9, 14), refDistance: 4, wet: .12 });
     game.ui.setObjective('再回 503 看看');
     game.ui.subtitle(LOOP_HINTS[next] || '灯灭了。你又站在楼道里。', 3.6);
@@ -810,8 +811,9 @@ function enterBedroomEnding(game) {
   game.audio.playMusic('main', { fade: 3 });
   game.audio.playAmbience('roomTone', { channel: 'main', fade: 2 });
   game.ui.setObjective('看看床上');
-  // 卧室只留一盏灯：椅子上的她才是房间里唯一的光源
+  // 后段保留卧室主光与局部工作灯，让旧物近景可读。
   game.setLight('LIGHT_bedroom', true, 1.15);
+  game.setLight('LIGHT_sewing', true, .85);
   game.setLight('LIGHT_moon_bed', true, 0.75);
   game.setLight('LIGHT_living', false);
   game.setLight('LIGHT_floor_lamp', false);

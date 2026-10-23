@@ -1,0 +1,82 @@
+{
+  "models": [
+    {
+      "chapter": "door",
+      "gameplayNodesChecked": 108,
+      "collisionBoundsPreserved": 37,
+      "triangles": 10462,
+      "previousTriangles": 9776,
+      "cap": 11000
+    },
+    {
+      "chapter": "mirror",
+      "gameplayNodesChecked": 33,
+      "collisionBoundsPreserved": 12,
+      "triangles": 5532,
+      "previousTriangles": 4716,
+      "cap": 7000
+    },
+    {
+      "chapter": "nightroad",
+      "gameplayNodesChecked": 28,
+      "collisionBoundsPreserved": 17,
+      "triangles": 6404,
+      "previousTriangles": 5710,
+      "cap": 12000
+    }
+  ],
+  "bumpMaterials": [
+    "MAT_wallpaper",
+    "MAT_wallpaper_dark",
+    "MAT_plaster",
+    "MAT_wood_floor",
+    "MAT_wood_door",
+    "MAT_wood_dark",
+    "MAT_wood_pale",
+    "MAT_paint_ceiling",
+    "MAT_tile_green",
+    "MAT_tile_white",
+    "MAT_tile_floor",
+    "MAT_metal_locker",
+    "MAT_curtain",
+    "MAT_soil",
+    "MAT_grass",
+    "MAT_bark",
+    "MAT_leaves",
+    "MAT_stone",
+    "MAT_shrine_wood",
+    "MAT_fabric_white",
+    "MAT_fabric_blue",
+    "MAT_red_cloth",
+    "MAT_rug_faded",
+    "MAT_enamel_worn",
+    "MAT_bakelite",
+    "MAT_soil_road",
+    "MAT_ceramic_worn",
+    "MAT_steel_worn",
+    "MAT_iron_painted",
+    "MAT_roof_tile"
+  ],
+  "knownChanges": [
+    "all original gameplay transforms and collision bounds preserved",
+    "door hard cap 10000 to 11000 for open sink, bedding and sewing-machine construction; target warnings retained"
+  ],
+  "bundle": {
+    "version": "1.7.0",
+    "name": "Sangeng-1.7.0-web.zip",
+    "sha256": "ea69f055e12d4c6199f801b4af14040dc3fa395acf067977772aaf89528db107",
+    "bytes": 43074627,
+    "itch_limits_checked": true,
+    "runtime_files": 433
+  },
+  "runtimeMatchesBundle": true,
+  "evidence": {
+    "sameCameraPairs": 15,
+    "assistedContentChapters": 3,
+    "shortNormalRoutes": 3,
+    "webProfiles": 6,
+    "audioSamples": 6,
+    "audioLifecycleMutationRejected": true
+  },
+  "scope": "static contracts, hashes and browser-evidence assertions; not human aesthetic or complete normal-play acceptance"
+}

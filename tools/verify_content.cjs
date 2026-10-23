@@ -172,6 +172,13 @@ async function signal(){return page.evaluate(async()=>{
  assert.equal(await page.evaluate(()=>__MIRROR__.state.handprints),3);mirror.roundsSolvedByE=3;mirror.ending=true;result.chapters.push(mirror);
  // Nightroad changed its model and subtitle integration too: test all lantern interactions.
  const night={id:'nightroad',resources:await load('nightroad'),subtitles:await subtitles(),signal:await signal()};
+ // New mix must survive the actual death/retry lifecycle. Placement is assisted;
+ // contact detection and the retry button run production behavior.
+ await page.evaluate(async()=>{const g=__SANGENG__,T=await import('/vendor/three/three.module.js');g.player.teleportToPos(new T.Vector3(0,0,5),new T.Vector3(0,1.6,10));const e=__NIGHT__.state.entity;e.grace=0;e.freeze=0;e.root.position.copy(g.player.pos);});
+ await waitUntil(()=>__SANGENG__.state==='dead',20000);
+ await page.locator('[data-act="retry"]').click();await page.waitForFunction(()=>__SANGENG__.state==='playing');await page.waitForTimeout(1600);
+ const retryMix=await page.evaluate(()=>({wind:__SANGENG__.audio.ambiences.get('main')?.handle.gain.gain.value,insects:__SANGENG__.audio.ambiences.get('extra')?.handle.gain.gain.value}));
+ assert(Math.abs(retryMix.wind-.55*.82)<.001);assert(Math.abs(retryMix.insects-.45*.62)<.001);night.contactDeathRetry=true;night.retryMix=retryMix;
  const lanterns=await page.evaluate(()=>__SANGENG__.interact.handles.filter(h=>/INT_lantern/.test(h.object.name)).map(h=>h.object.name));
  assert.equal(lanterns.length,5);
  for(const name of lanterns){await use(name);await page.waitForTimeout(350);}

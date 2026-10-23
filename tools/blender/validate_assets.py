@@ -1,5 +1,5 @@
 """validate_assets.py -- verify the three exported GLB scenes against
-horror-demos/docs/ASSET_SPEC.md.  Pure Python (no Blender needed).
+docs/ASSET_SPEC.md.  Pure Python (no Blender needed).
 
 Usage:
     python validate_assets.py            # validate all three scenes
@@ -18,6 +18,7 @@ MODELS = os.path.join(ROOT, "assets", "models")
 REPORT = os.path.join(ROOT, "reports", "modeler", "validate.txt")
 
 ALLOWED_MATS = {
+    "MAT_ceramic_worn", "MAT_steel_worn", "MAT_iron_painted", "MAT_roof_tile", "MAT_soil_road",
     "MAT_rug_faded", "MAT_enamel_worn", "MAT_bakelite",
     "MAT_wallpaper", "MAT_wallpaper_dark", "MAT_plaster", "MAT_wood_floor",
     "MAT_wood_door", "MAT_wood_dark", "MAT_wood_pale", "MAT_paint_ceiling",
@@ -51,7 +52,7 @@ NIGHT_LIGHTS = ["LIGHT_shrine", "LIGHT_village"]
 SCENES = {
     "door": {
         "file": "door.glb",
-        "target": 6000, "cap": 10000, "min_col": 18,
+        "target": 6000, "cap": 11000, "min_col": 18,
         "required_names": [
             "SPAWN_corridor", "LOOK_corridor",
             "SPAWN_apartment", "LOOK_apartment",
@@ -412,7 +413,7 @@ def main(argv):
     all_lines, all_errs, all_warns = [], [], []
     stamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     all_lines.append("三更 GLB validation  " + stamp)
-    all_lines.append("ASSET_SPEC: horror-demos/docs/ASSET_SPEC.md")
+    all_lines.append("ASSET_SPEC: docs/ASSET_SPEC.md")
     all_errs_total = []
     all_warns_total = []
     for sc in wanted:

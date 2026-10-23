@@ -1,0 +1,227 @@
+{
+  "results": [
+    {
+      "profile": "android-landscape",
+      "chapter": "door",
+      "resources": {
+        "textures": 70,
+        "expectedTextures": 70,
+        "missing": 0,
+        "touch": true,
+        "scale": 0.45,
+        "mp3": false
+      },
+      "target": "INT_door_503",
+      "before": false,
+      "after": true,
+      "audio": {
+        "supported": true,
+        "peak": 0.15536803007125854,
+        "state": "running"
+      },
+      "iframe": true,
+      "rotation": true
+    },
+    {
+      "profile": "android-landscape",
+      "chapter": "mirror",
+      "resources": {
+        "textures": 70,
+        "expectedTextures": 70,
+        "missing": 0,
+        "touch": true,
+        "scale": 0.6,
+        "mp3": false
+      },
+      "target": "INT_towel",
+      "before": "floor",
+      "after": "hook",
+      "audio": {
+        "supported": true,
+        "peak": 0.13110989332199097,
+        "state": "running"
+      },
+      "iframe": true,
+      "rotation": true
+    },
+    {
+      "profile": "android-landscape",
+      "chapter": "nightroad",
+      "resources": {
+        "textures": 70,
+        "expectedTextures": 70,
+        "missing": 0,
+        "touch": true,
+        "scale": 0.6,
+        "mp3": false
+      },
+      "target": "INT_lantern_01",
+      "before": 0,
+      "after": 1,
+      "audio": {
+        "supported": true,
+        "peak": 0.2660055160522461,
+        "state": "running"
+      },
+      "iframe": true,
+      "rotation": true
+    },
+    {
+      "profile": "phone-portrait",
+      "chapter": "door",
+      "resources": {
+        "textures": 70,
+        "expectedTextures": 70,
+        "missing": 0,
+        "touch": true,
+        "scale": 0.45,
+        "mp3": false
+      },
+      "target": "INT_door_503",
+      "before": false,
+      "after": true,
+      "audio": {
+        "supported": true,
+        "peak": 0.17093273997306824,
+        "state": "running"
+      },
+      "iframe": true,
+      "rotation": true
+    },
+    {
+      "profile": "small-phone",
+      "chapter": "door",
+      "resources": {
+        "textures": 70,
+        "expectedTextures": 70,
+        "missing": 0,
+        "touch": true,
+        "scale": 0.45,
+        "mp3": true
+      },
+      "target": "INT_door_503",
+      "before": false,
+      "after": true,
+      "audio": {
+        "supported": true,
+        "peak": 0.21714545786380768,
+        "state": "running"
+      },
+      "iframe": true,
+      "rotation": true
+    },
+    {
+      "profile": "tablet",
+      "chapter": "door",
+      "resources": {
+        "textures": 70,
+        "expectedTextures": 70,
+        "missing": 0,
+        "touch": true,
+        "scale": 0.45,
+        "mp3": false
+      },
+      "target": "INT_door_503",
+      "before": false,
+      "after": true,
+      "audio": {
+        "supported": true,
+        "peak": 0.18243001401424408,
+        "state": "running"
+      },
+      "iframe": true,
+      "rotation": true
+    },
+    {
+      "profile": "desktop",
+      "chapter": "door",
+      "resources": {
+        "textures": 70,
+        "expectedTextures": 70,
+        "missing": 0,
+        "touch": false,
+        "scale": 0.8,
+        "mp3": false
+      },
+      "target": "INT_door_503",
+      "before": false,
+      "after": true,
+      "audio": {
+        "supported": true,
+        "peak": 0.39325785636901855,
+        "state": "running"
+      },
+      "iframe": true,
+      "rotation": false
+    },
+    {
+      "profile": "desktop",
+      "chapter": "mirror",
+      "resources": {
+        "textures": 70,
+        "expectedTextures": 70,
+        "missing": 0,
+        "touch": false,
+        "scale": 0.6,
+        "mp3": false
+      },
+      "target": "INT_towel",
+      "before": "floor",
+      "after": "hook",
+      "audio": {
+        "supported": true,
+        "peak": 0.12066105753183365,
+        "state": "running"
+      },
+      "iframe": true,
+      "rotation": false
+    },
+    {
+      "profile": "desktop",
+      "chapter": "nightroad",
+      "resources": {
+        "textures": 70,
+        "expectedTextures": 70,
+        "missing": 0,
+        "touch": false,
+        "scale": 0.6,
+        "mp3": false
+      },
+      "target": "INT_lantern_01",
+      "before": 0,
+      "after": 1,
+      "audio": {
+        "supported": true,
+        "peak": 0.2966095209121704,
+        "state": "running"
+      },
+      "iframe": true,
+      "rotation": false
+    },
+    {
+      "profile": "webkit-phone",
+      "chapter": "door",
+      "resources": {
+        "textures": 70,
+        "expectedTextures": 70,
+        "missing": 0,
+        "touch": true,
+        "scale": 0.45,
+        "mp3": true
+      },
+      "target": "INT_door_503",
+      "before": false,
+      "after": true,
+      "audio": {
+        "supported": false,
+        "reason": "AudioContext is absent in this browser runtime"
+      },
+      "iframe": true,
+      "rotation": true
+    }
+  ],
+  "limits": [
+    "browser emulation, no physical phone",
+    "local sandboxed iframe, not live itch.io"
+  ]
+}

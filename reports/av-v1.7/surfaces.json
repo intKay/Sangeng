@@ -1,0 +1,86 @@
+[
+  {
+    "material": "MAT_tile_green",
+    "class": "tile",
+    "file": "av17_tile_green.png",
+    "shininess": 40
+  },
+  {
+    "material": "MAT_metal_locker",
+    "class": "locker",
+    "file": "av17_metal_locker.png",
+    "shininess": 32
+  },
+  {
+    "material": "MAT_bark",
+    "class": "outdoor",
+    "file": "av17_bark.png",
+    "shininess": 3
+  },
+  {
+    "material": "MAT_grass",
+    "class": "outdoor",
+    "file": "av17_grass.png",
+    "shininess": 3
+  },
+  {
+    "material": "MAT_soil",
+    "class": "outdoor",
+    "file": "av17_soil.png",
+    "shininess": 3
+  },
+  {
+    "material": "MAT_soil_road",
+    "class": "road",
+    "file": "av17_soil_road.png",
+    "shininess": 3
+  },
+  {
+    "material": "MAT_shrine_wood",
+    "class": "outdoor",
+    "file": "av17_shrine_wood.png",
+    "shininess": 3
+  },
+  {
+    "material": "MAT_leaves",
+    "class": "outdoor",
+    "file": "av17_leaves.png",
+    "shininess": 4
+  },
+  {
+    "material": "MAT_stone",
+    "class": "outdoor",
+    "file": "av17_stone.png",
+    "shininess": 4
+  },
+  {
+    "material": "MAT_red_cloth",
+    "class": "cloth",
+    "file": "av17_red_cloth.png",
+    "shininess": 4
+  },
+  {
+    "material": "MAT_ceramic_worn",
+    "class": "ceramic",
+    "file": "av17_ceramic_worn.png",
+    "shininess": 60
+  },
+  {
+    "material": "MAT_steel_worn",
+    "class": "metal",
+    "file": "av17_steel_worn.png",
+    "shininess": 70
+  },
+  {
+    "material": "MAT_iron_painted",
+    "class": "metal",
+    "file": "av17_iron_painted.png",
+    "shininess": 18
+  },
+  {
+    "material": "MAT_roof_tile",
+    "class": "outdoor",
+    "file": "av17_roof_tile.png",
+    "shininess": 9
+  }
+]

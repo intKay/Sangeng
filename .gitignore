@@ -31,6 +31,16 @@ reports/av-v1.6/model-before/
 reports/av-v1.6/reference-models/
 reports/av-v1.6/study-*/
 reports/av-v1.6/shader-diagnostic/
+reports/av-v1.7/model-before/
+reports/av-v1.7/reference-models/
+reports/av-v1.7/study-*/
+reports/av-v1.7/diagnostic-*.jpg
+reports/av-v1.7/*.log
+reports/av-v1.7/audio/**/*.webm
+reports/av-v1.7/routes/failure.jpg
+reports/qa/release-1.7.0/**/*.png
+reports/qa/release-1.7.0/**/partial.json
+reports/qa/release-1.7.0/**/*failure*
 reports/qa/release-1.6.0/**/*.png
 reports/qa/release-1.6.0/**/partial.json
 reports/qa/release-1.6.0/**/*failure*

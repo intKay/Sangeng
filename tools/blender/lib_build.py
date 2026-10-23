@@ -52,6 +52,10 @@ PALETTE = {
     "MAT_rug_faded":        ("#66513e", 0.98, 0.0, None, 0.0),
     "MAT_enamel_worn":      ("#b5ac8b", 0.45, 0.0, None, 0.0),
     "MAT_bakelite":         ("#211b16", 0.58, 0.0, None, 0.0),
+    "MAT_ceramic_worn":     ("#c4c2ac", 0.35, 0.0, None, 0.0),
+    "MAT_steel_worn":       ("#8a928c", 0.3, 0.2, None, 0.0),
+    "MAT_iron_painted":     ("#292c28", 0.65, 0.1, None, 0.0),
+    "MAT_roof_tile":        ("#393e3b", 0.9, 0.0, None, 0.0),
     "MAT_paper":            ("#cfc3a2", 0.90, 0.0, None, 0.0),
     "MAT_photo":            ("#8f7f6a", 0.85, 0.0, None, 0.0),
     "MAT_tv_static":        ("#c8ccd0", 0.35, 0.0, "#9fb4c8", 0.8),
@@ -59,6 +63,7 @@ PALETTE = {
     "MAT_lamp_warm":        ("#ffd9a0", 0.30, 0.0, "#ffc46a", 2.0),
     "MAT_lantern_paper":    ("#c8452c", 0.70, 0.0, "#ff7a3c", 1.2),
     "MAT_soil":             ("#5a4a38", 0.98, 0.0, None, 0.0),
+    "MAT_soil_road":        ("#62523c", 0.98, 0.0, None, 0.0),
     "MAT_grass":            ("#2f3d2a", 0.98, 0.0, None, 0.0),
     "MAT_bark":             ("#4a3a2c", 0.95, 0.0, None, 0.0),
     "MAT_leaves":           ("#2c3a28", 0.95, 0.0, None, 0.0),
@@ -370,6 +375,21 @@ def sphere(name, radius, loc, mat, subdiv=2, scale=(1, 1, 1), uv="tile",
     mats = [mat] if isinstance(mat, str) else list(mat)
     return _finish_mesh(name, bm, mats, p, uv, uv_scale, None, group,
                         0.0, smooth, False)
+
+
+def bowl(name, radius, depth, loc, mat, segments=16, group=None):
+    """Earthenware shell with an open cavity; lathed rim and recessed floor."""
+    profile=[(.63,-.50),(.93,-.28),(1,.30),(.98,.48),(.90,.50),(.82,.18),(.54,-.29),(0,-.30)]
+    verts=[];faces=[];uvs=[]
+    for r,z in profile:
+        for i in range(segments):
+            a=2*math.pi*i/segments
+            verts.append((loc[0]+radius*r*math.cos(a),loc[1]+radius*r*math.sin(a),loc[2]+depth*z))
+    for j in range(len(profile)-1):
+        for i in range(segments):
+            k=(i+1)%segments;faces.append((j*segments+i,j*segments+k,(j+1)*segments+k,(j+1)*segments+i))
+            uvs.extend([(i/segments,j/7),((i+1)/segments,j/7),((i+1)/segments,(j+1)/7),(i/segments,(j+1)/7)])
+    return mesh_custom(name,verts,faces,mat,group=group,loop_uvs=uvs)
 
 
 def mesh_custom(name, verts, faces, mat, pivot=(0, 0, 0), uv="tile",

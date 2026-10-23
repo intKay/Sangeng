@@ -1,0 +1,154 @@
+{
+  "stage": "after",
+  "errors": [],
+  "results": [
+    {
+      "id": "door",
+      "resources": {
+        "textures": 70,
+        "expectedTextures": 70,
+        "expectedBumps": 30,
+        "bumpTextures": 30,
+        "coloredMeshes": 158,
+        "shadowLights": 2,
+        "roomProfile": {
+          "seconds": 1.4,
+          "decay": 3.1,
+          "wet": 0.22
+        },
+        "audioMissing": [],
+        "placeholder": false,
+        "state": "playing",
+        "gpu": "ANGLE (NVIDIA, NVIDIA GeForce RTX 3050 Laptop GPU (0x000025E2) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+      },
+      "frames": {
+        "medianMs": 6.9000000059604645,
+        "p95Ms": 7.5,
+        "calls": 260,
+        "triangles": 20870,
+        "mainShadowRefreshed": true,
+        "reflectionShadowRefreshed": null
+      },
+      "audio": {
+        "playing": 0.07922567219252491,
+        "paused": 0,
+        "pausedContext": "suspended",
+        "contextState": "suspended",
+        "scope": "final gate measured even with context forcibly resumed while paused"
+      },
+      "resumed": "running",
+      "assistedFraming": {
+        "name": "INT_thermos",
+        "center": [
+          3.654229521751404,
+          1.1044999659061432,
+          9.050000190734863
+        ],
+        "position": [
+          4.0042295217514035,
+          0,
+          8.400000190734863
+        ]
+      }
+    },
+    {
+      "id": "mirror",
+      "resources": {
+        "textures": 70,
+        "expectedTextures": 70,
+        "expectedBumps": 30,
+        "bumpTextures": 30,
+        "coloredMeshes": 141,
+        "shadowLights": 1,
+        "roomProfile": {
+          "seconds": 2.6,
+          "decay": 3,
+          "wet": 0.36
+        },
+        "audioMissing": [],
+        "placeholder": false,
+        "state": "playing",
+        "gpu": "ANGLE (NVIDIA, NVIDIA GeForce RTX 3050 Laptop GPU (0x000025E2) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+      },
+      "frames": {
+        "medianMs": 7,
+        "p95Ms": 7.600000023841858,
+        "calls": 438,
+        "triangles": 17174,
+        "mainShadowRefreshed": true,
+        "reflectionShadowRefreshed": true
+      },
+      "audio": {
+        "playing": 0.07267349010246371,
+        "paused": 0,
+        "pausedContext": "suspended",
+        "contextState": "suspended",
+        "scope": "final gate measured even with context forcibly resumed while paused"
+      },
+      "resumed": "running",
+      "assistedFraming": {
+        "name": "S_basin",
+        "center": [
+          -0.5799999833106995,
+          0.5450000017881393,
+          0.42000000923871994
+        ],
+        "position": [
+          0.07000001668930056,
+          0,
+          1.42000000923872
+        ]
+      }
+    },
+    {
+      "id": "nightroad",
+      "resources": {
+        "textures": 70,
+        "expectedTextures": 70,
+        "expectedBumps": 30,
+        "bumpTextures": 30,
+        "coloredMeshes": 103,
+        "shadowLights": 0,
+        "roomProfile": {
+          "seconds": 0.48,
+          "decay": 4.2,
+          "wet": 0.07
+        },
+        "audioMissing": [],
+        "placeholder": false,
+        "state": "playing",
+        "gpu": "ANGLE (NVIDIA, NVIDIA GeForce RTX 3050 Laptop GPU (0x000025E2) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+      },
+      "frames": {
+        "medianMs": 6.9000000059604645,
+        "p95Ms": 7.5999999940395355,
+        "calls": 89,
+        "triangles": 5398,
+        "mainShadowRefreshed": true,
+        "reflectionShadowRefreshed": null
+      },
+      "audio": {
+        "playing": 0.0738427292422305,
+        "paused": 0,
+        "pausedContext": "suspended",
+        "contextState": "suspended",
+        "scope": "final gate measured even with context forcibly resumed while paused"
+      },
+      "resumed": "running",
+      "assistedFraming": {
+        "name": "INT_lantern_01",
+        "center": [
+          3.172923043370247,
+          0.949999988079071,
+          12
+        ],
+        "position": [
+          3.822923043370247,
+          0,
+          13
+        ]
+      }
+    }
+  ],
+  "scope": "real production browser; detail framing is assisted; no human listening acceptance"
+}

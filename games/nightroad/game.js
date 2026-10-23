@@ -177,9 +177,10 @@ const config = {
   audio: '../../assets/audio/nightroad/manifest.json',
   footstepSfx: 'stepDirt',
   flashlight: null,
-  ambient: { color: 0x6c82aa, intensity: 3.2 },
-  fog: { color: 0x080d18, density: 0.03 },
-  directional: { color: 0xa8c0e8, intensity: 1.15, position: [-26, 34, 30] },
+  ambient: { color: 0x8f9eaa, intensity: 1.45 },
+  fog: { color: 0x090f17, density: 0.025 },
+  // The moon in setupSky supplies the only key; avoid doubling a second blue sun.
+  directional: null,
   tint: '#c6d2e4',
   theme: { accent: '#9db8d8', ink: '#d8d2c0', bg: '#05070c' },
   playerStart: { spawn: 'SPAWN_night_start', look: 'LOOK_night_start' },
@@ -231,9 +232,9 @@ const config = {
     game.player.teleportTo('SPAWN_night_start', 'LOOK_night_start');
     game.player.enabled = true;
     game.audio.playMusic('main', { fade: 3 });
-    playAmb('windField', { channel: 'main', fade: 2.5, volume: 1 });
-    playAmb('insects', { channel: 'extra', fade: 2.5, volume: 0.9 });
-    playAmb('distantDog', { channel: 'dog', fade: 2.5, volume: 0.6 });
+    playAmb('windField', { channel: 'main', fade: 2.5, volume: .82 });
+    playAmb('insects', { channel: 'extra', fade: 2.5, volume: .62 });
+    playAmb('distantDog', { channel: 'dog', fade: 2.5, volume: .35 });
 
     game.ui.setObjective(OBJECTIVE.lanterns);
     game.ui.setCounter('灯笼 0 / 5');
@@ -323,8 +324,8 @@ const config = {
     game.ui.setCounter(`灯笼 ${state.litCount} / 5`);
     game.ui.subtitle('你又站起来了。前面的灯还亮着。', 3.4);
     game.audio.playMusic('main', { fade: 2 });
-    playAmb('windField', { channel: 'main', fade: 2, volume: 1 });
-    playAmb('insects', { channel: 'extra', fade: 2, volume: 0.9 });
+    playAmb('windField', { channel: 'main', fade: 2, volume: .82 });
+    playAmb('insects', { channel: 'extra', fade: 2, volume: .62 });
   },
 
   onFail(game) {
@@ -499,6 +500,11 @@ function setupSky(game) {
 
   // 月亮 + 极淡月晕
   const moonDir = new THREE.Vector3(-0.34, 0.42, 0.84).normalize();
+  const moonKey=new THREE.DirectionalLight(0xb4c3d0,.9);
+  moonKey.name='NR_moon_key';moonKey.position.copy(moonDir).multiplyScalar(30);
+  game.scene.add(moonKey);
+  const skyFill=new THREE.HemisphereLight(0x829db1,0x302e23,.32);
+  skyFill.name='NR_sky_bounce';game.scene.add(skyFill);
   const moon = new THREE.Mesh(
     new THREE.CircleGeometry(.85, 32),
     new THREE.MeshBasicMaterial({ color: 0xc4d1dc, fog: false, transparent: true, opacity: 0.82, depthWrite: false })
@@ -612,7 +618,7 @@ function cloneLanternPaper(root) {
 
 /* ================= 玩家随身暖光（火折子 / 提灯） ================= */
 function setupPlayerLight(game) {
-  const light = new THREE.PointLight(0xffb877, 1.55, 13.5, 1.3);
+  const light = new THREE.PointLight(0xffc48b, 1.05, 10, 1.3);
   light.position.set(0.32, -0.3, -0.45);
   game.camera.add(light);
   state.playerLight = light;
@@ -621,25 +627,25 @@ function setupPlayerLight(game) {
 function updatePlayerLight(game) {
   if (!state.playerLight) return;
   const f = 0.9 + 0.1 * Math.sin(game.time * 8.3) * Math.sin(game.time * 3.7 + 0.7);
-  state.playerLight.intensity = 1.55 * f;
+  state.playerLight.intensity = 1.05 * f;
 }
 
 /* ================= 土地庙灯光 ================= */
 function setupShrineLighting(game) {
-  game.setLight('LIGHT_shrine', true, 2.6);
-  const light = new THREE.PointLight(0xff9a5a, 1.5, 5.6, 1.3);
+  game.setLight('LIGHT_shrine', true, 1.4);
+  const light = new THREE.PointLight(0xffb77d, 1.05, 5.6, 1.3);
   light.position.set(0, 1.25, 96.9);
   game.scene.add(light);
   state.shrineLight = light;
 
   const glowMat = new THREE.SpriteMaterial({
     map: lanternGlowTexture(),
-    transparent: true, opacity: 0.2, depthWrite: false,
+    transparent: true, opacity: 0.07, depthWrite: false,
     blending: THREE.AdditiveBlending, fog: true,
   });
   const glow = new THREE.Sprite(glowMat);
   glow.position.set(0, 1.15, 97.3);
-  glow.scale.set(4.0, 4.0, 1);
+  glow.scale.set(1.5, 1.5, 1);
   game.scene.add(glow);
   state.shrineGlow = glow;
 }
@@ -647,8 +653,8 @@ function setupShrineLighting(game) {
 function updateShrine(game) {
   const t = game.time;
   const flick = 0.86 + 0.14 * Math.sin(t * 7.3) * Math.sin(t * 2.9 + 1.3);
-  if (state.shrineLight) state.shrineLight.intensity = 1.5 * flick;
-  if (state.shrineGlow) state.shrineGlow.material.opacity = 0.17 + 0.05 * flick;
+  if (state.shrineLight) state.shrineLight.intensity = 1.05 * flick;
+  if (state.shrineGlow) state.shrineGlow.material.opacity = 0.055 + 0.015 * flick;
 }
 
 function updateLanterns(game, dt) {  const t = game.time;
@@ -1181,7 +1187,7 @@ function updateAmbient(game, dt) {
   state.ambient.dog -= dt;
   if (state.ambient.dog <= 0) {
     state.ambient.dog = 34 + Math.random() * 30;
-    playAmb('distantDog', { channel: 'dog', fade: 3, volume: 0.5 });
+    playAmb('distantDog', { channel: 'dog', fade: 3, volume: .35 });
   }
   const z = game.player.pos.z;
   if (!state.ambient.crow && z > 40 && z < 92) {
